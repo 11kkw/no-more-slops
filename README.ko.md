@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="no-more-slops.png" alt="No-More-Slops — 아이디어를 논문, 애플리케이션, 콘텐츠로 만드는 프로젝트" width="100%">
+</p>
+
 # No-More-Slops
 
 [English](README.md) | **한국어**
