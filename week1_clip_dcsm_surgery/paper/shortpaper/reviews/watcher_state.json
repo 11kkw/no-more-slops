@@ -1,0 +1,13 @@
+{
+  "handled": [
+    "380a8d9c312d980928e58cda26d5271ba7d40fa1774a8e4c6dd3e1b37615e5e1",
+    "5fae5f9ed2ae690fbc279c4189c0060deb5e6a64cabfcc1d388ee3077bae4f15",
+    "c322eb7a99a934eda26cda9623e3be178ef792f5752ee2b0e73a56354f13b621",
+    "5e755c14e7713a45a802ffc2d6b52d57183a49d2b77c7021b6076d65e6e41cca"
+  ],
+  "rounds": {
+    "DCSM-SHORT-20261010-001": 2
+  },
+  "last_signature": "a1d8bb07a9a1f4fc3ae103228ea80415c88a6b928160b507c333b75e15a56be7",
+  "active_cycle": "writing-feedback-20261010-user-request"
+}

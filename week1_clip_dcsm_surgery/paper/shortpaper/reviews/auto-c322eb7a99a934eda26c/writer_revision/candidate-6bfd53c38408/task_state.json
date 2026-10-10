@@ -1,0 +1,19 @@
+{
+  "task_id": "DCSM-SHORT-20261010-001",
+  "status": "author_revision_completed_with_open_review_items",
+  "request": "../../plan/04_discord_shortpaper_request.md",
+  "processing": "One bounded request; iterative compilation/review within same task, no duplicate new job",
+  "body_pages": 4,
+  "reference_pages": 1,
+  "total_pdf_pages": 5,
+  "validation_status": "passed_with_warnings",
+  "review": "Sequential Hermes internal review only",
+  "no_new_inference": true,
+  "no_server_task": true,
+  "no_delegation_or_bot_mentions": true,
+  "no_commit_push_or_submission": true,
+  "preserved_inputs": 114,
+  "pdf_sha256": "b0ee73d9a6b024adf2fec61c7de8e7c17b7f40252841fd9309d8424897064867",
+  "handoff": "Current Discord progress channel final response with PDF attachment; no additional bot-to-bot message",
+  "revision": "author-revision-20261010-01"
+}

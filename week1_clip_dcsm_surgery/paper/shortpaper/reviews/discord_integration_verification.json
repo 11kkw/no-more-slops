@@ -1,0 +1,12 @@
+{
+  "reviewer_bot_member_verified": true,
+  "reviewer_bot_id": "1558443383176044556",
+  "reviewer_bot_name": "Paper Reviewer",
+  "original_files_verified": 39,
+  "original_files_changed": [],
+  "publisher_validation": "payload/mentions/size/attachments + mock successful send, dedup, stale rejection, missing lint and uncertainty tests passed",
+  "review_bot_credential_selected": true,
+  "review_bot_connection_message_verified": true,
+  "message_url": "https://discord.com/channels/1558103834788765766/1558119941939535973/1558449273040011426",
+  "reviewer_service": "active"
+}

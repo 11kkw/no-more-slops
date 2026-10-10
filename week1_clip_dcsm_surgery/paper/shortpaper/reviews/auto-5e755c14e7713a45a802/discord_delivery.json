@@ -1,0 +1,14 @@
+{
+  "review_id": "auto-5e755c14e7713a45a802",
+  "input_digest": "5e755c14e7713a45a802ffc2d6b52d57183a49d2b77c7021b6076d65e6e41cca",
+  "channel_id": "1558119941939535973",
+  "guild_id": "1558103834788765766",
+  "sender_id": "1558443383176044556",
+  "sender_name": "Paper Reviewer",
+  "credential_profile": "paper-reviewer",
+  "status": "sent",
+  "message_id": "1558457843664027718",
+  "message_url": "https://discord.com/channels/1558103834788765766/1558119941939535973/1558457843664027718",
+  "sent_at": "2026-10-10T12:35:05.359092+00:00",
+  "attachment_verified": true
+}

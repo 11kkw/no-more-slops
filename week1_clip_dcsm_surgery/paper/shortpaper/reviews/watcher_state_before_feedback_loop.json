@@ -1,0 +1,11 @@
+{
+  "handled": [
+    "380a8d9c312d980928e58cda26d5271ba7d40fa1774a8e4c6dd3e1b37615e5e1",
+    "5fae5f9ed2ae690fbc279c4189c0060deb5e6a64cabfcc1d388ee3077bae4f15",
+    "c322eb7a99a934eda26cda9623e3be178ef792f5752ee2b0e73a56354f13b621"
+  ],
+  "rounds": {
+    "DCSM-SHORT-20261010-001": 3
+  },
+  "last_signature": "a08c9f9ecb74c80649f453cc20160a8832a79f2d82f5fef503f89dfbc3486092"
+}

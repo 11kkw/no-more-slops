@@ -1,0 +1,583 @@
+{
+  "schema_version": 1,
+  "tool_version": "0.3.1",
+  "checked_at": "2026-10-10T12:04:22.225008+00:00",
+  "package": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper",
+  "manuscript": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/shortpaper.md",
+  "input_files": [
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/shortpaper.md",
+      "sha256": "2f106b7270b274cee6da18484de8f84ff7d0d3db99c4b52a70adc1f63d16a964"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/references.bib",
+      "sha256": "28db8accb1cc06376079f1a1e5980c64b3c202379e18c7f6fe186360b205d515"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/shortpaper.tex",
+      "sha256": "de06eba2f9d577d6f852e290015a70694c65e534d3caa93928f618c6ab80fc8f"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/figures/spatial_balanced.pdf",
+      "sha256": "f7a7e9bf48b907eb0280670ef31529083a575e9bb660b6687b96e73d9e68a02f"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/shortpaper.pdf",
+      "sha256": "b0ee73d9a6b024adf2fec61c7de8e7c17b7f40252841fd9309d8424897064867"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/build_validation.json",
+      "sha256": "90248311695a345ae0f040ff5aaae53d3b39b26dcae0a6d09ece8a07f91d6fa3"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/task_state.json",
+      "sha256": "472eb5e4c427f2bb809c383328294d559747b18983b4bb8c0f4d3ad103b44025"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/sources/kang2025dcsm.html.txt",
+      "sha256": "6311acda689f8432fdee06822a463bff509d35fc95005213375ceee6abd2484d"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/sources/lan2024clearclip.pdf.txt",
+      "sha256": "5208321d809aff7f1fc89da2dc22c85f05d1873f7d49a964ee71c74dfb12f3c4"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/sources/minderer2023owlv2.txt",
+      "sha256": "802b719a7ef883fdfff2d6d79b2aa337b91ae9efdb43a32b4c95a1c649b190b2"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/sources/zhou2021maskclip.pdf.txt",
+      "sha256": "3d7f9989c048bd6b7cb4bc0d16aa1a0dd146a717c9c261cfa1637d64602c2af5"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/renders/page-1.png",
+      "sha256": "81136df063afe0a2c6b5bdafa7cd947f8d29d5ed69547a2a04d3edb463eef5e6"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/renders/page-2.png",
+      "sha256": "bde2d22ff08ac87ace4344df96d2989ee70c5fea92fc24841de79ea0d4846c7e"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/renders/page-3.png",
+      "sha256": "1720e7ce8a64f2a3690214d5fef3dc437e90eb83147bdee8f629effbe46b4936"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/renders/page-4.png",
+      "sha256": "c1c5be6c90e25e46301209f6facd0e9557b49eb7e304ba52c4b0da3d984eb8e3"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/renders/page-5.png",
+      "sha256": "68d2ad139081d224bb32c0852e15af9b6ef5971264e0815957dedef555aaee6e"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/README.md",
+      "sha256": "57d0931f7784d55f1e35127daa9be50546abd57ffbfb4653bfbfafc6d35825af"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/build.py",
+      "sha256": "241c345d0309e7cb7a3fe5735585eac4c8b7cb8ed948adb84393d0df541592b1"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/citation_audit.md",
+      "sha256": "c790ad50fdda8da66bc0fb179ca0551d8cfe8bdc63c4379d7c6247d48521ac9e"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/compile_stdout.txt",
+      "sha256": "3348999d50c18be235c7a0632fe033b2c8033740643e465a906553a3e1d3dbc7"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/discord_review.ko.md",
+      "sha256": "650e6e7a800f248b06a736947ece6293a5f61b4dc6b9c40dca21f08f845a57ce"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/evidence_export/evidence/manifest.json",
+      "sha256": "290500f668a81cb7f8f318e59b9d43fd964853d6994f06f430eaf2fb04727496"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/evidence_export/evidence/measurements.json",
+      "sha256": "0bbd41c79532fa3d4b60dd3ca02be9e2c9ab6b26ff4e45f17b49e9ab0933ccaa"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/evidence_export/tables/compositional_balanced.md",
+      "sha256": "aac574a478ec06b99a972bb34e9b21dd5cc65242b776d20af9693a971a8eb5b5"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/evidence_export/tables/compositional_raw.md",
+      "sha256": "6339cde39d5c63998dbc0b483f993f6ceae3972275939757a3b7b1ad9a607af8"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/evidence_export/tables/detection.md",
+      "sha256": "824f1a561e7d35e2da005b25c8a1ee9ef52537d2cbbd41c9a5651fce98c9f120"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/evidence_export/tables/heuristics.md",
+      "sha256": "c6145fea2b3c6310e86c583617a86022aad8e5f09a9fc64101283bbe925e3a89"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/figure_data.json",
+      "sha256": "7bbf561e690462209d38dbd8f2cd1f3f34c4d6b6c35e806f2a1635d90400de33"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/figures/spatial_balanced.png",
+      "sha256": "a6bde0605c939179f6a20cfe8a15b213cbff5f877e35a82f4406634662015ed0"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/format_review.ko.md",
+      "sha256": "d08a60844e20de171360924bddbdbb6aa2127964787e039ef04259d7c4c138b9"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/input_snapshot.json",
+      "sha256": "09fce7554135765ca09e33480fdba3c97d49f9690e84ad2d5b9ca30ae1c6545f"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/pdf_text.txt",
+      "sha256": "a556557f26fc9932d5f1d62d4a9ee18a7913c284f80f1834dbaaa019a2242549"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/shortpaper.aux",
+      "sha256": "1f4c03123a420dcc95bcf430b4bde89e25ee061960399f37ee81e23c47de1ff8"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/shortpaper.bbl",
+      "sha256": "0af6d280fd24bf1023fb40d0479d1b3e3f5e2fe66fa9ae07969b726353b40a56"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/shortpaper.blg",
+      "sha256": "85b306d1709a2792181254b73cefcc71029326e992e6c448027d3aebf205b117"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/shortpaper.log",
+      "sha256": "84f227e28108597e6ade852a4254562a99f35bfdcd16643d1b3ceca7119c939b"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/shortpaper.out",
+      "sha256": "9b321a426ca8ac3977d32a4a51c7e3a54cb439dbaaa3dea72cd949490039912b"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/sources/minderer2023owlv2.pdf",
+      "sha256": "9037260cadc12fcf5e605c47fee523c2253e840fc77ed679f12f39e3c44e4b73"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/validate.py",
+      "sha256": "80922194886a80a810662d82b8519dc1a3fdcaa010d992595ce1a262a159cd99"
+    }
+  ],
+  "checks": [
+    {
+      "name": "section_abstract",
+      "status": "passed",
+      "details": "Section presence only; content adequacy requires review"
+    },
+    {
+      "name": "section_introduction",
+      "status": "passed",
+      "details": "Section presence only; content adequacy requires review"
+    },
+    {
+      "name": "section_methods",
+      "status": "passed",
+      "details": "Section presence only; content adequacy requires review"
+    },
+    {
+      "name": "section_results",
+      "status": "passed",
+      "details": "Section presence only; content adequacy requires review"
+    },
+    {
+      "name": "section_conclusion",
+      "status": "passed",
+      "details": "Section presence only; content adequacy requires review"
+    },
+    {
+      "name": "section_references",
+      "status": "passed",
+      "details": "Section presence only; content adequacy requires review"
+    },
+    {
+      "name": "bibliography_keys",
+      "status": "passed",
+      "details": {
+        "cited": [
+          "bianchi2023fgovd",
+          "kang2025dcsm",
+          "lan2024clearclip",
+          "lin2014coco",
+          "minderer2022owlvit",
+          "minderer2023owlv2",
+          "radford2021clip",
+          "zhou2021maskclip"
+        ],
+        "missing": []
+      }
+    },
+    {
+      "name": "figure_files",
+      "status": "passed",
+      "details": [
+        {
+          "reference": "figures/spatial_balanced.pdf",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "name": "latex_document",
+      "status": "passed",
+      "details": "Source structure only; no arXiv-side compilation"
+    },
+    {
+      "name": "pdf_readable",
+      "status": "passed",
+      "details": {
+        "pages": 5,
+        "text_chars_per_page": [
+          4570,
+          5905,
+          5151,
+          3654,
+          1940
+        ]
+      }
+    },
+    {
+      "name": "build_record_matches_pdf",
+      "status": "needs_review",
+      "details": {
+        "recorded_status": "needs_revision",
+        "recorded_pages": {
+          "body": 4,
+          "references": 1,
+          "total": 5
+        },
+        "scope": "PDF hash agreement only; manual rendering review still required"
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "author_placeholder",
+      "priority": "required",
+      "evidence": "Authors and affiliations: to be determined",
+      "line": 3
+    },
+    {
+      "id": "working_draft_label",
+      "priority": "recommended",
+      "evidence": "Venue-neutral working short paper",
+      "line": 3
+    }
+  ],
+  "local_similarity": {
+    "scope": "Exact English word sequences in supplied local texts; references excluded",
+    "minimum_words": 8,
+    "plagiarism_percentage": null,
+    "external_database_comparison": "not_run",
+    "semantic_overlap_review": "not_run",
+    "sources": [
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/kang2025dcsm.html.txt",
+        "sha256": "6311acda689f8432fdee06822a463bff509d35fc95005213375ceee6abd2484d",
+        "source_tokens": 14564,
+        "candidate_count": 0,
+        "matches": [],
+        "matches_truncated": false
+      },
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/lan2024clearclip.pdf.txt",
+        "sha256": "5208321d809aff7f1fc89da2dc22c85f05d1873f7d49a964ee71c74dfb12f3c4",
+        "source_tokens": 9683,
+        "candidate_count": 0,
+        "matches": [],
+        "matches_truncated": false
+      },
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/minderer2023owlv2.txt",
+        "sha256": "802b719a7ef883fdfff2d6d79b2aa337b91ae9efdb43a32b4c95a1c649b190b2",
+        "source_tokens": 11260,
+        "candidate_count": 0,
+        "matches": [],
+        "matches_truncated": false
+      },
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/zhou2021maskclip.pdf.txt",
+        "sha256": "3d7f9989c048bd6b7cb4bc0d16aa1a0dd146a717c9c261cfa1637d64602c2af5",
+        "source_tokens": 8329,
+        "candidate_count": 0,
+        "matches": [],
+        "matches_truncated": false
+      }
+    ],
+    "source_count": 4,
+    "status": "no_exact_candidates_in_supplied_sources",
+    "interpretation": "Neither a plagiarism verdict nor proof of originality"
+  },
+  "near_similarity": {
+    "engine": "RapidFuzz",
+    "version": "3.14.6",
+    "method": "normalized sentence fuzz.ratio",
+    "candidate_threshold": 90,
+    "segment_words": [
+      12,
+      150
+    ],
+    "source_count": 4,
+    "status": "no_near_candidates_in_supplied_sources",
+    "sources": [
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/kang2025dcsm.html.txt",
+        "candidate_count": 0,
+        "matches": []
+      },
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/lan2024clearclip.pdf.txt",
+        "candidate_count": 0,
+        "matches": []
+      },
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/minderer2023owlv2.txt",
+        "candidate_count": 0,
+        "matches": []
+      },
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/zhou2021maskclip.pdf.txt",
+        "candidate_count": 0,
+        "matches": []
+      }
+    ],
+    "plagiarism_percentage": null,
+    "limitations": "Pairwise string scores only. Sentence splitting and PDF extraction may miss overlap; no semantic or web/database comparison."
+  },
+  "latex_lint": {
+    "engine": "ChkTeX",
+    "version": "1.7.9",
+    "status": "warnings_found",
+    "exit_code": 2,
+    "diagnostic_count": 34,
+    "diagnostics": [
+      {
+        "line": "14",
+        "column": "14",
+        "rule": "1",
+        "message": "Command terminated with space."
+      },
+      {
+        "line": "27",
+        "column": "38",
+        "rule": "9",
+        "message": "`]' expected, found `}'."
+      },
+      {
+        "line": "27",
+        "column": "50",
+        "rule": "9",
+        "message": "`}' expected, found `]'."
+      },
+      {
+        "line": "27",
+        "column": "66",
+        "rule": "9",
+        "message": "`]' expected, found `}'."
+      },
+      {
+        "line": "28",
+        "column": "6",
+        "rule": "9",
+        "message": "`}' expected, found `]'."
+      },
+      {
+        "line": "47",
+        "column": "41",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "52",
+        "column": "14",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "59",
+        "column": "66",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "77",
+        "column": "11",
+        "rule": "1",
+        "message": "Command terminated with space."
+      },
+      {
+        "line": "89",
+        "column": "50",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "108",
+        "column": "36",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "123",
+        "column": "17",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "131",
+        "column": "66",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "139",
+        "column": "47",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "143",
+        "column": "6",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "167",
+        "column": "53",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "173",
+        "column": "44",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "193",
+        "column": "64",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "194",
+        "column": "60",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "203",
+        "column": "20",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "256",
+        "column": "57",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "267",
+        "column": "1",
+        "rule": "24",
+        "message": "Delete this space to maintain correct pagereferences."
+      },
+      {
+        "line": "291",
+        "column": "19",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "306",
+        "column": "1",
+        "rule": "24",
+        "message": "Delete this space to maintain correct pagereferences."
+      },
+      {
+        "line": "331",
+        "column": "10",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "334",
+        "column": "1",
+        "rule": "24",
+        "message": "Delete this space to maintain correct pagereferences."
+      },
+      {
+        "line": "339",
+        "column": "24",
+        "rule": "9",
+        "message": "`]' expected, found `}'."
+      },
+      {
+        "line": "339",
+        "column": "35",
+        "rule": "9",
+        "message": "`}' expected, found `]'."
+      },
+      {
+        "line": "340",
+        "column": "23",
+        "rule": "9",
+        "message": "`]' expected, found `}'."
+      },
+      {
+        "line": "340",
+        "column": "35",
+        "rule": "9",
+        "message": "`}' expected, found `]'."
+      },
+      {
+        "line": "371",
+        "column": "9",
+        "rule": "1",
+        "message": "Command terminated with space."
+      },
+      {
+        "line": "424",
+        "column": "53",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "430",
+        "column": "1",
+        "rule": "24",
+        "message": "Delete this space to maintain correct pagereferences."
+      },
+      {
+        "line": "432",
+        "column": "11",
+        "rule": "1",
+        "message": "Command terminated with space."
+      }
+    ],
+    "stdout": "14:14:1:Command terminated with space.\n27:38:9:`]' expected, found `}'.\n27:50:9:`}' expected, found `]'.\n27:66:9:`]' expected, found `}'.\n28:6:9:`}' expected, found `]'.\n47:41:8:Wrong length of dash may have been used.\n52:14:8:Wrong length of dash may have been used.\n59:66:8:Wrong length of dash may have been used.\n77:11:1:Command terminated with space.\n89:50:13:Intersentence spacing (`\\@') should perhaps be used.\n108:36:8:Wrong length of dash may have been used.\n123:17:13:Intersentence spacing (`\\@') should perhaps be used.\n131:66:13:Intersentence spacing (`\\@') should perhaps be used.\n139:47:8:Wrong length of dash may have been used.\n143:6:8:Wrong length of dash may have been used.\n167:53:8:Wrong length of dash may have been used.\n173:44:13:Intersentence spacing (`\\@') should perhaps be used.\n193:64:13:Intersentence spacing (`\\@') should perhaps be used.\n194:60:13:Intersentence spacing (`\\@') should perhaps be used.\n203:20:13:Intersentence spacing (`\\@') should perhaps be used.\n256:57:13:Intersentence spacing (`\\@') should perhaps be used.\n267:1:24:Delete this space to maintain correct pagereferences.\n291:19:13:Intersentence spacing (`\\@') should perhaps be used.\n306:1:24:Delete this space to maintain correct pagereferences.\n331:10:8:Wrong length of dash may have been used.\n334:1:24:Delete this space to maintain correct pagereferences.\n339:24:9:`]' expected, found `}'.\n339:35:9:`}' expected, found `]'.\n340:23:9:`]' expected, found `}'.\n340:35:9:`}' expected, found `]'.\n371:9:1:Command terminated with space.\n424:53:8:Wrong length of dash may have been used.\n430:1:24:Delete this space to maintain correct pagereferences.\n432:11:1:Command terminated with space.\n",
+    "stderr": "/home/happy5700x/.cache/paper-review-local/chktex/usr/bin/chktex: WARNING -- Could not find global resource file.\n",
+    "limitations": "Static LaTeX typography only; no prose grammar, visual layout, arXiv compilation or acceptance judgment. Input-file traversal disabled."
+  },
+  "manual_checks_required": [
+    "actual PDF layout",
+    "academic prose and claim support",
+    "figure provenance and representative selection",
+    "paraphrase/idea attribution",
+    "author and arXiv metadata decisions"
+  ],
+  "arxiv_submission_status": "not_ready_author_metadata_and_manual_review_pending",
+  "external_similarity": {
+    "status": "not_connected",
+    "score": null,
+    "upload_performed": false
+  },
+  "originals_modified": false,
+  "review_id": "auto-5fae5f9ed2ae690fbc27",
+  "input_digest": "5fae5f9ed2ae690fbc279c4189c0060deb5e6a64cabfcc1d388ee3077bae4f15",
+  "review_directory": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/reviews/auto-5fae5f9ed2ae690fbc27"
+}

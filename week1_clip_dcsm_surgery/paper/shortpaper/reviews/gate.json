@@ -1,0 +1,12 @@
+{
+  "review_id": "auto-5e755c14e7713a45a802",
+  "input_digest": "5e755c14e7713a45a802ffc2d6b52d57183a49d2b77c7021b6076d65e6e41cca",
+  "checked_at": "2026-10-10T12:31:54.509663+00:00",
+  "status": "author_revision_required",
+  "review_directory": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/reviews/auto-5e755c14e7713a45a802",
+  "finding_counts": {
+    "required": 3,
+    "recommended": 5,
+    "minor": 3
+  }
+}

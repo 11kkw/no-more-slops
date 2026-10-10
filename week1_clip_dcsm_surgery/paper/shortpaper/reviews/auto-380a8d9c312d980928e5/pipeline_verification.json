@@ -1,0 +1,30 @@
+{
+  "mcp_tools_discovered": 6,
+  "tests_passed": [
+    "exact_phrase_positive",
+    "near_string_positive",
+    "reference_section_excluded",
+    "path_traversal_rejected",
+    "symlink_escape_rejected",
+    "same_id_idempotent",
+    "changed_input_id_rejected",
+    "stale_editorial_rejected",
+    "required_linter_missing_rejected",
+    "diagnostic_lines_parsed",
+    "input_immutability",
+    "actual_pdf_page_image_read",
+    "native_image_routing",
+    "localized_confidence_normalization",
+    "supporting_file_change_rejected"
+  ],
+  "actual_source_count": 4,
+  "actual_chktex_warnings": 33,
+  "external_uploads": 0,
+  "model_review": "completed",
+  "native_pages_attached": 5,
+  "findings": 13,
+  "required_findings": 4,
+  "original_files_unchanged": 39,
+  "service": "hermes-paper-reviewer.service",
+  "latest_code_version": "0.3.1"
+}

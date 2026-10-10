@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "review_id": "auto-e70e42b96c17b7bcc862",
+  "input_digest": "e70e42b96c17b7bcc86272b5176d505ca1b45ac93ccdc7561718ee9c06c392d1",
+  "summary": "판정: 원고·인용 문맥에 대한 편집 검토는 수행했으나, 실제 이미지 시각 검사와 최신 공식 arXiv 지침 확인은 미완료이므로 전체 검토 완료 또는 제출 준비 완료로 판정하지 않는다. 원고 shortpaper.md와 shortpaper.tex 전체, references.bib, PDF 1–5쪽 추출문, README, figure_data.json을 읽었다. 작성자의 self-review, discord_review, format_review, review_notes 및 drafting conversation은 읽지 않았다. 첫 실행은 지정 review_id의 run_local_review이며 ChkTeX 1.7.9가 실제 실행되었다(status warnings_found, exit_code 2, diagnostic_count 33); stderr에는 global resource file 경고가 있다. 구조, 인용 키, 그림 파일 존재, PDF 가독성 및 기록된 PDF 해시 일치는 통과했지만 새 컴파일이나 arXiv 측 컴파일은 하지 않았다. 로컬 문자열 비교 범위는 sources/kang2025dcsm.html.txt, lan2024clearclip.pdf.txt, minderer2023owlv2.txt, zhou2021maskclip.pdf.txt 네 파일 전체와 원고 본문이다. 8단어 이상 exact 후보와 RapidFuzz 3.14.6 normalized sentence fuzz.ratio 90 이상(12–150단어 구간) near 후보가 모두 보고되지 않았다. 후보 부재는 독창성 또는 표절 부재를 증명하지 않는다. 사람의 문맥 검토는 DCSM 서론 및 §5.1, ClearCLIP 서론·§3.3–4.1, MaskCLIP 서론·§3.3, OWLv2 초록·§1–3의 읽은 구절에 한정되며 출처 네 편 전체를 정독한 것은 아니다. CLIP, OWL-ViT, COCO, FG-OVD 원문은 로컬 비교와 원문 검토 범위 밖이다. 원고는 conditional selection, 비대응 입력·학습 조건, scalar-map 제한 및 인과 해석 금지를 잘 밝힌다. 주요 보완은 저자 메타데이터, 체크포인트·어댑터 출처, 직접 readout 비교의 paired 차이 보고, query 구성 세부사항, PDF 표의 Pointing 단위, 내부 진행상태 문장의 분리 및 휴대 가능한 소스 번들이다. 그림 데이터는 저장된 bootstrap 파일의 위치와 선택된 scorer 키를 명시하나 원본 bootstrap·prediction·실행 코드까지의 독립적 역추적 및 재계산은 하지 않았다. 다섯 rendered page 호출은 모두 기존 PNG 경로만 반환하여 픽셀을 볼 수 없었고 대체 MCP 리소스도 비어 있었다. 따라서 1–5쪽의 클리핑, 그림 글자 크기, 표·캡션 간격, 폰트, 여백, 실제 페이지 균형은 모두 미검증이다. 네트워크 도구가 없으므로 최신 공식 arXiv 지침, 실시간 서지 검증, 외부 웹/DB 유사도, 자동 의미 유사도 비교 및 AI 텍스트 탐지는 수행하지 않았다. 훈련/평가 중복, tokenizer 정렬, 체크포인트 해시·원 실행 revision, label 품질·target 유일성, 독립 데이터 일반화, 검출·pointing 불확실성, 전체 소스 번들·라이선스·category·저자 승인·moderation·arXiv 컴파일/수락은 미검증 또는 미실행이다. 보조 evidence_export 경로를 추정한 읽기 두 건은 파일 부재였고 원 실행 증거 접근은 도구 circuit breaker로 완료되지 않았다. 원고 원본 수정, 실험, 업로드, Discord 접촉은 하지 않았다.",
+  "findings": [
+    {
+      "id": "R01_author_metadata",
+      "location": "표제부 / PDF p.1 / shortpaper.md line 3; shortpaper.tex author/date",
+      "evidence": "Authors and affiliations: to be determined; LaTeX author는 Authors and affiliations to be determined, date는 Venue-neutral working short paper이다.",
+      "priority": "required",
+      "explanation": "학술 구조가 갖추어져 있어도 실제 저자·소속이 미정인 상태는 제출용 메타데이터 완료가 아니다. 본문 감사문 및 AI 지원 고지와 실제 저자 결정은 별개다.",
+      "confidence": "high",
+      "suggested_correction": "저자가 저자 순서·소속·연락처 및 감사문을 확정하고 PDF와 제출 메타데이터를 일치시킨다. 최종 배포본에서 working short paper 표시를 유지할지 명시적으로 결정한다."
+    },
+    {
+      "id": "R02_scope_and_terminology",
+      "location": "제목, Abstract, §3.2, §5 Conclusion",
+      "evidence": "제목은 Dense CLIP Localization Gains Do Not Consistently Transfer to Relational Object Selection이고 §3.2는 transfer failure is specific to these scalar-map reductions and candidate rules라고 제한한다. Abstract는 mean-map scorer, Methods는 pooled text와 box mean을 구분한다.",
+      "priority": "recommended",
+      "explanation": "본문의 제한은 적절하지만 제목의 Dense CLIP는 검토한 readout·box-mean 집계보다 넓게 읽힐 수 있다. pooled가 text pooling인지 box averaging인지 문맥마다 구분해야 한다.",
+      "confidence": "medium",
+      "suggested_correction": "제목 또는 초록 첫 문장에서 evaluated frozen-CLIP readouts와 supplied-box scalar-map selection을 명시한다. text-EOS pooled map 및 box-mean scoring 용어를 일관되게 쓰고 dense representation 전반의 실패로 확장하지 않는다."
+    },
+    {
+      "id": "R03_primary_paired_contrast",
+      "location": "§2.4 및 §3.2 / Table 2",
+      "evidence": "§2.4는 10,000 paired image-cluster resamples를 명시한다. §3.2는 ordinary 50.3%, 두 modified pooled readout 39.4%를 보고하지만 paired 차이 구간은 ObjA-versus-chance와 ObjA-versus-ClearCLIP에만 제시한다.",
+      "priority": "recommended",
+      "explanation": "논문의 중심 결론은 modified-versus-ordinary selection 비교인데 직접적인 paired 차이의 불확실성 보고가 빠져 있다. 개별 방법 신뢰구간을 단순 비교하는 것으로 paired 추론을 대체하면 안 된다.",
+      "confidence": "high",
+      "suggested_correction": "이미 저장된 paired bootstrap에 해당 contrast가 있으면 ordinary 대비 각 modified pooled map의 차이와 percentile 95% 구간을 본문 또는 표 주석에 보고한다. 없으면 기술적 순위 관찰임을 명확히 유지하고 유의성이나 보편적 전이 실패를 주장하지 않는다. 새 실험을 요구하거나 실행하지 않는다."
+    },
+    {
+      "id": "R04_dcsm_prior_motivation",
+      "location": "Introduction, §2.3, §4 / sources/kang2025dcsm.html.txt §5.1 (읽은 offset 27000–41000)",
+      "evidence": "원출처 §5.1은 we do not perform these surgeries and rely on the scoring tool to recognize inverted patterns 및 Further analysis ... extracted DCSMs from edited CLIP models라고 명시한다. 원고는 DCSM의 matrix scoring을 인용하지만 이 관련 동기를 설명하지 않는다.",
+      "priority": "recommended",
+      "explanation": "원출처가 이미 feature surgery와 DCSM의 연결을 후속 과제로 언급했다. 현재 원고는 full CNN-on-modified-readout 실험을 하지 않았다고 올바르게 제한하지만, 이 직접 관련 문맥을 밝히면 기여의 경계와 아이디어 출처가 더 명확해진다. 표절 또는 연구 부정 판정은 아니다.",
+      "confidence": "high",
+      "suggested_correction": "DCSM 원논문이 unaltered features를 사용하고 edited-feature DCSM 분석을 후속 과제로 남겼음을 인용해 덧붙인다. 본 연구는 그 완전한 factorial 검증이 아니라 scalar-map selection과 released scorer의 비교임을 연결해 설명한다.",
+      "classification": "attribution_issue"
+    },
+    {
+      "id": "R05_maskclip_variant_mapping",
+      "location": "§2.1; sources/zhou2021maskclip.pdf.txt §3.3 (offset 16000–23000); sources/lan2024clearclip.pdf.txt §3.3",
+      "evidence": "원고는 Z_value=W_O V 및 Modified outputs omit the final residual and feed-forward paths라고 한다. MaskCLIP 로컬 §3.3은 ViT에 대해 adding input x to the output을 언급한다. ClearCLIP §3.3은 residual 및 FFN 제거와 기본 qq attention을 명시한다.",
+      "priority": "recommended",
+      "explanation": "-style와 not full reproductions라는 표현은 적절하다. 그러나 value-only arm에서 residual을 제거한 설계가 읽은 MaskCLIP 원문 ViT 설명과 다르므로 결과를 MaskCLIP 자체 성능으로 오해하지 않도록 차이를 직접 설명해야 한다. 원문 버전 및 공식 구현과의 일치는 별도 미검증이다.",
+      "confidence": "high",
+      "suggested_correction": "value-only arm에 smoothing·prompt denoising 미사용 및 residual/FFN 처리 차이를 짧게 명시하고 표에서도 -style 명칭을 유지한다. 읽은 원문 버전의 위치를 인용하며 원본 방법의 재현 결과로 제시하지 않는다.",
+      "classification": "acceptable_overlap"
+    },
+    {
+      "id": "R06_checkpoint_adapter_provenance",
+      "location": "§2.3 및 §4; sources/kang2025dcsm.html.txt §5.1",
+      "evidence": "원고는 locally called ObjA and COCO, inherited whitespace positions, jointly across candidate crops, Tokenizer alignment is not independently certified라고 한다. DCSM 원출처는 fixed functional rows, two-layer CNN/hidden dimension 128 및 Objaverse·COCO training을 설명한다.",
+      "priority": "required",
+      "explanation": "DCSM 관련 서술은 출처와 전반적으로 맞지만 실제 checkpoint 식별 및 adapter 변형이 불완전하여 현재 수치를 canonical released pipeline의 충실한 재현으로 확인할 수 없다. candidate-batch normalization과 whitespace/tokenizer 정렬은 측정 해석에 직접 영향을 줄 수 있다.",
+      "confidence": "high",
+      "suggested_correction": "기존 기록에서 회수 가능한 정확한 checkpoint 파일명·release/revision·해시, upstream/adapter 코드 위치, 정규화 축·epsilon과 functional-row 위치 규칙을 보조 manifest에 기록한다. 회수 불가 항목은 unknown으로 표시하고 결과를 local adapter pipeline으로 지칭한다. 검증하지 않은 tokenizer 충실성 및 training overlap을 인증하지 않는다.",
+      "classification": "unverified"
+    },
+    {
+      "id": "R07_query_construction_details",
+      "location": "§2.2–2.4",
+      "evidence": "공간 query 구성에 center margin 0.05와 separation constraints를 제시하지만 추가 separation 규칙·실제 template·동률 처리 규칙은 없다. pointing trial은 image-category pair인데 Table 1 캡션에는 500 images만 제시한다.",
+      "priority": "recommended",
+      "explanation": "한 페이지 내에서 중요한 입력 조건은 잘 제시됐지만 exact query 재구성과 pointing 분모를 판단하려면 구체적 규칙 및 trial 수가 필요하다. image 수가 image-category trial 수와 같다는 보장은 없다.",
+      "confidence": "high",
+      "suggested_correction": "기존 builder/manifest의 정확한 위치와 함수·revision을 연결하고 query 예시, 모든 separation 규칙, area-stratum 동률 처리, crop clipping·padding 적용 순서, top-1 tie 처리 및 pointing trial 분모·집계 가중 방식을 supplement에 명시한다. 현재 없는 값을 추정해 채우지 않는다."
+    },
+    {
+      "id": "R08_table_units_labels",
+      "location": "Table 1 / PDF p.3; shortpaper.tex tabular header; Table 2",
+      "evidence": "Markdown Table 1에는 Pointing (%)가 있지만 LaTeX 및 PDF 추출문에는 Readout / Pointing / P1 AP / P2 AP로 나온다. Table 2는 캡션에 %가 있으며 PDF 행명은 Ordinary map, CLIP context, DCSM ObjA 등으로 축약돼 있다.",
+      "priority": "recommended",
+      "explanation": "실제 PDF의 Pointing 단위는 표 자체와 캡션에서 명시되지 않는다. 표를 독립적으로 읽는 독자는 %인지 비율인지 알아야 한다. 축약된 scorer 명칭은 pooled/box mean/context 여부를 덜 명확하게 만든다.",
+      "confidence": "high",
+      "suggested_correction": "변환 템플릿에서 Pointing (%)를 보존하고 Table 2 header를 Accuracy (%)로 쓴다. 표 캡션이나 공통 주석에서 map=EOS text similarity의 box mean, context=privileged union crop임을 풀어 준다. 수정 후 생성된 PDF를 실제 시각 재검토한다."
+    },
+    {
+      "id": "R09_figure_provenance_selection",
+      "location": "Figure 1, figure_data.json, Table 2",
+      "evidence": "figure_data.json은 ../evidence/cluster_bootstrap.json#/subsets/spatial/balanced와 선택 scorer keys를 명시한다. Table 2에는 MaskCLIP-style이 있지만 Figure 1 keys에는 없다. 그림 캡션은 Selected spatial scorers라고 한다.",
+      "priority": "recommended",
+      "explanation": "선택된 scorer를 비교한다는 캡션과 데이터 provenance 경로는 적절하며 그림을 외부 논문에서 복사했다는 증거는 없다. 다만 핵심 readout arm 하나가 생략된 이유와 원본 bootstrap까지의 추적은 독립 확인되지 않았다. 그림 미관이나 clipping은 이미지 미열람으로 평가할 수 없다.",
+      "confidence": "medium",
+      "suggested_correction": "왜 MaskCLIP-style을 생략했는지 캡션 또는 보조 기록에 설명하고 필요하면 모든 pooled readout을 제시한다. plot 생성 입력·코드·원본 bootstrap 해시를 번들에 함께 기록한다. 선택 이유나 그래픽 품질을 검증 없이 단정하지 않는다."
+    },
+    {
+      "id": "R10_editorial_process_notes",
+      "location": "Introduction, §4 마지막 문단, Evidence Availability",
+      "evidence": "We therefore do not claim ... established novelty; Novelty, authorship, and venue compliance also remain pending; rather than submission readiness라는 내부 판단 문장이 본문에 있다. 긴 중심 문장과 not, conditional candidate selection, Modified readouts ... not evaluated가 bold로 강조돼 있다.",
+      "priority": "recommended",
+      "explanation": "비인과적 비교, annotation-derived 평가와 saved-artifact 분석이라는 과학적 한계는 유지해야 한다. 그러나 저자 결정·venue compliance·내부 readiness는 연구 논증이 아닌 작업 진행 상태이며 반복된 방어적 표현은 중심 관찰을 흐릴 수 있다.",
+      "confidence": "high",
+      "suggested_correction": "저자·venue·submission readiness 문장은 리뷰 기록으로 이동하고 관련연구와 비교한 실제 기여를 긍정적으로 명시한다. 핵심 scientific caveat는 한 곳에 정리하고 긴 bold 문장을 보통체로 바꿔 강조를 최소화한다. AI 지원 및 saved-artifact disclosure는 유지한다."
+    },
+    {
+      "id": "R11_chktex_triage",
+      "location": "local_checks.json latex_lint; shortpaper.tex lines 14, 27–28, 256, 292, 316, 321–322, 414, 416 등",
+      "evidence": "ChkTeX 1.7.9는 실제 실행됐으며 exit_code 2, warnings_found, diagnostic_count 33이다. 괄호 경고의 일부는 {[}...{]} 형식, rule 24 일부는 label 주변 빈 줄, 그 밖에 dash·command space·sentence spacing 후보이다. stderr는 Could not find global resource file이다.",
+      "priority": "recommended",
+      "explanation": "필수 linter 실행 조건은 충족했다. 33개 경고가 모두 컴파일 오류라는 뜻은 아니며 Pandoc 괄호 escape로 생긴 정적 검사 false positive 가능성이 있다. 반대로 warning 존재를 단순 통과로 표기하면 안 된다.",
+      "confidence": "high",
+      "suggested_correction": "경고를 실제 문법/spacing 수정과 문서화된 false positive로 분류한다. 변환 템플릿의 괄호·label 처리와 dash 용법을 점검하고 global resource file 경고가 사용한 로컬 설정에 미치는 영향을 기록한다. 저자 수정 이후 제한된 linter 재검사를 수행하되 이번 리뷰에서는 원본을 바꾸지 않는다."
+    },
+    {
+      "id": "R12_portable_arxiv_bundle",
+      "location": "README Build and validate; shortpaper.tex preamble / Evidence Availability",
+      "evidence": "README build 명령은 uv dependency 환경과 /home/happy5700x/.cache/paper-tools/tectonic-0.17.0/tectonic의 절대 경로를 사용한다. 소스는 newtxtext/newtxmath, natbib, bibliography{references}, figures/spatial_balanced.pdf에 의존하며 supporting material은 ../ 및 ../../에 있다.",
+      "priority": "required",
+      "explanation": "로컬 PDF 존재와 해시 일치는 휴대 가능한 arXiv source bundle의 증거가 아니다. 의존 패키지·bibliography artifact·그림·본문 외 supplement가 제출 번들에 완결적으로 들어 있는지 확인되지 않았다. 최신 공식 지침은 네트워크 접근 부재로 확인하지 못했다. 두 단 또는 본문 네 쪽은 보편적 arXiv 요건으로 판단하지 않는다.",
+      "confidence": "high",
+      "suggested_correction": "저자가 최신 공식 https://info.arxiv.org/help/submit_tex.html 및 https://info.arxiv.org/help/submit/index.html을 확인한 뒤 상대 경로만으로 완결되는 main TeX·그림·필요 bibliography 파일과 의존 목록을 준비한다. 빌드의 개인 캐시 경로를 제거하고 지원 material을 실제 공개 위치 또는 제출 supplement로 연결한다. 이번 리뷰에서 번들 새 빌드·업로드·승인은 실행하지 않았다.",
+      "classification": "unverified"
+    },
+    {
+      "id": "R13_local_attribution_coverage",
+      "location": "local_checks.json local_similarity / near_similarity; sources/; Introduction citations",
+      "evidence": "로컬 비교 원문은 kang2025dcsm, lan2024clearclip, minderer2023owlv2, zhou2021maskclip의 네 .txt 파일이다. 각 파일의 exact 및 near candidate_count가 0이다. radford2021clip, minderer2022owlvit, lin2014coco, bianchi2023fgovd는 인용 키만 확인되며 로컬 원문 비교에 포함되지 않았다.",
+      "priority": "recommended",
+      "explanation": "deterministic 비교는 명시된 텍스트만 다루며 PDF 추출·sentence splitting 및 문자열 기준으로 인해 누락될 수 있다. 읽은 네 논문의 관련 방법 설명은 원고의 인용과 대체로 부합한다. 후보가 없으므로 quotation 문제를 판정할 matching passage가 없으며 그 사실을 전체 표절 검증으로 확장할 수 없다.",
+      "confidence": "high",
+      "suggested_correction": "보고서와 저자 대응에 네 출처 범위를 유지하고 미포함 네 논문의 주장 지원은 원문으로 별도 확인한다. 외부 DB·웹, 전체 의미 유사도, 출처 진위·최신 서지 확인은 미검증으로 남긴다. 표절 자유, 부정행위, 글로벌 표절률을 선언하지 않는다.",
+      "classification": "unverified"
+    },
+    {
+      "id": "R14_visual_inspection_blocked",
+      "location": "PDF rendered pages 1, 2, 3, 4, 5 / renders/page-1.png through page-5.png",
+      "evidence": "read_rendered_page를 다섯 페이지 각각 호출했으나 결과는 MEDIA: 캐시 PNG 경로 문자열뿐이었다. list_resources는 resources=[]였다. 실제 viewable image content 또는 image-view 도구가 이 세션에 제공되지 않았다. pdf_text.txt에는 모든 쪽의 본문·표·그림 labels·references가 있다.",
+      "priority": "required",
+      "explanation": "기존 렌더를 요청하는 것과 실제 이미지 픽셀을 보는 것은 다르다. PDF text는 표·그림 간격, clipping, labels 글자 크기, 캡션 길이의 시각 효과, 수식 overflow, 폰트·여백·페이지 균형을 증명하지 못한다. 사용자 요구인 다섯 쪽 실제 시각 검사와 전체 리뷰 완료 조건이 아직 충족되지 않았다.",
+      "confidence": "high",
+      "suggested_correction": "이미지 내용을 전달하는 MCP bridge 또는 이미지 열람 가능한 검토 환경에서 기존 다섯 PNG를 실제로 열고 각 쪽의 제목/수식/표/그림/감사문/참고문헌 가독성·클리핑·간격·여백을 기록한다. 그 전에는 visual passed나 layout clean으로 표시하지 않는다.",
+      "classification": "unverified"
+    },
+    {
+      "id": "R15_unverified_evidence_and_decisions",
+      "location": "§2.3–2.4, §4, Evidence Availability; review scope",
+      "evidence": "원고는 training/evaluation overlap, checkpoint hashes, execution revisions, hardware/inventories, human label verification가 미완전하다고 직접 밝힌다. figure_data.json provenance만 읽었고 원본 predictions·bootstrap·evaluation implementation을 끝까지 역추적하지 못했다. evidence_export에서 추정한 두 JSON 이름은 파일 부재였으며 이후 읽기는 MCP circuit breaker로 차단됐다.",
+      "priority": "recommended",
+      "explanation": "현재 리뷰는 보고된 숫자의 원고·그림 데이터 간 문맥 일치 검토이지 원 실행 또는 bootstrap 계산의 재현 검증이 아니다. 현재 주장 범위를 좁히는 한계 공개는 장점이며 미확인 상태를 사실 확인으로 바꾸면 안 된다.",
+      "confidence": "high",
+      "suggested_correction": "author response에서 기존 증거의 정확한 경로를 제공하고 회수 가능한 manifest를 보완한다. 미검증 목록에는 원 수치·paired 구간 독립 재계산, figure bootstrap 계보, upstream adapter 충실성/tokenizer 정렬, 훈련 중복, label 품질·target 유일성, 독립/미관측 category 일반화, pointing/detection 불확실성, matched speed, 전체 bundle 및 라이선스·category·저자 승인, 최신 공식 arXiv 규칙·arXiv 측 컴파일·moderation·수락을 명시한다. 새 실험·학습·업로드로 자동 확장하지 않는다.",
+      "classification": "unverified"
+    }
+  ],
+  "originals_modified": false
+}

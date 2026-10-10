@@ -1,0 +1,8 @@
+{
+  "status": "writer_revision_blocked",
+  "review_id": "auto-5e755c14e7713a45a802",
+  "at": "2026-10-10T12:36:08.550530+00:00",
+  "review_rounds": 2,
+  "error_type": "RuntimeError",
+  "reason": "Writer did not submit a completed revision proposal"
+}

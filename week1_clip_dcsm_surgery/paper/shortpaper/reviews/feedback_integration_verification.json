@@ -1,0 +1,20 @@
+{
+  "checked_at": "2026-10-10T12:32:31.381093+00:00",
+  "writer_state": "awaiting_recheck",
+  "patch_count": 13,
+  "writer_message_url": "https://discord.com/channels/1558103834788765766/1558119941939535973/1558456850339336222",
+  "validation_status": "passed_with_warnings",
+  "mandatory_linter_status": "warnings_found",
+  "scientific_numeric_values_preserved": true,
+  "scientific_files_preserved": 44,
+  "body_pages": 4,
+  "reference_pages": 1,
+  "max_writer_revisions": 2,
+  "max_reviews": 3,
+  "experiments_enabled": false,
+  "services": {
+    "hermes-paper-review-presence.service": "active",
+    "hermes-paper-reviewer.service": "active",
+    "hermes-paper-feedback-loop.service": "active"
+  }
+}

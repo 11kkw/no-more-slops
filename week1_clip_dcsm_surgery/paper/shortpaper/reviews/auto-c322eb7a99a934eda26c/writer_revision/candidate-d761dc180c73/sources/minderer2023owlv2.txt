@@ -1,0 +1,3002 @@
+PAGE 1
+Scaling Open-Vocabulary Object Detection
+Matthias Minderer
+Alexey Gritsenko
+Neil Houlsby
+Google DeepMind
+{mjlm, agritsenko, neilhoulsby}@google.com
+Abstract
+Open-vocabulary object detection has benefited greatly from pretrained vision-
+language models, but is still limited by the amount of available detection training
+data. While detection training data can be expanded by using Web image-text
+pairs as weak supervision, this has not been done at scales comparable to image-
+level pretraining. Here, we scale up detection data with self-training, which
+uses an existing detector to generate pseudo-box annotations on image-text pairs.
+Major challenges in scaling self-training are the choice of label space, pseudo-
+annotation filtering, and training efficiency. We present the OWLv2 model and
+OWL-ST self-training recipe, which address these challenges. OWLv2 surpasses
+the performance of previous state-of-the-art open-vocabulary detectors already
+at comparable training scales (≈10M examples). However, with OWL-ST, we
+can scale to over 1B examples, yielding further large improvement: With an L/14
+architecture, OWL-ST improves AP on LVIS rare classes, for which the model has
+seen no human box annotations, from 31.2% to 44.6% (43% relative improvement).
+OWL-ST unlocks Web-scale training for open-world localization, similar to what
+has been seen for image classification and language modelling.
+1
+Introduction
+Object detection is a core computer vision task with many real-world applications. Consequently,
+there is great interest in improving detection models, especially in the open-vocabulary domain. For
+image-level tasks, large improvements have been achieved through contrastive pretraining of vision-
+language models, which is massively scalable because it can use naturally abundant weak supervision
+in the form of image-text pairs from the Web [24, 9, 23]. Since no such natural supervision data exists
+for localization tasks, open-vocabulary detection models typically build on pretrained image-level
+encoders [7, 14, 21, 40, 17, 1, 33, 41]. However, due to the scarcity of detection data and the fragility
+of pretrained representations, detection-training stages of these models have typically had to be
+relatively brief, which limits final detection performance and scaling potential.
+The scarcity of detection data can be addressed with self-training. In self-training, an existing
+detector is used to predict bounding boxes on unlabeled images to generate data for training better
+detectors [25, 42, 29]. By combining open-vocabulary detectors with Web image-text data, such
+pseudo-labeling can produce practically unlimited amounts of open-vocabulary detection training
+data that leverages the image-associated text for semantic supervision. While several works have
+applied various forms of self-training to open-vocabulary object detection [40, 1, 41, 33, 32], they
+have done so at relatively small scales, comparable to the size of human-annotated detection datasets
+and much smaller than the datasets used for image-level training.
+To scale detection self-training further, we take guidance from image-level methods, where the
+principle has been to leverage weak supervision in the largest possible amount [24, 9, 23, 36]. We
+identify three key ingredients for optimizing the use of weak supervision for detection: choice of
+label space, filtering of pseudo-annotations, and training efficiency. Prior methods have typically
+Preprint. Under review.
+arXiv:2306.09683v3  [cs.CV]  22 May 2024
+
+PAGE 2
+OWL-ViT
+detection loss
+OWL-ViT
+detection loss
+Caption:
+“Monarch on 
+a Zinnia”
+N-grams:
+Monarch
+Monarch on
+Monarch on a
+Monarch on a Zinnia
+…
+Open-vocab
+detector
+(OWL-ViT L/14)
+OWLv2
+Pseudo-annotated 
+WebLI
+1. Annotation
+2. Self-training
+3. Fine-tuning
+(optional)
+LVISbase
+OWLv2
+Zinnia
+Monarch on a Zinnia
+107
+108
+109
+Total examples seen
+(including repetitions)
+25
+30
+35
+40
+45
+50
+LVIS APrare (%)
+Unseen classes
+Model
+OWL-ST+FT G/14
+OWL-ST+FT L/14
+OWL-ST+FT B/16
+OWL L/14
+(annotator)
+Best OWL
+Best F-VLM
+Best ViLD
+Best 3Ways
+Best OWL
+Best F-VLM
+Best ViLD
+Best 3Ways
+Figure 1: Overview of our method. Left: Our method consists of three steps: (1) Generate pseudo-box
+annotations on WebLI with OWL-ViT L/14, queried with caption N-grams. (2) Train new models
+on pseudo-annotations. (3) Optionally, fine-tune on human annotations. Right: Zero-shot detection
+performance on LVISrare after fine-tuning on LVISbase. Neither the annotator nor our models have
+seen any human-generated box annotations for LVISrare classes. Our self-training approach improves
+over other methods even at moderate amounts of training (e.g. the OWL-L/14 model we use as
+annotator; black ×), and continues to improve as training is scaled up. Horizontal black lines indicate
+previous state-of-the-art open-vocabulary detectors which did not see LVISrare classes during training.
+used human-curated label spaces or complex concept mining [41, 33, 32, 40] and strict filtering,
+keeping just the single largest [41] or highest-scoring [1] pseudo-box for each image. In contrast, we
+argue that we should “let the data do the work” and therefore apply little processing and filtering. We
+propose to simply use all possible N-grams of the image-associated text as detection prompts for that
+image, and apply only weak confidence filtering to the resulting pseudo-labels.
+We apply this self-training recipe to the OWL-ViT detection architecture [21] and call it OWL-ST.
+To increase the number of examples seen for a given amount compute, we also introduce OWLv2,
+an optimized architecture with improved training efficiency. Combining the OWL-ST recipe with
+the OWLv2 architecture surpasses prior state-of-the-art methods already at moderate amounts of
+self-training, comparable to training amounts of previous methods (Figure 1). Scaling self-training
+to billions of examples yields further large improvements. For example, our ViT-L/14-based model,
+trained on 2.3B image-text pairs and fine-tuned on LVISbase, achieves 44.6% zero-shot LVIS mAPrare,
+which is a 36% relative improvement over the prior state of the art (32.8% mAPrare for F-VLM
+R50x64 [14]). Our largest model, ViT-G/14, reaches 47.2% mAPrare.
+We also evaluate our models on a suite of "in the wild" datasets [16] and study the trade-off between
+fine-tuned and open-vocabulary performance. We find that strong in- and out-of-distribution per-
+formance is possible with weight ensembling [31]. Finally, our analysis of the scaling behavior of
+OWL-ST suggests that self-training has further potential for leveraging abundantly available weak
+supervision for open-vocabulary object detection.
+2
+Related Work
+2.1
+Scaling Vision Models
+Vision models have recently seen large advances in model and training scale, leading to improved
+performance on many image-level tasks. On the architecture side, Vision Transformers have been
+shown to scale more efficiently than prior architectures [12]. Task performance improves predictably
+as training data and compute are increased [36], with recent work showing continued improvements
+for models with up to 22 billion parameters [5]. We apply these findings to object detection.
+On the data side, contrastive pretraining of vision-language models (VLMs) [24] has unlocked the use
+of abundantly available image-text pairs from the Web as weak supervision, with improved results
+if more data is used [9, 22]. VLMs, which embed images and text into a shared space, also enable
+open-vocabulary applications where prior models were limited to fixed label spaces. Here, we use
+pretrained CLIP [24] and SigLIP [37] encoders as backbones for our detector.
+2
+
+PAGE 3
+2.2
+Open-Vocabulary Object Detection
+Much recent work aims to transfer the open-vocabulary capabilities of VLMs to localization tasks
+such as object detection. A first wave of VLM-based object detection methods either distilled VLM-
+predictions for cropped image regions (e.g. ViLD [7]), or added detection heads directly to frozen
+(F-VLM [14]) or fine-tuned (OWL-VIT [21]) VLM encoders. A challenge identified by these works
+is to protect the VLM from forgetting its open-vocabulary knowledge while training the detection
+heads on the relatively little available detection data.
+2.3
+Scaling Open-Vocabulary Detection with Weak Supervision
+Given that earlier methods identified detection data as a limiting factor in open-vocabulary detection
+performance, more recent works focus on using weak supervision directly for detection training,
+rather than just during VLM pretraining. There are two main approaches:
+Some methods use self-training, in which an existing detector is used to predict pseudo-boxes for
+images where image-level labels or captions, but no human box annotations, are available. Better
+detectors can then be trained on the pseudo-annotations. For example, RegionCLIP [40] generates
+pseudo-boxes using nouns parsed from image captions and uses those boxes for localization pre-
+training. Detic [41] predicts class-agnostic pseudo-boxes on images for which classification labels
+are available and associates the largest predicted box with the image label. Similar to our approach,
+3Ways [1] uses an existing open-vocabulary detector to predict pseudo-boxes on captioned images,
+but uses the whole caption as a prompt, instead of dividing it into multiple prompts as we do.
+Other methods propose grounding losses that directly train a detector on weak supervision such as
+image-level labels or captions. These methods pretrain models to align class-agnostic pseudo-boxes
+with words from image-associated text and rely on human-generated detection data for fine-tuning.
+Major examples of this approach are GLIPv1/v2 and [17, 39] and DetCLIPv1/v2 [33, 32].
+In principle, these approaches unlock Web-scale training for detection, but prior methods rarely go
+much beyond 10M examples and instead focus on the model architecture and training loss. Here, we
+keep architecture and loss simple, and focus on scaling up the training data, since this was successful
+for image-level models. A similar approach was recently applied with good results to class-agnostic
+segmentation in the Segment Anything work [11]. Together with our results on text-conditioned
+localization, this suggests that scaling up self-training is a powerful and general method for improving
+performance on fine-grained vision tasks.
+3
+Method
+We propose a simple self-training approach with three steps: (1) Use an existing open-vocabulary
+detector to predict bounding boxes for a large Web image-text dataset. (2) Self-train a new detector on
+the pseudo-annotations. (3) Optionally, fine-tune the self-trained model briefly on human-annotated
+detection data (Figure 1, left). Our goal is to optimize the key components of this approach—
+label space, annotation filtering, and training efficiency—such that it provides strong and scalable
+open-vocabulary performance with few human annotations.
+3.1
+Generating Web-Scale Open-Vocabulary Object Annotations
+We use the WebLI dataset [3] as the source of weak supervision for self-training. WebLI is a large
+dataset of images and texts available on the public Web. The dataset consist of approximately 10B
+images and associated alt-text strings, which can be thought of as noisy image captions. For images
+whose alt-text is not in English, we use an automatically generated English translation [3].
+We use OWL-ViT CLIP-L/14 [21] to annotate all 10B WebLI images with bounding box pseudo-
+annotations. OWL-ViT is an open-vocabulary object detector. Given an image, the model first
+detects objects in the image in a class-agnostic way. Then, given a list of free-text queries, the model
+produces scores indicating the likelihood that each detected object is associated with each text query.
+A crucial design choice for open-vocabulary pseudo-labeling is the annotation label space. Methods
+in the literature vary widely but typically fall somewhere between two extremes: (1) use a fixed,
+3
+
+PAGE 4
+human-curated label space for all images (e.g. [41]), or (2) machine-generate per-image queries from
+image-associated text (e.g. [1]). We implement both and compare their performance in Section 4.3.
+Human-curated label space.
+We performed one pseudo-annotation run by combining the label
+sets from the LVIS [8], Objects365 [27], OpenImagesV4 [15], and Visual Genome [13] datasets and
+removing duplicates and plural forms. In total, this label space contains 2520 common object cate-
+gories, e.g. "phone", "goatee", "teakettle", "park", "suit (clothing)". See Appendix A.1
+for code to generate the full list. Models trained on this label space may not be considered fully
+open-vocabulary for evaluation datasets whose classes were included in the pseudo-annotation label
+space (e.g. LVIS), since the evaluation vocabulary is known at training time in this case. However,
+LVISrare classes are still unseen for all of our models, in the sense that neither the annotator nor the
+self-trained models have ever seen human box annotations for LVISrare classes.
+Machine-generated label space.
+In a second pseudo-annotation run, we automatically generated
+queries from the image-associated text. Prior work using image captions as weak supervision for
+detection often used grammatical parsing to extract noun phrases or concepts [40, 33, 32]. These
+approaches may add biases that reduce the diversity of extracted queries. To keep such biases to
+a minimum, we use no grammatical parsing and simply extract all word N-grams up to length 10
+from the text associated with a given image and use them as queries for that image. We apply
+minimal filtering, only removing generic terms like image or png, and queries consisting entirely of
+stop-words (details in Appendix A.2). Note that, since OWL-ViT uses late image-text fusion, the
+quality of box localization (as opposed to classification) is not affected by the chosen label space.
+Regardless of label space, we ensemble predictions over seven prompt templates such as "a photo
+of a {}" as described in [21]. For each predicted box, we keep the query with the highest score as
+its pseudo-label. For each image, we keep all boxes above a score threshold. We study the choice of
+threshold in Section 4.4. The pseudo-annotations are used as hard labels for self-training.
+3.2
+Self-training at Scale
+We now describe how we use the pseudo-annotations to train better detectors. We use a variant of
+the OWL-ViT architecture [21] as described below. The image and text encoders are initialized
+from contrastively trained image-text models (CLIP, unless noted otherwise); the detection heads are
+randomly initialized. All models are first trained exclusively on pseudo-annotations (“self-training”).
+In an optional separate step, models are fine-tuned briefly on human-annotated detection data.
+Self-training proceeds similarly to detection training in [21]. In particular, we use the same losses
+and also augment queries with “pseudo-negatives” that are randomly sampled from the queries of
+other images, similar to batch negatives in [1]. Due to the size of our dataset, in contrast to [21], we
+use no random prompt templates and fewer image augmentations (details in Appendix A.4).
+Prior work on image-level tasks shows that pretraining improves performance on downstream tasks
+well beyond 1 billion examples seen [38, 9, 22, 36], across model sizes. We hypothesize that similar
+scaling applies to detection self-training. We therefore optimize training efficiency to maximize the
+number of images seen for a given amount of training compute as follows.
+Token dropping.
+Vision Transformers represent images as an unordered sequence of tokens.
+Tokens can therefore be reorganized or dropped without changing the model parameters. Various
+forms of token dropping or pooling have been proposed to improve efficiency [19, 26, 35, 20, 2].
+Here, we drop tokens simply based on the pixel variance of the corresponding image patch. Both
+natural and Web images contain low-variance areas devoid of useful information, e.g. sky, single-color
+backgrounds, or padding. We find that the lower half of image patches by mean pixel variance can be
+dropped without loss in detection performance (Appendix A.5). We therefore drop 50% of patches in
+all of our experiments during training. No patches are dropped during inference.
+Instance selection.
+OWL-ViT is an encoder-only architecture and predicts one bounding box per
+encoder token. This is inefficient, since there are typically many more encoder tokens than objects
+(e.g. 5184 tokens for resolution 1008×1008 and patch size 14×14). Most output tokens therefore do
+not represent objects. We introduce an objectness head which predicts the likelihood that an output
+token actually represents an object, and compute boxes, class scores, and losses only for the top k
+tokens by objectness, similar to Efficient DETR [34]. The objectness head receives an encoder token
+as input and computes a scalar objectness score. The objectness score predicts the future classification
+4
+
+PAGE 5
+Table 1: Open-vocabulary detection performance on LVIS and ODinW. Rows for our models are
+shown in blue . None of our models have seen any human box annotations for LVISrare classes at
+any stage of training, so LVIS APval
+rare (rightmost column) measures zero-shot performance. Numbers
+in green or red indicate the difference to the prior state of the art, i.e. F-VLM R50x64 in the open-
+vocabulary (top) part of the table and DetCLIPv2 Swin-L in the curated-vocabulary (bottom) part.
+Gray O+VG indicates that O365+VG were used indirectly (for training the annotator). Gray ODinW
+numbers indicate that these models were trained on OpenImages data, which overlaps with ODinW.
+APmini refers to the LVIS “minival” split introduced by MDETR [?].
+Method
+Backbone
+Self-training
+data
+Self-training
+vocabulary
+Human box
+annotations
+ODinW
+13
+LVIS
+APmini
+all
+LVIS
+APmini
+rare
+LVIS
+APval
+all
+LVIS
+APval
+rare
+Open vocabulary (evaluation vocabulary is not available at training time):
+1
+RegionCLIP [40]
+R50x4
+CC3M
+6k concepts
+LVISbase
+–
+–
+–
+32.3
+22.0
+2
+OWL [21]
+CLIP B/16
+–
+–
+O365+VG
+–
+–
+–
+27.2
+20.6
+3
+OWL [21]
+CLIP L/14
+–
+–
+O365+VG
+48.4
+–
+–
+34.6
+31.2
+4
+GLIPv2 [39]
+Swin-T
+Cap4M
+tokens
+O365+GoldG
+48.5
+29.0
+–
+–
+–
+5
+GLIPv2 [39]
+Swin-B
+CC15M
+tokens
+FiveODs+GoldG
+54.2
+48.5
+–
+–
+–
+6
+GLIPv2 [39]
+Swin-H
+CC15M
+tokens
+FiveODs+GoldG
+55.5
+50.1
+–
+–
+–
+7
+F-VLM [14]
+R50x4
+–
+–
+LVISbase
+–
+–
+–
+28.5
+26.3
+8
+F-VLM [14]
+R50x64
+–
+–
+LVISbase
+–
+–
+–
+34.9
+32.8
+9
+3Ways [1]
+NFNet-F0
+CC12M
+captions
+LVISbase
+–
+–
+–
+35.7
+25.6
+10 3Ways [1]
+NFNet-F6
+CC12M
+captions
+LVISbase
+–
+–
+–
+44.6
+30.1
+11 OWL-ST
+CLIP B/16
+WebLI
+N-grams
+O+VG
+48.8
+31.8
+35.4
+27.0
+29.6 -3.2
+12 OWL-ST
+CLIP L/14
+WebLI
+N-grams
+O+VG
+53.0
+38.1
+39.0
+33.5
+34.9 +2.1
+13 OWL-ST
+SigLIP G/14
+WebLI
+N-grams
+O+VG
+49.9
+37.8
+40.9
+33.7
+37.5 +4.7
+14 OWL-ST+FT
+CLIP B/16
+WebLI
+N-grams
+O+VG, LVISbase
+48.6
+47.2
+37.8
+41.8
+36.2 +3.4
+15 OWL-ST+FT
+CLIP L/14
+WebLI
+N-grams
+O+VG, LVISbase
+50.1
+54.1
+46.1
+49.4
+44.6 +11.8
+16 OWL-ST+FT
+SigLIP G/14
+WebLI
+N-grams
+O+VG, LVISbase
+50.1
+51.3
+50.9
+47.0
+47.2 +14.4
+Human-curated vocabulary (evaluation vocabulary may be accessed at training time):
+17 Detic [41]
+R50
+IN-21k
+LVIS classes
+LVISbase
+–
+–
+–
+32.4
+24.6
+18 DetCLIPv2 [32]
+Swin-T
+CC15M
+Nouns+curated
+O365+GoldG
+–
+40.4
+36.0
+32.8
+31.0
+19 DetCLIPv2 [32]
+Swin-L
+CC15M
+Nouns+curated
+O365+GoldG
+–
+44.7
+43.1
+36.6
+33.3
+20 OWL-ST+FT
+CLIP B/16
+WebLI
+N-grm+curated O+VG, LVISbase
+48.9
+51.1
+41.9
+45.6
+40.5 +7.2
+21 OWL-ST+FT
+CLIP L/14
+WebLI
+N-grm+curated O+VG, LVISbase
+48.7
+55.8
+50.0
+50.4
+45.9 +12.6
+score of a token and is supervised by the actual classification score of those tokens that end up being
+selected and passed on to the classification head. We select approximately 10% of instances by top
+objectness during training in all of our experiments. During inference, all instances are used.
+Mosaics.
+During self-training, we combine raw images into grids of up to 6 × 6 to produce a
+single training example (i.e. a more extreme version of the mosaics in [21]). This has two main
+motivations: (1) Using mosaics increases the number of raw images seen for a given fixed model
+input resolution. An alternative is to train using variable image sizes [32], but this would require
+resizing image position embeddings for each input size. (2) The average resolution and complexity
+of Web images is lower than images in detection benchmarks and applications. Mosaics reduce the
+average object size and improve small-object performance, similar to large scale-jittering [6], but
+with less padding. For all self-training experiments, we use 1 × 1, 2 × 2,3 × 3, 4 × 4, and 6 × 6 grids
+in equal proportions, resulting in an average of 13.2 raw component images per training example.
+To further improve training efficiency, we also adopt previously proposed practices for large-scale
+Transformer training [36] (details in Appendix A.6). Together, our improvements reduce training
+FLOPS by approximately 50% compared to the original OWL-ViT [21] and increase training
+throughput by 2× (e.g. for L/14 at 840 × 840 resolution measured on TPUv3: GFLOPs/example
+11’945.4 vs. 5357.9; examples/s/core 1.0 vs. 2.2). We refer to the improved model as OWLv2. Note
+that at inference, the model is identical to the original OWL-ViT.
+3.3
+Fine-tuning
+Self-training on pseudo-annotations alone already yields strong performance (Section 4.2). However,
+fine-tuning briefly on human annotations can provide significant further benefits. For fine-tuning,
+we start with the learning rate and optimizer state of the self-trained checkpoint and then continue
+training on the target dataset while linearly cooling down the learning rate to zero. Fine-tuning of
+open-vocabulary models involves a trade-off between improving the performance on the fine-tuned
+classes and losing open-vocabulary performance [24, 23, 31]. We study this trade-off in Section 4.6.
+5
+
+PAGE 6
+107
+108
+109
+Total examples seen
+(including repetitions)
+25
+30
+35
+40
+45
+50
+LVIS APfrequent (%)
+Fine-tuned classes
+107
+108
+109
+Total examples seen
+(including repetitions)
+15
+20
+25
+30
+35
+40
+45
+LVIS APrare (%)
+Unseen classes
+107
+108
+109
+Total examples seen
+(including repetitions)
+30
+35
+40
+45
+50
+ODinW13 mean AP (%)
+"In the Wild" datasets
+Pseudo-label space
+Curated vocabulary
+N-grams
+N-grams+curated
+Figure 2: Comparison of pseudo-label spaces. Self-training on a human-curated list of classes yields
+good downstream performance on these classes, but generalizes poorly to unseen classes and datasets.
+Open-vocabulary generalization can be improved by obtaining weak but diverse supervision from
+image-associated text. WebLI image-text data was pseudo-annotated using OWL-ViT CLIP-L/14
+with one of three label spaces: Curated vocabulary (the union of label spaces from LVIS, Objects365,
+OpenImagesv4, and Visual Genome), N-grams (lightly filtered N-grams from the text associated
+with each image), or a combination of both (N-grams + curated). OWLv2-B/16 models were then
+self-trained on the pseudo-annotations and fine-tuned on LVISbase. Each point represents a separate
+fine-tuning run. “Examples seen” refers to the number of images after creating mosaics; the total
+number of raw images seen is 13.2× that number (Section 3.2).
+4
+Experiments
+4.1
+Experimental Setup
+Models.
+We use the publicly available OWL-ViT CLIP L/14 model to generate detection pseudo-
+annotations for the WebLI dataset (10 billion image-text pairs [3]). For all self-training experiments,
+we use OWL-ViT models modified as described in Section 3.2. Backbones are initialized with the
+publicly available CLIP [24] checkpoints (B/16 and L/14) or a SigLIP [37] checkpoint (G/14).
+Training.
+Models are first self-trained on the pseudo-annotations for varying durations as indicated.
+If indicated, after self-training, models are fine-tuned on LVISbase, i.e. the LVIS dataset [8] with all
+annotations for “rare” categories removed. Therefore, neither the annotator nor any of our models
+have seen human-generated annotations for LVISrare classes. Fine-tuning uses mosaics up to 3 × 3
+and is always done until the model has seen 256’000 mosaics (1.1M individual images, roughly
+equivalent to 100 LVIS epochs). The image size is 960 × 960 for /16 models and 1008 × 1008 for
+/14 models. See Appendix A.7 for a complete list of hyperparameters.
+Evaluation.
+We use mean average precision (mAP) on LVIS [8] as our main detection metric,
+where mAPrare indicates open-vocabulary performance on unseen classes. To measure generalization
+on diverse real-world tasks, we evaluate zero-shot performance on the “Object Detection in the Wild”
+(ODinW) benchmark [16]. ODinW is a suite of datasets covering a wide range of domains. We report
+the average mAP on the subset of 13 ODinW datasets introduced in [17] and provide performance
+on individual datasets in Appendix A.8.2. To avoid leakage of evaluation data into the training set,
+WebLI was filtered to remove images similar to those in the train, validation, and test splits of 68
+common computer vision datasets, including COCO/LVIS, Objects365, and Visual Genome, but not
+the ODinW datasets (see [3] for details).
+4.2
+Main Result
+We compare our best models to the literature in Table 1. We broadly include state-of-the-art open-
+vocabulary detectors in the comparison. Our self-training approach, using only machine-generated
+pseudo-annotation queries, improves over previous methods even without fine-tuning (Table 1, OWL-
+ST, rows 11–13). Our OWL-ST B/16 model (row 11) achieves 29.6% LVIS mAPrare, 9 points more
+than the equivalent OWL-ViT model (row 2). Our largest model, G/14 (row 13), reaches 37.5%
+mAPrare, 4.7 points better than the next-best model from the literature (F-VLM R50x64, row 8).
+Interestingly, after self-training, our models perform better on LVIS mAPrare than mAPall (which
+includes frequent and common classes). We speculate that this may be because weak Web-data
+6
+
+PAGE 7
+107
+108
+Total examples seen
+(including repetitions)
+25
+30
+35
+40
+45
+LVIS APfrequent (%)
+Fine-tuned classes
+107
+108
+Total examples seen
+(including repetitions)
+15
+20
+25
+30
+35
+LVIS APrare (%)
+Unseen classes
+107
+108
+Total examples seen
+(including repetitions)
+30
+35
+40
+45
+ODinW13 mean AP (%)
+"In the Wild" datasets
+Confidence
+threshold
+0.1
+0.3
+0.5
+0.7
+Figure 3: Impact of pseudo-annotation filtering by detection confidence on self-training effectiveness.
+Pseudo-labels (N-gram label space) were filtered using different confidence thresholds. Number
+of remaining images for each threshold: 0.1: 5B, 0.3: 2B, 0.5: 782M, 0.7: 224M. OWLv2-B/16
+detectors were self-trained on the filtered pseudo-annotations and fine-tuned on LVISbase. Each point
+represents a different fine-tuning run. “Examples seen” refers to the number of images after creating
+mosaics; the total number of raw images seen is 13.2× that number (Section 3.2).
+supervision may be better for specific terms than general terms: Image/text pairs involving unusual
+objects (such as LVISrare categories) may be more likely to be specifically about these objects, whereas
+common terms like “person” or “car” may occur often without being related to the image.
+Fine-tuning on LVISbase provides additional significant improvements, even on mAPrare (OWL-
+ST+FT, rows 14–16). Our best model, which has only seen machine-generated queries during
+self-training, reaches 47.2% LVIS mAPrare after fine-tuning, a 14.4-point improvement over the next
+best model (F-VLM R50x64, row 8).
+Including a human-curated list of common object classes as pseudo-annotation queries can further
+improve the results on LVIS (rows 20–21), but this approach is not fully open-vocabulary since the
+model sees a curated label space, including the LVIS classes, at training time. While the benefit of
+the curated label space is significant for our smallest model, is is minor on mAPrare for the larger
+L/14 model (compare rows 15 and 21).
+To measure more general open-world performance, Table 1 also includes zero-shot results on
+ODinW13 [16], a suite of “in the wild” datasets. Performance on ODinW is best right after self-
+training and is reduced by fine-tuning on LVISbase. We discuss this further in Section 4.6. We
+also fine-tuned on COCO, where our B/16 and L/14 models reach 54.3% and 56.0% COCO mAP,
+respectively. OWLv2 therefore matches the performance of ViTDet with a Cascade Mask-RCNN
+head [18], despite using a simpler head architecture. Further results and examples in Appendix A.8.
+4.3
+Pseudo-Annotation Label Space
+Figure 2 takes a closer look at the impact of the pseudo-annotation label space on performance
+after fine-tuning. Performance on fine-tuned classes (mAPfrequent; left plot) is highest if the pseudo-
+annotation label space included these classes (blue circles). Therefore, if the target label space is
+known ahead of time, pseudo-labeling on that space leads to the best results.
+However, performance on unseen classes (mAPrare) and “In the Wild” datasets is much better if the
+pseudo-labeling included diverse queries that were machine-generated from the image-associated
+text (orange squares and green diamonds). A mixture of human and machine-generated label spaces
+performs well in all settings, but does not significantly outperform the purely machine-generated label
+space on the “In the Wild” datasets. These results suggest that a human-curated label space can help
+if the target label space is known, but that strong in-the-wild generalization is driven by the weakly
+supervised machine-generated label space. Our results also show that a simple N-grams approach is
+sufficient to leverage the weak supervision and outperforms more complex methods (Table 1).
+4.4
+Filtering of Pseudo-Annotations
+Besides the label space, a second important decision in self-training is the filtering of pseudo-
+annotations. We filter based on the detection confidence score of the annotator and vary the score
+7
+
+PAGE 8
+101
+102
+103
+Detection training compute
+(exaFLOPs)
+30
+35
+40
+45
+50
+LVIS APfrequent (%)
+Fine-tuned classes
+101
+102
+103
+Detection training compute
+(exaFLOPs)
+20
+25
+30
+35
+40
+45
+LVIS APrare (%)
+Unseen classes
+101
+102
+103
+Detection training compute
+(exaFLOPs)
+30
+35
+40
+45
+50
+ODinW13 mean AP (%)
+"In the Wild" datasets
+Model
+OWL-ST+FT B/16
+OWL-ST+FT L/14
+OWL L/14 (annotator)
+Figure 4: Scaling of detection performance with model size and training compute. Models show
+classic scaling behavior [36]: Performance increases monotonically with training compute, with larger
+models being necessary to benefit from larger amounts of compute/data. Models were self-trained on
+N-gram pseudo-annotations and fine-tuned on LVISbase.
+threshold in Figure 3. For confidence-based filtering, a bias-variance trade-off exists between
+including only high-confidence pseudo-annotations but inheriting the annotator’s biases, or lowering
+the bias but increasing the noise by including lower-confidence pseudo-annotations. Many prior
+works err on the side of high bias and low variance, applying high confidence thresholds [29] or
+including only the single highest-confidence detection for an image [41, 1]. In our setting, we find
+that including all pseudo-annotations that pass a moderate threshold of 0.3 works well, while strict
+thresholds lead to poor results (Figure 3). As training continues for longer than what was possible for
+Figure 3, we suspect that lower thresholds may scale better. Therefore, for our main results, we chose
+to include all annotations above 0.1, but only kept images with at least one annotation above 0.3.
+4.5
+Scaling
+The use of abundant Web image-text data with little filtering means that our self-training dataset
+is large (approximately 2B images). We can therefore study detection training scaling in the same
+regime as prior work on classification (Figure 4; models see each image at most once for these
+experiments). We make several noteworthy observations:
+1. Self-training is beneficial already at moderate compute budgets, less than that of the annotator.
+2. Models show similar scaling behavior for detection as for classification [36]: Both overall
+performance and the size of the Pareto-optimal model increase with compute/data size.
+3. As we move further out of distribution, the amount of compute at which L/14 overtakes B/16
+increases. In other words, for in-the-wild performance, at most compute budgets, it may be better
+to train a smaller model for longer than a larger model for shorter.
+These results suggests that self-training on Web data is further scalable as an approach for improving
+open-vocabulary localization models without the need for further human annotations. The large
+datasets also makes it possible to scale model size. We trained a G/14 model, which has 5.2× the
+number of parameters and 4.3× the inference FLOPs of our L/14 model. To our knowledge, this is
+the largest open-vocabulary detection model to date. Since the G/14 model uses a different backbone
+than our other models (SigLIP [37] instead of CLIP [24]), we do not include it in Figure 4, but show
+in Table 1 that it is currently the best-performing model on zero-shot LVIS, with 47.2% mAPrare.
+4.6
+Effect of Fine-Tuning Open-Vocabulary Performance
+For contrastively trained image-text models, fine-tuning improves performance on the target distribu-
+tion but reduces the (originally very high) robustness to distribution shift [24, 22, 31]. We observe
+the same effect for detection, using ODinW13 AP as a proxy for out-of-distribution performance:
+Compared to the performance after self-training (red dots in Figure 5), fine-tuning on LVISbase im-
+proves performance on the fine-tuned classes (LVIS mAPfrequent), but OOD performance (ODinW13
+AP) is simultaneously reduced in proportion to the amount of fine-tuning (light blue line in Figure 5).
+A simple approach to improve on this trade-off is to create an ensemble of the model before and after
+fine-tuning by averaging the model weights [31]. This approach comes at no additional training cost
+8
+
+PAGE 9
+44
+46
+48
+50
+52
+54
+"In the Wild" performance
+(ODinW13 mean AP (%))
+25
+30
+35
+40
+45
+50
+55
+LVIS APfrequent (%)
+100
+1k
+2k
+5k
+20k
+.1
+.2
+.3
+.4
+.5
+.6
+.7
+.8
+.9
+Longer self-training →
+← Longer fine-tuning
+Ensembles
+44
+46
+48
+50
+52
+54
+"In the Wild" performance
+(ODinW13 mean AP (%))
+25
+30
+35
+40
+45
+LVIS APrare (%)
+100
+1k
+2k
+20k
+.1
+.2
+.3.4
+.5
+.6
+.7
+.8
+.9
+Self-training only
+Fine-tuned on LVIS base
+Weight ensemble
+OWL L/14 (annotator)
+Figure 5: Trade-off between fine-tuned and open-world performance. Self-training yields continued
+improvements on a suite of diverse datasets (ODinW13; x-axis), but performance on any given dataset
+(e.g. LVIS; y-axis) may saturate (red circles). Fine-tuning on a target dataset improves performance
+on that dataset, but reduces the open-world generalization ability in proportion to the finetuning
+duration (light blue squares; numbers indicate finetuning steps). This trade-off can be improved
+through weight-space ensembling (averaging) of the pretrained and fine-tuned checkpoints [31]
+(purple diamonds; numbers indicate the mixing coefficient for the fine-tuned weights). The plot
+shows B/16 models self-trained on N-gram pseudo-annotations and evaluated either directly after self-
+training or after fine-tuning on LVISbase. Ensembles were created between the longest-self-trained
+checkpoint and the weights obtained after finetuning that checkpoint for 20k steps. Note that there is
+significant variability in ODinW13 performance between checkpoints towards the end of self-training.
+and improves the Pareto-frontier for all ensemble mixing ratios (Figure 5, purple line). We also tried
+co-training on WebLI and LVIS but found it to perform worse than weight ensembling.
+Notably, performance on LVISrare behaves similarly to LVISfrequent and improves during fine-tuning,
+even though no LVISrare classes are seen (Figure 5, right). This may be because LVISrare classes
+are semantically and visually close to LVISfrequent classes. For example, seeing many annotations
+for "bird" may improve performance on rare classes such as "heron", "mallard", or "puffin".
+LVIS mAPrare therefore only measures a narrow concept of open-vocabulary performance, and does
+not reveal the fact that fine-tuning significantly reduces generalization to broader distribution shifts.
+Benchmarks such as ODinW therefore provide significant additional insight.
+5
+Limitations
+The main limitation of our method is the amount of compute and data needed for self-training. As we
+show in Section 4.5, performance improves consistently with training compute and data. This means
+that further improvements are possible, but also that these will come at increasingly large costs. In
+fact, cost likely increases faster than resources can realistically be grown in practice. New approaches
+will therefore be eventually necessary for further improvements.
+A second important limitation of our method, similar to other open-vocabulary models [24, 22, 31],
+is the trade-off between fine-tuned and open-vocabulary performance addressed in Section 4.6. For
+out-of-distribution queries, predictions of fine-tuned models may be poorly calibrated and may depend
+on the precise wording of the query. These issues can be mitigated with weight ensembling [31], but
+more research is needed to fully understand the open-vocabulary robustness of these models.
+6
+Conclusion
+In the past, open-vocabulary detection performance has been limited by the availability of human-
+annotated detection training data. Here, we show that self-training can be scaled up to overcome the
+dependency on human annotations. Our OWL-ST recipe delivers large improvements in detection
+performance using weak supervision from abundant Web data, similar to what has been seen for
+image classification and language modelling.
+9
+
+PAGE 10
+Acknowledgments and Disclosure of Funding
+We would like to thank Xiao Wang for help with the WebLI dataset, Xiaohua Zhai and Lucas Beyer
+for providing the SigLIP model, and Rich Munoz and Alexey Dosovitskiy for insightful comments.
+References
+[1] Arandjelovi´c, R., Andonian, A., Mensch, A., Hénaff, O.J., Alayrac, J.B., Zisserman, A.: Three ways to
+improve feature alignment for open vocabulary detection. arXiv preprint arXiv:2303.13518 (2023)
+[2] Bolya, D., Fu, C.Y., Dai, X., Zhang, P., Feichtenhofer, C., Hoffman, J.: Token merging: Your vit but faster.
+arXiv preprint arXiv:2210.09461 (2022)
+[3] Chen, X., Wang, X., Changpinyo, S., Piergiovanni, A., Padlewski, P., Salz, D., Goodman, S., Grycner, A.,
+Mustafa, B., Beyer, L., Kolesnikov, A., Puigcerver, J., Ding, N., Rong, K., Akbari, H., Mishra, G., Xue,
+L., Thapliyal, A.V., Bradbury, J., Kuo, W., Seyedhosseini, M., Jia, C., Ayan, B.K., Ruiz, C.R., Steiner,
+A.P., Angelova, A., Zhai, X., Houlsby, N., Soricut, R.: PaLI: A jointly-scaled multilingual language-image
+model. ICLR (2023)
+[4] Dave, A., Dollár, P., Ramanan, D., Kirillov, A., Girshick, R.: Evaluating large-vocabulary object detectors:
+The devil is in the details. arXiv preprint arXiv:2102.01066 (2021)
+[5] Dehghani, M., Djolonga, J., Mustafa, B., Padlewski, P., Heek, J., Gilmer, J., Steiner, A., Caron, M.,
+Geirhos, R., Alabdulmohsin, I., Jenatton, R., Beyer, L., Tschannen, M., Arnab, A., Wang, X., Riquelme,
+C., Minderer, M., Puigcerver, J., Evci, U., Kumar, M., van Steenkiste, S., Elsayed, G.F., Mahendran, A.,
+Yu, F., Oliver, A., Huot, F., Bastings, J., Collier, M.P., Gritsenko, A., Birodkar, V., Vasconcelos, C., Tay, Y.,
+Mensink, T., Kolesnikov, A., Paveti´c, F., Tran, D., Kipf, T., Luˇci´c, M., Zhai, X., Keysers, D., Harmsen, J.,
+Houlsby, N.: Scaling vision transformers to 22 billion parameters. ICML (2023)
+[6] Ghiasi, G., Cui, Y., Srinivas, A., Qian, R., Lin, T.Y., Cubuk, E.D., Le, Q.V., Zoph, B.: Simple copy-paste is
+a strong data augmentation method for instance segmentation. CVPR (2021)
+[7] Gu, X., Lin, T.Y., Kuo, W., Cui, Y.: Open-vocabulary object detection via vision and language knowledge
+distillation. arXiv preprint arXiv:2104.13921 (2021)
+[8] Gupta, A., Dollar, P., Girshick, R.: LVIS: A dataset for large vocabulary instance segmentation. CVPR
+(2019)
+[9] Jia, C., Yang, Y., Xia, Y., Chen, Y.T., Parekh, Z., Pham, H., Le, Q., Sung, Y.H., Li, Z., Duerig, T.: Scaling
+up visual and vision-language representation learning with noisy text supervision. ICML (2021)
+[10] Kingma, D.P., Ba, J.: Adam: A method for stochastic optimization. arXiv preprint arXiv:1412.6980 (2014)
+[11] Kirillov, A., Mintun, E., Ravi, N., Mao, H., Rolland, C., Gustafson, L., Xiao, T., Whitehead, S., Berg, A.C.,
+Lo, W.Y., Dollár, P., Girshick, R.: Segment anything. arXiv preprint arXiv:2304.02643 (2023)
+[12] Kolesnikov, A., Dosovitskiy, A., Weissenborn, D., Heigold, G., Uszkoreit, J., Beyer, L., Minderer,
+M., Dehghani, M., Houlsby, N., Gelly, S., Unterthiner, T., Zhai, X.: An image is worth 16x16 words:
+Transformers for image recognition at scale. ICLR (2021)
+[13] Krishna, R., Zhu, Y., Groth, O., Johnson, J., Hata, K., Kravitz, J., Chen, S., Kalantidis, Y., Li, L.J., Shamma,
+D.A., et al.: Visual genome: Connecting language and vision using crowdsourced dense image annotations.
+International journal of computer vision 123(1), 32–73 (2017)
+[14] Kuo, W., Cui, Y., Gu, X., Piergiovanni, A., Angelova, A.: Open-vocabulary object detection upon frozen
+vision and language models. ICLR (2023)
+[15] Kuznetsova, A., Rom, H., Alldrin, N., Uijlings, J., Krasin, I., Pont-Tuset, J., Kamali, S., Popov, S., Malloci,
+M., Kolesnikov, A., Duerig, T., Ferrari, V.: The Open Images Dataset V4. International Journal of Computer
+Vision 128(7), 1956–1981 (Mar 2020)
+[16] Li*, C., Liu*, H., Li, L.H., Zhang, P., Aneja, J., Yang, J., Jin, P., Lee, Y.J., Hu, H., Liu, Z., et al.: Elevater:
+A benchmark and toolkit for evaluating language-augmented visual models. NeurIPS (2022)
+[17] Li, L.H., Zhang, P., Zhang, H., Yang, J., Li, C., Zhong, Y., Wang, L., Yuan, L., Zhang, L., Hwang, J.N.,
+et al.: Grounded language-image pre-training. arXiv preprint arXiv:2112.03857 (2021)
+[18] Li, Y., Mao, H., Girshick, R., He, K.: Exploring plain vision transformer backbones for object detection.
+arXiv preprint arXiv:2203.16527 (2022)
+[19] Liang, Y., Ge, C., Tong, Z., Song, Y., Wang, J., Xie, P.: Not all patches are what you need: Expediting
+vision transformers via token reorganizations. ICLR (2022)
+[20] Marin, D., Chang, J.H.R., Ranjan, A., Prabhu, A., Rastegari, M., Tuzel, O.: Token pooling in vision
+transformers for image classification. CVPR (2023)
+10
+
+PAGE 11
+[21] Minderer, M., Gritsenko, A., Stone, A., Neumann, M., Weissenborn, D., Dosovitskiy, A., Mahendran, A.,
+Arnab, A., Dehghani, M., Shen, Z., Wang, X., Zhai, X., Kipf, T., Houlsby, N.: Simple open-vocabulary
+object detection with vision transformers. ECCV (2022)
+[22] Pham, H., Dai, Z., Ghiasi, G., Kawaguchi, K., Liu, H., Yu, A.W., Yu, J., Chen, Y.T., Luong, M.T., Wu, Y.,
+Tan, M., Le, Q.V.: Combined scaling for zero-shot transfer learning (2021)
+[23] Pham, H., Dai, Z., Ghiasi, G., Liu, H., Yu, A.W., Luong, M.T., Tan, M., Le, Q.V.: Combined scaling for
+zero-shot transfer learning. arXiv preprint arXiv:2111.10050 (2021)
+[24] Radford, A., Kim, J.W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sastry, G., Askell, A., Mishkin, P.,
+Clark, J., Krueger, G., Sutskever, I.: Learning transferable visual models from natural language supervision.
+ICML (2021)
+[25] Ramanathan, V., Wang, R., Mahajan, D.: Dlwl: Improving detection for lowshot classes with weakly
+labelled data. CVPR (2020)
+[26] Rao, Y., Zhao, W., Liu, B., Lu, J., Zhou, J., Hsieh, C.J.: Dynamicvit: Efficient vision transformers with
+dynamic token sparsification. NeurIPS (2021)
+[27] Shao, S., Li, Z., Zhang, T., Peng, C., Yu, G., Zhang, X., Li, J., Sun, J.: Objects365: A Large-Scale,
+High-Quality Dataset for Object Detection. ICCV (2019)
+[28] Shazeer, N., Stern, M.: Adafactor: Adaptive learning rates with sublinear memory cost. arXiv preprint
+arXiv:1804.04235 (2018)
+[29] Sohn, K., Zhang, Z., Li, C.L., Zhang, H., Lee, C.Y., Pfister, T.: A simple semi-supervised learning
+framework for object detection. arXiv preprint arXiv:2005.04757 (2020)
+[30] Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.N., Kaiser, L., Polosukhin, I.:
+Attention is all you need. NeurIPS (2017)
+[31] Wortsman, M., Ilharco, G., Kim, J.W., Li, M., Kornblith, S., Roelofs, R., Gontijo-Lopes, R., Hajishirzi, H.,
+Farhadi, A., Namkoong, H., Schmidt, L.: Robust fine-tuning of zero-shot models. CVPR (2022)
+[32] Yao, L., Han, J., Liang, X., Xu, D., Zhang, W., Li, Z., Xu, H.: Detclipv2: Scalable open-vocabulary object
+detection pre-training via word-region alignment. arXiv preprint arXiv:2304.04514 (2023)
+[33] Yao, L., Han, J., Wen, Y., Liang, X., Xu, D., Zhang, W., Li, Z., Xu, C., Xu, H.: DetCLIP: Dictionary-
+enriched visual-concept paralleled pre-training for open-world detection. NeurIPS (2022)
+[34] Yao, Z., Ai, J., Li, B., Zhang, C.: Efficient detr: Improving end-to-end object detector with dense prior.
+arXiv preprint arXiv:2104.01318 (2021)
+[35] Yin, H., Vahdat, A., Alvarez, J., Mallya, A., Kautz, J., Molchanov, P.: Adavit: Adaptive tokens for efficient
+vision transformer. CVPR (2022)
+[36] Zhai, X., Kolesnikov, A., Houlsby, N., Beyer, L.: Scaling vision transformers. CVPR (2022)
+[37] Zhai, X., Mustafa, B., Kolesnikov, A., Beyer, L.: Sigmoid loss for language image pre-training. arXiv
+preprint arXiv:2303.15343 (2023)
+[38] Zhai, X., Wang, X., Mustafa, B., Steiner, A., Keysers, D., Kolesnikov, A., Beyer, L.: LiT: Zero-shot
+transfer with locked-image text tuning. arXiv preprint arXiv:2111.07991 (2021)
+[39] Zhang, H., Zhang, P., Hu, X., Chen, Y.C., Li, L.H., Dai, X., Wang, L., Yuan, L., Hwang, J.N., Gao, J.:
+Glipv2: Unifying localization and vision-language understanding. NeurIPS (2022)
+[40] Zhong, Y., Yang, J., Zhang, P., Li, C., Codella, N., Li, L.H., Zhou, L., Dai, X., Yuan, L., Li, Y., et al.:
+RegionCLIP: Region-based language-image pretraining. arXiv preprint arXiv:2112.09106 (2021)
+[41] Zhou, X., Girdhar, R., Joulin, A., Krähenbühl, P., Misra, I.: Detecting twenty-thousand classes using
+image-level supervision. arXiv preprint arXiv:2201.02605 (2021)
+[42] Zoph, B., Ghiasi, G., Lin, T.Y., Cui, Y., Liu, H., Cubuk, E.D., Le, Q.V.: Rethinking pre-training and
+self-training. NeurIPS (2020)
+11
+
+PAGE 12
+A
+Appendix
+The Appendix provides additional methodological details, model hyperparameters, and results. At the
+end of the Appendix, we provide qualitative examples of the self-training data and model predictions.
+The Appendix is structured as follows:
+A.1
+Human-Curated Label Space . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+A.2
+Machine-Generated Label Space . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+A.3
+Combined Label Space . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+A.4 Augmentations for Self-Training . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+A.5 Token Dropping . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+A.6
+Further Efficiency Improvements . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+A.7
+Model Hyperparameters
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+A.8 Additional Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+A.8.1
+Fixed Average Precision . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+A.8.2
+Per-Dataset ODinW Results . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+A.8.3
+Fine-Tuning Robustness Trade-Off for OWLv2 L/14 . . . . . . . . . . . .
+16
+A.8.4
+Qualitative Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+A.1
+Human-Curated Label Space
+The human-curated label space was obtained by merging common dataset class lists with the Python
+code below.
+1 # Dataset class names, as available e.g. from TensorFlow Datasets.
+2 # For Visual Genome, we used the 1600 most common label strings.
+3 LVIS_CLASS_NAMES = [...]
+4 OBJECTS365_CLASS_NAMES = [...]
+5 OPEN_IMAGES_V4_BOXABLE_CLASS_NAMES = [...]
+6 VISUAL_GENOME_CLASS_NAMES = [...]
+7
+8 queries = (
+9
+LVIS_CLASS_NAMES
+10
++ OBJECTS365_CLASS_NAMES
+11
++ OPEN_IMAGES_V4_BOXABLE_CLASS_NAMES
+12 )
+13
+14 # Remove duplicates:
+15 queries = set([q.lower() for q in queries])
+16
+17 # Remove plural forms:
+18 remove = set()
+19 for singular in queries:
+20
+plurals = [singular + 's', singular + 'es']
+21
+for plural in plurals:
+22
+if plural in queries:
+23
+remove.add(plural)
+24
+25 # Same queries for all images:
+26 queries = list(queries.difference(remove))
+A.2
+Machine-Generated Label Space
+The machine-generated label space was obtained from the image-associated text, for each image
+separately, using the Python code below. Figure A2 shows example pseudo-annotations using the
+N-gram label space.
+12
+
+PAGE 13
+1 from typing import Iterable, List
+2 import nltk
+3
+4 # Stopwords from nltk.corpus.stopwords.words('english'):
+5 STOPWORDS_EN = frozenset({
+6
+'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an',
+7
+'and', 'any', 'are', 'as', 'at', 'be', 'because', 'been', 'before', 'being',
+8
+'below', 'between', 'both', 'but', 'by', 'can', 'did', 'do', 'does',
+9
+'doing', 'don', 'down', 'during', 'each', 'few', 'for', 'from', 'further',
+10
+'had', 'has', 'have', 'having', 'he', 'her', 'here', 'hers', 'herself',
+11
+'him', 'himself', 'his', 'how', 'i', 'if', 'in', 'into', 'is', 'it', 'its',
+12
+'itself', 'just', 'me', 'more', 'most', 'my', 'myself', 'no', 'nor', 'not',
+13
+'now', 'of', 'off', 'on', 'once', 'only', 'or', 'other', 'our', 'ours',
+14
+'ourselves', 'out', 'over', 'own', 's', 'same', 'she', 'should', 'so',
+15
+'some', 'such', 't', 'than', 'that', 'the', 'their', 'theirs', 'them',
+16
+'themselves', 'then', 'there', 'these', 'they', 'this', 'those', 'through',
+17
+'to', 'too', 'under', 'until', 'up', 'very', 'was', 'we', 'were', 'what',
+18
+'when', 'where', 'which', 'while', 'who', 'whom', 'why', 'will', 'with',
+19
+'you', 'your', 'yours', 'yourself', 'yourselves'
+20 })
+21
+22 # These words were found by manually going through the most common 1000 words
+23 # in a sample of alt-texts and selecting generic words without specific meaning:
+24 COMMON_GENERIC_WORDS = frozenset({
+25
+'alibaba', 'aliexpress', 'amazon', 'available', 'background', 'blog', 'buy',
+26
+'co', 'com', 'description', 'diy', 'download', 'facebook', 'free', 'gif',
+27
+'hd', 'ideas', 'illustration', 'illustrations', 'image', 'images', 'img',
+28
+'instagram', 'jpg', 'online', 'org', 'original', 'page', 'pdf', 'photo',
+29
+'photography', 'photos', 'picclick', 'picture', 'pictures', 'png', 'porn',
+30
+'premium', 'resolution', 'royalty', 'sale', 'sex', 'shutterstock', 'stock',
+31
+'svg', 'thumbnail', 'tumblr', 'tumgir', 'twitter', 'uk', 'uploaded', 'vector',
+32
+'vectors', 'video', 'videos', 'wallpaper', 'wallpapers', 'wholesale', 'www',
+33
+'xxx', 'youtube'
+34 })
+35
+36 def _is_all_stopwords(ngram: Iterable[str]) -> bool:
+37
+return set(ngram).issubset(STOPWORDS_EN)
+38
+39
+40 def _get_ngrams(
+41
+caption: str, max_num_queries: int, max_ngram_len: int
+42 ) -> List[str]:
+43
+"""Returns image caption ngrams as queries."""
+44
+45
+# Make lower-case:
+46
+caption = caption.lower()
+47
+48
+# Remove common generic words:
+49
+words = [w for w in caption.split() if w not in COMMON_GENERIC_WORDS]
+50
+51
+queries = []
+52
+for ngram in nltk.everygrams(words, max_len=max_ngram_len):
+53
+# Don't use ngram if it only consists of stop words:
+54
+if _is_all_stopwords(ngram):
+55
+continue
+56
+queries.append(' '.join(ngram))
+57
+if len(queries) == max_num_queries:
+58
+break
+59
+return queries
+60
+61 # Example command to get queries for one image:
+62 queries = _get_ngrams(caption, max_num_queries=300, max_ngram_len=10)
+13
+
+PAGE 14
+A.3
+Combined Label Space
+When merging pseudo-annotations obtained with human-curated and machine-generated queries, it
+is important to consider that human-curated queries tend to be closer to the training distribution of
+the annotator and therefore tend to have higher scores than pseudo-annotations based on machine-
+generated queries. Simply merging annotations from the two label spaces and filtering them with
+the same confidence threshold would therefore retain primarily annotations based on human-curated
+queries. To achieve a more even balance when using the combined label space (“N-grm+curated”
+in Table 1), we therefore re-scaled scores of pseudo-annotations obtained with the human-curated
+queries by a factor of 0.3 before applying the same confidence threshold to all (human-curated and
+machine-generated) annotations.
+A.4
+Augmentations for Self-Training
+Since Web-scale image-text data differs in important aspects from human-curated detection datasets,
+we depart from the augmentation strategy of [21] in several ways. As described in Section 3.2, since
+Web images tend to be smaller and show fewer objects than e.g. LVIS images, we use stronger image
+mosaics with up do 6 × 6 tiles. For the same reason, we additionally randomly resize each raw image
+such that its width is between 0.5× and 1.0× the width of the full mosaic tile, padding on the bottom
+and right to preserve the aspect ratio (Figure A3).
+On the other hand, given the large size of our dataset, some other augmentations can be avoided: We
+do not use left/right flipping or random cropping during self-training. We also do not add random
+prompt templates to the pseudo-labels during self-training. During fine-tuning, we use the same
+augmentations as [21].
+A.5
+Token Dropping
+To improve training efficiency, we drop image patches based on their pixel variance (Section 3.2).
+Table A1 shows how the performance of a standard OWL-ViT model varies for different amounts
+of token dropping. Dropping up to 50% of tokens is within one standard deviation of the full
+performance. We therefore drop 50% of tokens during all of our experiments.
+Table A1: Performance of standard OWL-ViT (L/14), trained on Objects365 and Visual Genome as in [21], for
+different token drop rates. For drop rate 0.0, the standard deviation over three runs is given.
+Token drop rate
+Metric
+0.00
+0.25
+0.33
+0.50
+0.70
+LVIS APval
+all
+33.3 ±0.33
+33.1
+33.6
+32.9
+30.4
+LVIS APval
+rare
+31.8 ±1.16
+31.0
+32.6
+30.8
+28.2
+To inject some stochasticity to the patch selection, we add a small amount of noise to the image
+before computing patch variance (uniformly distributed between 0.0 and 0.01 for images in the range
+[0.0, 1.0]). Figure A3 shows an example training image before and after token dropping.
+A.6
+Further Efficiency Improvements
+To further improve training efficiency beyond the methods described in Section 3.2, we also adopt
+previously proposed methods for large-scale Transformer training: To save memory, we use a
+variant [36] of the Adafactor optimizer [28] instead of Adam [10]. To avoid having to choose
+and optimize the total training duration ahead of time, we use the open-ended inverse square-root
+schedule [30, 36] with a fixed time-scale of 10’000 steps for all experiments and linearly “cool down”
+checkpoints along the way for evaluation (see Section 3.3).
+A.7
+Model Hyperparameters
+We use the following hyperparameters for all of our models. Hyperparameters that vary between
+models are listed in Table A2.
+14
+
+PAGE 15
+Table A2: Hyperparameters of the models shown in Table 1. Only parameters that vary between
+models are shown; constant parameters are described in the text (Appendix A.7). For Dropout rate
+and Droplayer rate, the first number indicates the value used for the image encoder and the second
+for the text encoder. Examples seen includes both self-training and fine-tuning.
+Method
+Backbone
+Image size
+Learning rate
+Dropout rate
+Droplayer rate
+Instance top k
+Batch size (ST)
+Batch size (FT)
+Examples seen
+Open vocabulary:
+11 OWL-ST
+CLIP B/16
+960
+5.0 × 10−5 .0/.0 .2/.1 256 256
+–
+3.7 × 108
+12 OWL-ST
+CLIP L/14
+1008 2.0 × 10−5 .0/.0 .2/.1 512 256
+–
+2.3 × 108
+13 OWL-ST
+SigLIP G/14 1008 2.0 × 10−5 .0/.1 .2/.4 512 128
+–
+1.6 × 108
+14 OWL-ST+FT
+CLIP B/16
+960
+5.0 × 10−5 .0/.0 .2/.1 256 256 256 3.6 × 108
+15 OWL-ST+FT
+CLIP L/14
+1008 2.0 × 10−5 .0/.0 .2/.1 512 256 128 2.3 × 108
+16 OWL-ST+FT SigLIP G/14 1008 2.0 × 10−5 .0/.1 .2/.4 512 128 128 1.6 × 108
+Human-curated vocabulary:
+20 OWL-ST+FT
+CLIP B/16
+960
+5.0 × 10−5 .0/.0 .2/.1 256 256 256 8.2 × 108
+21 OWL-ST+FT
+CLIP L/14
+1008 2.0 × 10−5 .0/.0 .2/.1 512 256 128 3.6 × 108
+• Optimizer: Adafactor variant as in [36]
+• Learning rate schedule: Inverse square-root [30] with timescale 10’000 steps
+• Learning rate for the text encoder: 2 × 10−6
+• Token dropping rate during training: 0.5
+• Pseudo-annotation confidence score threshold: 0.3 (except for Figure 3)
+• Augmentations: See Appendix A.4
+• All remaining hyperparameters are as in [21].
+Hyperparameter selection.
+Most hyperparameters were either taken directly from [21] or tech-
+nically constrained, e.g. we chose the largest batch size that fit into the memory of the available
+accelerators. Where hyperparameters were tuned, we ran short B/16-scale trial experiments and
+selected the parameters with the highest LVIS mAPrare for our main runs.
+SigLIP G/14.
+For the G/14 model, we started self-training with a learning rate of 5 × 10−5, a
+droplayer rate of .1/.0, and no dropout. We found that the model overfit during fine-tuning with these
+settings, and switched to a learning rate of 2 × 10−5, a droplayer rate of .2/.4, and a dropout rate of
+.0/.1 after 740’000 self-training steps. To save resources, we did not start training from the beginning.
+With the new settings, we observed no overfitting during fine-tuning, but it is possible that these
+settings are still not optimal.
+A.8
+Additional Results
+A.8.1
+Fixed Average Precision
+In the standard Average Precision metric (APold), performance on one class depends on the perfor-
+mance on other classes. This dependence makes the metric “gameable” by re-scaling the scores of
+certain classes [4]. To avoid this issue, some prior work reports a “fixed” version of AP proposed
+in [4]. In Table 1, we report APold for our models. For models from the literature, we report whichever
+AP version is available. Since APfixed tends to produce higher values than APold, Table 1 tends to
+underestimate the advantage of our method over prior work using APfixed. We provide APfixed for all
+of our models in Table A3. As proposed in [4], we implement APfixed by evaluating AP on the top
+10’000 predictions per class over the entire validation set. This ensures that classes do not compete
+with each other for inclusion in the evaluated predictions.
+15
+
+PAGE 16
+44
+46
+48
+50
+52
+54
+56
+58
+"In the Wild" performance
+(ODinW13 mean AP (%))
+30
+35
+40
+45
+50
+55
+LVIS APfrequent (%)
+100
+1k
+2k
+5k
+20k
+.1
+.2
+.3
+.4
+.5
+.6
+.7
+.8
+.9
+44
+46
+48
+50
+52
+54
+56
+58
+"In the Wild" performance
+(ODinW13 mean AP (%))
+30
+35
+40
+45
+LVIS APrare (%)
+100
+1k
+2k
+20k
+.1
+.2
+.3.4
+.5
+.6
+.7
+.8
+.9
+Self-training only
+Fine-tuned on LVIS base
+Weight ensemble
+OWL L/14 (annotator)
+Figure A1: Trade-off between fine-tuned and open-world performance. Similar to Figure 5, but for
+OWLv2 L/14.
+A.8.2
+Per-Dataset ODinW Results
+Table A4 shows un-aggregated results on all 35 ODinW datasets for our main models. In addition,
+in the last row, we provide results for a weight-space ensemble of a self-trained and fine-tuned
+OWLv2 L/14 model (the same model is shown in Figure A1).
+A.8.3
+Fine-Tuning Robustness Trade-Off for OWLv2 L/14
+In Figure A1, we provide the same analysis of the robustness trade-off after fine-tuning for an L/14
+model that we provided for a B/16 model in Figure 5.
+A.8.4
+Qualitative Examples
+In Figures A4 to A6, we provide qualitative examples of detection predictions from OWLv2 L/14
+models. In each figure, the top image shows predictions obtained directly after self-training, and
+the bottom image shows predictions after fine-tuning on LVISbase. Example images are from the
+LVIS validation set and the model was queried with all LVIS classes. All predictions meeting the
+confidence threshold specified in the caption are shown.
+16
+
+PAGE 17
+Table A3: Open-vocabulary detection results on LVIS using the “fixed” AP metric [4]. Fixed AP is
+implemented as proposed in [4] by evaluating AP on the top 10’000 predictions per class over the
+entire validation set.
+Method
+Backbone
+APmini
+all
+APmini
+rare
+APval
+all
+APval
+rare
+old
+fixed
+old
+fixed
+old
+fixed
+old
+fixed
+Open vocabulary:
+1
+RegionCLIP [40]
+R50x4
+–
+–
+–
+–
+32.3
+–
+22.0
+–
+2
+OWL [21]
+CLIP B/16
+–
+–
+–
+–
+27.2
+–
+20.6
+–
+3
+OWL [21]
+CLIP L/14
+–
+–
+–
+–
+34.6
+–
+31.2
+–
+4
+GLIPv2 [39]
+Swin-T
+29.0
+–
+–
+–
+–
+–
+–
+–
+5
+GLIPv2 [39]
+Swin-B
+48.5
+–
+–
+–
+–
+–
+–
+–
+6
+GLIPv2 [39]
+Swin-H
+50.1
+–
+–
+–
+–
+–
+–
+–
+7
+F-VLM [14]
+R50x4
+–
+–
+–
+–
+28.5
+–
+26.3
+–
+8
+F-VLM [14]
+R50x64
+–
+–
+–
+–
+34.9
+–
+32.8
+–
+9
+3Ways [1]
+NFNet-F0
+–
+–
+–
+–
+35.7
+–
+25.6
+–
+10 3Ways [1]
+NFNet-F6
+–
+–
+–
+–
+44.6
+–
+30.1
+–
+11 OWL-ST
+CLIP B/16
+31.8 34.4 35.4 38.3 27.0 28.6 29.6 30.3
+12 OWL-ST
+CLIP L/14
+38.1 40.9 39.0 41.5 33.5 35.2 34.9 36.2
+13 OWL-ST
+SigLIP G/14 37.8
+–
+40.9
+–
+33.7
+–
+37.5
+–
+14 OWL-ST+FT
+CLIP B/16
+47.2 48.7 37.8 42.1 41.8 43.2 36.2 39.0
+15 OWL-ST+FT
+CLIP L/14
+54.1 56.2 46.1 52.3 49.4 51.1 44.6 47.4
+16 OWL-ST+FT
+SigLIP G/14 51.3
+–
+50.9
+–
+47.0
+–
+47.2
+–
+Human-curated vocabulary:
+17 Detic [41]
+R50
+–
+–
+–
+–
+32.4
+–
+24.6
+–
+18 DetCLIPv2 [32]
+Swin-T
+–
+40.4
+–
+36.0
+–
+32.8
+–
+31.0
+19 DetCLIPv2 [32]
+Swin-L
+–
+44.7
+–
+43.1
+–
+36.6
+–
+33.3
+20 OWL-ST+FT
+CLIP B/16
+51.1 52.3 41.9 46.5 45.6 46.7 40.5 42.5
+21 OWL-ST+FT
+CLIP L/14
+55.8 57.2 50.0 54.5 50.4 52.0 45.9 48.5
+Table A4: Zero-shot AP of the models in Table 1 on all 35 ODinW datasets [16]. The subset of 13
+datasets defined in [17] and used in the main paper is shown in bold. The last row (OWL-ST/FT ens)
+shows the weight-space ensemble [31] of the checkpoints after self-training and after fine-tuning of
+the model in row 21 (weight of the fine-tuned checkpoint in the ensemble is 0.4; also see Figure A1).
+This is our best model by ODinW13 performance.
+Method
+Backbone
+Mean (13 datasets)
+Mean (35 datasets)
+Median (35 datasets)
+Aerial Maritime Drone Large
+Aerial Maritime Drone Tiled
+American Sign Language
+Aquarium
+BCCD
+Boggle Boards
+Brackish Underwater
+Chess Pieces
+Cottontail Rabbits
+Dice Medium Color
+Drone Control
+Ego Hands Generic
+Ego Hands Specific
+Hard Hat Workers
+Mask Wearing
+Mountain Dew Commercial
+North America Mushrooms
+Open Poetry Vision
+Oxford Pets By Breed
+Oxford Pets By Species
+Packages
+Pascal VOC
+Pistols
+Pk Lot
+Plantdoc
+Pothole
+Raccoon
+Selfdriving Car
+Shellfish OpenImages
+Thermal Cheetah
+Thermal Dogs And People
+Uno Cards Raw
+Vehicles OpenImages
+Website Screenshots
+Wildfire Smoke
+Open vocabulary:
+11
+OWL-ST
+CLIP B/16
+48.8 22.1 11.6
+11.6 19.4 1.1 33.2 11.6 0.3 4.8 4.1 85.5 0.1 2.7 46.9 5.5 2.0 0.4 22.0 33.9 0.4 2.7 3.4 75.9 52.7 60.1 0.1 4.8 19.2 66.6 5.5 40.1 19.1 51.1 1.0 57.2 1.8 25.4
+12
+OWL-ST
+CLIP L/14
+53.0 24.4 16.2
+19.9 21.2 1.1 32.3 16.2 0.2 5.9 7.8 84.9 0.1 4.7 47.1 3.5 1.9 0.5 27.3 76.6 0.6 3.1 2.7 70.9 53.9 62.6 0.0 4.4 27.5 63.8 4.9 35.0 25.5 55.6 1.1 58.5 1.8 31.1
+13
+OWL-ST
+SigLIP G/14
+49.9 22.9 17.5
+22.0 17.5 2.0 36.7 21.4 0.2 3.3 5.6 88.1 0.1 4.9 37.8 4.3 1.4 0.2 22.6 42.4 0.5 3.0 3.2 62.8 53.4 58.4 0.1 6.5 25.7 63.9 5.8 42.5 25.0 56.6 1.2 58.1 2.0 23.4
+14
+OWL-ST+FT
+CLIP B/16
+48.6 20.8 6.0
+13.7 16.6 0.2 35.8 3.9 0.1 4.2 3.1 85.5 0.1 0.9 50.7 1.3 2.7 0.5 16.0 37.4 0.2 1.9 2.1 71.3 57.4 59.4 0.2 2.7 7.6 61.7 6.0 42.5 15.3 45.6 1.3 62.8 1.2 15.8
+15
+OWL-ST+FT
+CLIP L/14
+50.1 22.3 6.3
+20.6 16.3 0.2 37.4 4.0 0.1 5.1 5.6 83.4 0.1 4.8 58.5 2.2 2.1 0.6 28.5 42.2 0.3 2.5 1.9 65.5 58.9 63.7 0.2 1.5 9.1 57.2 6.3 43.0 24.7 47.7 1.3 64.3 1.8 20.3
+16
+OWL-ST+FT
+SigLIP G/14
+50.1 22.5 9.5
+21.3 16.5 0.3 39.8 9.5 0.3 5.6 5.8 82.5 0.0 3.6 50.9 0.5 1.7 0.2 25.5 44.9 0.2 2.8 2.3 68.1 56.4 58.5 0.7 5.3 17.4 58.3 6.1 42.7 23.6 47.9 1.9 61.9 1.9 23.9
+Human-curated vocabulary:
+20
+OWL-ST+FT
+CLIP B/16
+48.9 21.7 6.8
+16.7 17.2 0.3 35.3 4.5 0.1 4.6 4.4 85.1 0.1 2.4 51.8 0.9 2.9 0.4 27.3 36.9 0.3 2.1 2.5 71.3 59.0 61.3 0.4 2.7 9.6 58.7 6.8 42.0 20.0 45.7 1.2 62.6 1.5 20.6
+21
+OWL-ST+FT
+CLIP L/14
+48.7 21.9 7.0
+18.8 17.5 0.2 36.4 5.3 0.1 5.4 5.7 85.1 0.1 4.9 53.9 2.5 2.2 0.3 28.8 41.2 0.3 2.4 2.1 61.1 59.2 65.7 0.1 1.8 9.5 57.9 7.0 44.0 23.8 36.8 0.9 63.2 1.6 20.7
+OWL-ST/FT ens
+CLIP L/14
+56.3 25.6 10.6
+21.7 20.0 1.0 39.1 10.6 0.2 7.6 7.0 87.0 0.0 6.1 53.1 3.2 2.1 0.3 31.3 80.6 0.4 3.1 2.9 66.3 61.8 66.2 0.1 4.0 26.0 65.4 6.2 45.1 24.1 56.7 1.1 63.3 1.9 30.9
+17
+
+PAGE 18
+file 2005 citroën c3
+interior 8th july 2015...
+c3
+c3 interior
+interior
+interior
+interior
+citroën c3 interior
+αρχείο map athenian
+empire 431 bc el svg
+431 bc el
+empire 431 bc el
+file map athenian
+431 bc
+file map athenian
+431 bc el
+file map athenian
+map
+file bus luxembourg city
+3 jpg
+file bus luxembourg city 3
+3
+file bus luxembourg city 3
+city
+3 datei bus luxe
+city 3
+3
+3 datei bus lux
+bus
+file patrick henry bruce
+landscape google art...
+patrick henry bruce land
+patrick henry bruce land
+file fresco showing a
+silver tray containing...
+dried figs and dates a
+dried figs and
+dried
+prunes dried
+dried
+dried figs and
+fresco showing a silver tray conta
+prunes dried
+fresco showing
+dried
+file monumento a josé
+maria dos santos pinhal...
+file monument to
+monument to 
+file monument to jo
+file iss 39 grand canyon
+jpg
+canyon for version as of 23
+canyon for version a
+canyon for version as
+39 grand canyon for version as
+grand canyon for version as of 23
+file kalisz bazylika
+wniebowzięcia nmp...
+of st. joseph
+of st. joseph
+of the church of st. joseph sanctuary
+fichier h with hook
+uppercase and lowercase...
+version as of
+with hook uppercase and lowercase
+lowercase for version as of
+h with hook upp
+h with hook uppercase and
+archivo red script
+palestine flag svg
+archivo red script
+archivo red script
+archivo red script
+script palestine flag for version
+version as of
+archivo red script
+file station tramway
+ligne 3b marie miribel...
+tram station
+tram station
+tram station
+tram
+file gleisanlage zürich
+hauptbahnhof jpg
+track system
+track system
+track system
+track system zurich main
+station
+track system
+track system
+track system zurich main station
+track system
+track system
+track system
+track system
+station
+file zürich
+industriequartier prime...
+industrial quarter
+zürich industr
+quarter prime and mobimo tower
+file zürich industrial quarter
+zürich industrial
+zürich indus
+industrial quarter
+tower käferberg
+and mobimo tower käferberg
+zürich industrial quarter
+industrial quarter
+quarter prime and mobimo tower
+industrial quarter
+industrial quarter
+industrial quarter
+zürich industrial quarter
+industrial quarter prime and mobim
+파일 chikoo sapodilla
+noseberry mudapples...
+november
+sapodilla noseberry mudapples
+chikoo
+sapodilla nose
+chiko
+chikoo
+chiko
+chikoo
+chikoo
+chikoo sapodil
+datei kitchen impossible
+map png
+dateidatei
+impossible map
+impossible map
+map
+gata isaac onora ramaria
+aurea wikipedia
+onora ramaria
+isaac onora ramaria
+september
+ramaria
+statue mentuhotep aa by
+khruner jpg
+statue mentuhotep
+statue mentuhotep
+file athena promachos
+reggio calabria jpg
+athena promachos
+athena
+athena promachos
+athena
+スポンサー ドリンク
+アンティーク 風 時計...
+clock
+file birkenstock jpg
+birkenstock
+birkenstock
+birkenstock
+birkenstock
+Figure A2: Example pseudo-annotations on WebLI [3]. Image-associated text (from the HTML
+alt_text tag) is shown above the images. If the text is not in English, an automatically generated
+translation is used. N-grams are extracted from these texts to generate queries for the annotator model.
+Pseudo-annotations were filtered as for our main experiments: To be included, boxes must have a
+score of at least 0.1, and images must have at least one box with a score above 0.3. All images from
+Wikimedia Commons.
+18
+
+PAGE 19
+Figure A3: Training inputs after pre-processing. Top: A 4 × 4 mosaic of randomly resized and
+padded images as used for self-training. Bottom: The same mosaic after dropping the 50% of patches
+with lowest pixel variance (image size: 1008 × 1008; patch size: 14 × 14). Most dropped patches
+belong to padding areas or uniform image backgrounds. All images from Wikimedia Commons.
+19
+
+PAGE 20
+OWL-ST L/14 self-trained on N-grams, not fine-tuned (Table 1 row 12)
+apple
+peach
+pear
+date (fruit)
+apple
+apple
+pear
+clementine
+apple
+g
+g
+colander
+date (fruit)
+cart
+pear
+pole
+apple
+colander
+cylinder
+dropper
+apple
+pineapple
+apple
+packet
+date (fruit)
+apple
+water jug
+colander
+clementine
+kiwi fruit
+bucket
+apple
+colander
+kiwi fruit
+apple
+colander
+apple
+apple
+apple
+clementine
+colander
+pole
+apple
+apple
+apple
+colander
+basket
+orange (fruit)
+date (fruit)
+apple
+apple
+apple
+apple
+kiwi fruit
+apple
+vest
+apple
+bucket
+apple
+skullcap
+bucket
+apple
+packet
+apple
+canteen
+basket
+hook
+basket
+bob
+hose
+apple
+thumbtack
+bucket
+apple
+p
+pineapple
+elevator car
+apple
+apple
+clementine
+apple
+cart
+apple
+canteen
+lime
+kiwi fruit
+pear
+apple
+turnip
+date (fruit)
+apple
+cart
+vending machine
+apple
+water cooler
+apple
+apple
+apple
+g
+g
+p
+packet
+colander
+apple
+banner
+canteen
+orange (fruit)
+apple
+ose
+kiwi fruit
+apple
+apple
+apple
+a p
+apple
+apple
+cart
+orange (fruit)
+g
+g
+canteen
+clementine
+apple
+apple
+bucket
+apple
+apple
+date (fruit)
+banner
+date (fruit)
+apple
+salmon (food)
+apple
+orange (fruit)
+lime
+apple
+apple
+apple
+apple
+apple
+date (fruit)
+orange (fruit)
+apple
+apple
+apple
+water heater
+p
+orange (fruit)
+cucumber
+apple
+clementine
+thumbtack
+basket
+apple
+thermostat
+thumbtack
+zucchini
+apple
+orange (fruit)
+apple
+tabasco sauce
+apple
+celery
+apple
+banana
+apple
+apple
+cart
+bamboo
+cart
+colander
+kiwi fruit
+calendar
+pole
+orange (fruit)
+cylinder
+apple
+basket
+orange (fruit)
+apple
+apple
+pineapple
+receipt
+apple
+apple
+orange (fruit)
+apple
+orange (fruit)
+apple
+lab coat
+apple
+apple
+apple
+skullcap
+reflector
+apple
+p
+apple
+speaker (stero equipment)
+fig (fruit
+turkey (food)
+po e
+apple
+apple
+cylinder
+plastic bag
+date (fruit)
+apple
+parking meter
+prune
+apple
+pear
+kiwi fruit
+dispenser
+orange (fruit)
+celery
+orange (fruit)
+cylinder
+apple
+basket
+apple
+orange (fruit)
+hook
+apple
+date (fruit)
+zucchini
+pineapple
+pineapple
+pineapple
+dropper
+pineapple
+celery
+zucchini
+orange (fruit)
+date (fruit)
+cucumber
+cucumber
+speaker (stero equipment)
+grocery bag
+cucumber
+zucchini zucchini
+banana
+canteen
+banana
+date (fruit)
+cart
+thermometer
+OWL-ST+FT L/14 self-trained on N-grams and fine-tuned on LVISbase (Table 1 row 15)
+pear
+banana
+apple
+basket
+date (fruit)
+orange (fruit)
+apple
+speaker (stero equipment)
+apple
+orange (fruit)
+kiwi fruit
+basket
+bucket
+pear
+orange (fruit)
+basket
+orange (fruit)
+lightbulb
+orange (fruit)
+g
+pear
+orange (fruit)
+apple
+potato
+apple
+banana
+apple
+signboard
+bucket
+pear
+kiwi fruit
+basket
+pear
+kiwi fruit
+basket
+kiwi fruit
+potato
+banana
+apple
+orange (fruit)
+apple
+apple
+orange (fruit)
+apple
+kiwi fruit
+pear
+signboard
+pear
+kiwi fruit
+apple
+pear
+bucket
+banana
+p
+g
+kiwi fruit
+basket
+kiwi fruit
+pear
+kiwi fruit
+apple
+apple
+kiwi fruit
+kiwi fruit
+g
+orange (fruit)
+kiwi fruit
+apple
+kiwi fruit
+pear
+pear
+kiwi fruit
+orange (fruit)
+kiwi fruit
+orange (fruit)
+bask
+apple
+orange (fruit)
+apple
+kiwi fruit
+orange (fruit)
+pear
+kiwi fruit
+kiwi fruit
+pear
+kiwi fruit
+orange (fruit)
+kiwi fruit
+kiwi fruit
+pear
+orange (fruit)
+pineapple
+apple
+p
+g
+apple
+apple
+bucket
+apple
+pear
+apple
+apple
+pear
+banana
+basket
+basket
+orange (fruit)
+kiwi fruit
+kiwi fruit
+pear
+apple
+pear
+kiwi fruit
+kiwi fruit
+pearpear
+pear
+apple
+banana
+apple
+kiwi fruit
+orange (fruit)
+kiwi fruit
+apple
+apple
+banana
+apple
+kiwi fruit
+pear
+apple
+apple
+kiwi fruit
+pear
+pear
+kiwi fruit
+kiwi fruit
+pear
+date (fruit)
+apple
+pear
+banana
+apple
+kiwi fruit
+apple
+pear
+apple
+kiwi fruit
+apple
+apple
+apple
+apple
+apple
+pear
+apple
+kiwi fruit
+orange (fruit)
+orange (fruit)
+bucket
+apple
+pear
+pear
+kiwi fruit
+kiwi fruit
+kiwi fruit
+apple
+kiwi fruit
+orange (fruit)
+apple
+apple
+kiwi fruit
+orange (fruit)
+apple
+kiwi fruit
+kiwi fruit
+banana
+pear
+orange (fruit)
+banana
+apple
+pear
+apple
+apple
+apple
+plastic bag
+kiwi fruit
+apple
+kiwi fruit
+pear
+apple
+apple
+apple
+kiwi fruit
+orange (fruit)
+kiwi fruit
+apple
+kiwi fruit
+bucket
+orange (fruit)
+pear
+kiwi fruit
+apple
+apple
+apple
+apple
+kiwi fruit
+banana
+apple
+kiwi fruit
+apple
+basket
+apple
+orange (fruit)
+apple
+pear
+apple
+orange (fruit)
+basket
+apple
+banana
+kiwi fruit
+apple
+apple
+pear
+apple
+basket
+kiwi fruit
+apple
+apple
+kiwi fruit
+apple
+apple
+apple
+apple
+basket
+banana
+orange (fruit)
+apple
+apple
+apple
+apple
+apple
+orange (fruit)
+apple
+apple
+basket
+basket
+apple
+apple
+orange (fruit)
+apple
+apple
+pear
+apple
+banana
+apple
+orange (fruit)
+thermometer
+apple
+apple
+apple
+banana
+orange (fruit)
+apple
+apple
+orange (fruit)
+orange (fruit)
+apple
+apple
+apple
+apple
+apple
+apple
+banana
+apple
+apple
+apple
+orange (fruit)
+apple
+orange (fruit)
+banana
+apple
+apple
+apple
+shopping cart
+orange (fruit)
+apple
+apple
+apple
+apple
+zucchini
+apple
+plastic bag
+apple
+orange (fruit)
+apple
+apple
+apple
+apple
+orange (fruit)
+apple
+orange (fruit)
+orange (fruit)
+kiwi fruit
+apple
+apple
+apple
+orange (fruit)
+orange (fruit)
+apple
+apple
+zucchini
+apple
+apple
+orange (fruit)
+apple
+apple
+apple
+orange (fruit)
+apple
+apple
+orange (fruit)
+apple
+zucchini
+apple
+apple
+apple
+apple
+apple
+apple
+orange (fruit)
+apple
+apple
+apple
+zucchini
+apple
+apple
+zucchini
+apple
+orange (fruit)
+pineapple
+apple
+apple
+apple
+apple
+apple
+apple
+apple
+pineapple
+zucchini
+apple
+pineapple
+apple
+apple
+apple
+apple
+apple
+apple
+apple
+Figure A4: Qualitative example for OWLv2 L/14 from the LVIS val set. For the visualization, all
+LVIS classes were used as prompts. LVISrare classes are labeled in black. Top: OWL-ST self-trained
+on N-grams, not fine-tuned (Table 1 row 12). Bottom: OWL-ST+FT self-trained on N-grams and
+fine-tuned on LVISbase (Table 1 row 15). Boxes above score 0.08 (top) or 0.3 (bottom) are shown.
+20
+
+PAGE 21
+OWL-ST L/14 self-trained on N-grams, not fine-tuned (Table 1 row 12)
+black sheep
+sheep
+fleece
+sheep
+fleece
+sheep
+ram (animal)
+sheep
+black sheep
+yoke (animal equipment)
+sheep
+yoke (animal equipment)
+sheep
+sheep
+yoke (animal equipment)
+sheep
+sheep
+freight car
+sheep
+yoke (animal equipment)
+sheep
+light
+lightning rod
+sheep
+g
+g
+sheep
+black sheep
+sheep
+yoke (animal equipment)
+sheep
+sheep
+sheep
+mast
+mail slot
+sheep
+lamb (animal)
+yoke (animal equipment)
+lightning rod
+lightning rod
+sheep
+sheep
+silo
+sheep
+lamb (animal)
+g
+g
+sheep
+black sheep
+sheep
+yoke (animal equipment)
+sheep
+sheep
+black sheep
+lightning rod
+g
+g
+sheep
+sheep
+sheep
+sheep
+g
+g
+black sheep
+sheep
+sheep
+sheep
+lamb (animal)
+lamb (animal)
+light
+mail slot
+black sheep
+sheep
+black sheep
+mail slot
+sheep
+sheep
+lightning rod
+lamb (animal)
+sheep
+sheep
+lamb (animal)
+sheep
+sheep
+vat
+yoke (animal equipment)
+sheep
+sheep
+she
+lamb (animal)
+sheep
+sheep
+lamb (animal)
+sheep
+g
+g
+sheep
+silo
+sheep
+black sheep
+lamb (animal)
+sheep
+lamb (animal)
+lamb (animal)
+lightning rod
+lamb (animal)
+lamb (anim
+light
+ram (animal)
+sheep
+sheep
+sheep
+sheep
+mail slot
+measuring stick
+lig
+lamb (animal)
+g
+g
+OWL-ST+FT L/14 self-trained on N-grams and fine-tuned on LVISbase (Table 1 row 15)
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+black sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+she
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+sheep
+Figure A5: Qualitative example for OWLv2 L/14 from the LVIS val set. For the visualization, all
+LVIS classes were used as prompts. LVISrare classes are labeled in black. Top: OWL-ST self-trained
+on N-grams, not fine-tuned (Table 1 row 12). Bottom: OWL-ST+FT self-trained on N-grams and
+fine-tuned on LVISbase (Table 1 row 15). Boxes above score 0.08 (top) or 0.3 (bottom) are shown.
+21
+
+PAGE 22
+OWL-ST L/14 self-trained on N-grams, not fine-tuned (Table 1 row 12)
+zucchini
+pepper
+pepper
+hook
+folding chair
+pepper
+pepper
+dropper
+handle
+measuring cup
+pumpkin
+eggplant
+hook
+radish
+bow (decorative ribbons)
+wooden leg
+pepper
+folding chair
+handle
+lettuce
+bell pepper
+clementine
+bow (decorative ribbons)
+flute glass
+cornice
+hook
+handle
+wooden leg
+handle
+step stool
+step stool
+chinaware
+frying pan
+cooking utensil
+handle
+hook
+measuring cup
+ironing board
+lettuce
+cooking utensil
+ladle
+handle
+stool
+folding chair
+hook
+dresser
+hinge
+pan (metal container)
+hairpin
+underdrawers
+hook
+underdrawers
+carton
+gourd
+knob
+knob
+handle
+handle
+crossbar
+wooden leg
+handle
+thumbtack
+hook
+soupspoon
+basket
+cooking utensil
+hook
+hook
+knob
+hook
+hook
+dixie cup
+clementine
+hook
+carrot
+crossbar
+underdrawers
+hook
+cooking utensil
+bread
+pitcher (vessel for liquid)
+wooden leg
+cooking utensil
+hook
+measuring cup
+wooden leg
+wooden leg
+wooden leg
+clementine
+wooden leg
+orange (fruit)
+lettuce
+underdrawers
+eggplant
+dixie cup
+flower arrangement
+folding chair
+cooking utensil
+cooking utensil
+cooking utensil
+folding chair
+lettuce
+cooking utensil
+ladle
+cooking utensil
+cooking utensil
+cornice
+cooking utensil
+cooking utensil
+hook
+step stool
+pan (metal container)
+cooking utensil
+frying pan
+cooking utensil
+cooking utensil frying pan
+kettle
+frying pan
+folding chair
+teakettle
+cooking utensil
+dixie cup
+step stool
+basket
+basket
+frying pan
+cooking utensil
+kitchen table
+wooden leg
+pan (metal container)
+sewing machine
+spice rack
+cooking utensil
+parchment
+cayenne (spice)
+eggplant
+armoire
+wooden leg
+bread
+parchment
+lettuce
+pan (metal container)
+pan (metal container)
+wooden leg
+bread
+knob
+pan (metal container)
+knob
+canteen
+OWL-ST+FT L/14 self-trained on N-grams and fine-tuned on LVISbase (Table 1 row 15)
+gourd
+basket
+cooking utensil
+hook
+pumpkin
+hook
+stool
+handle
+dresser
+hook
+gourd
+wooden leg
+hook
+chair
+pumpkin
+handle
+hook
+vase
+tray
+hook
+hook
+gourd
+hook
+hook
+chair
+pot
+cooking utensil
+cooking utensil
+cooking utensil
+gourd
+hook
+frying pan
+pan (metal container)
+cooking utensil
+pottery
+stool
+stool
+cooking utensil
+flower arrangement
+drawer
+cooking utensil
+frying pan
+frying pan
+drawer
+cooking utensil
+pan (metal container)
+frying pan
+frying pan
+knob
+knob
+frying pan
+frying pan
+armoire
+eggplant
+frying pan
+bread
+bread
+iron (for clothing)
+frying pan
+frying pan
+frying pan
+pot
+table
+pot
+pan (metal container)
+basket
+basket
+Figure A6: Qualitative example for OWLv2 L/14 from the LVIS val set. For the visualization, all
+LVIS classes were used as prompts. LVISrare classes are labeled in black. Top: OWL-ST self-trained
+on N-grams, not fine-tuned (Table 1 row 12). Bottom: OWL-ST+FT self-trained on N-grams and
+fine-tuned on LVISbase (Table 1 row 15). Boxes above score 0.08 (top) or 0.3 (bottom) are shown.
+22

@@ -1,0 +1,69 @@
+# 집필 에이전트의 검토 응답
+
+기존 수치·표 값을 보존하며 DCSM을 신원이 미확인된 로컬 어댑터로 명시하고, pooled-text map 용어·without 균형 지표·표와 그림 설명·서술적 순위 역전을 정리했습니다. 분량 검사에서 발견된 초과 페이지는 반복 설명을 압축하여 보완했습니다. 저자 정보, 체크포인트 신원, 쿼리 생성 규칙 등 근거가 없는 항목은 미해결로 남깁니다. 새 실험이나 추론은 수행하지 않았습니다.
+
+## META-01 — unresolved
+
+저자 이름·순서·소속과 공개 버전의 working-paper 표시는 저자 결정입니다. placeholder를 보존했으며 제출 메타데이터를 만들지 않았습니다.
+
+근거: read_revision_context의 원고 첫머리: Authors and affiliations: to be determined; README.md의 Scope and submission readiness.
+
+## METHOD-01 — partial
+
+초록·방법·표·그림 캡션·결과·결론에서 로컬 checkpoint-adapter pipelines로 범위를 통일하고 원 방법의 Functional Rows, 축 관례, EOS padding과 로컬 구현을 구분했습니다. 신원·해시·버전·실행 리비전·정렬·정규화 동등성은 확인되지 않아 해결하지 못했습니다. 그림 자산 내부 라벨은 수정하지 않았습니다.
+
+근거: sources/kang2025dcsm.html.txt §5.1 Model Pipeline/Training 및 Appendix B.1 Implementation Details; README.md DCSM adapter provenance; measurements.json#/compositional_args/dcsm_ckpts; 원고 §2.3.
+
+## METHOD-02 — partial
+
+방법 문단에 분리 조건·reference 규칙·중복/동률·후보 순서·템플릿의 미확인을 명시했습니다. 제공 파일에는 생성 인자와 코드 해시만 있고 규칙을 발췌할 원 코드/쿼리 본문이 없어 프로토콜 재구성은 미해결입니다.
+
+근거: measurements.json#/benchmark_args; manifest.json#/inputs의 build_comp_queries.py와 comp_queries.json 해시 기록; README.md Supporting material 경로; 원고 §2.3.
+
+## STAT-01 — partial
+
+서술적 순위 역전을 명료화하고 저장된 paired contrast 경로를 명시했습니다. 원 계산의 구현·프로비넌스 검증은 별도 확인이 필요합니다.
+
+근거: ../evidence/cluster_bootstrap.json#/subsets/spatial/paired_differences 및 Figure 1의 marginal intervals를 구분합니다.
+
+## METRIC-01 — addressed
+
+without의 DCSM 수치·chance·ordinary token-max를 모두 balanced 지표로 명시하고 target-largest/not-largest box-area 층의 동등 가중과 chance 적용 방식을 설명했습니다. size의 big/small 및 raw without와 구분하며 기존 숫자를 유지했습니다.
+
+근거: evidence_export/tables/compositional_balanced.md 첫 줄: Size: big/small; others: target-largest/not-largest; measurements.json#/balanced_top1/dcsm_obja_ctx/negation, #/balanced_top1/dcsm_coco_ctx/negation, #/balanced_top1/readout~1naive~1dcsm_tok/negation, #/balanced_chance/negation; raw_top1은 별도 키.
+
+## PROSE-01 — addressed
+
+반복적인 novelty 면책을 긍정형 연구 범위 문장으로 바꾸고 pooled-text map 정의 및 캡션을 명료화했습니다. saved-artifact 설계, 인과 한계와 AI assistance 공개는 유지하면서 마지막 재실행 면책의 반복을 줄였습니다.
+
+근거: 원고 §1 기여 목록·saved-artifact 분석 문단, §2.1 h(p,q) 정의, §4 인과 제한 및 Acknowledgements의 AI assistance 공개.
+
+## VISUAL-01 — partial
+
+Figure 1 캡션을 줄이고 Table 1의 pointing 분모를 명시했습니다. 방법 차이는 본문에 유지됩니다. float 배치, 페이지 경계, 양끝 맞춤 제목, 참고문헌 페이지 선택은 prose patch만으로 검증·해결할 수 없어 그대로 남겼습니다. 수정 후 전체 PDF 픽셀 검토는 후속 독립 단계입니다.
+
+근거: 첨부 원 PDF pp.1–5와 review VISUAL-01; 원고 Table 1/2 및 Figure 1 캡션. 그림 경로 figures/spatial_balanced.pdf는 보존.
+
+## LINT-01 — unresolved
+
+생성 TeX나 빌드 설정을 직접 편집할 권한이 없으므로 label·escape·suppression을 임의 변경하지 않았습니다. 기존 진단을 warning-free나 오류 해결로 표시하지 않습니다. 새 빌드 후 같은 설정의 필수 ChkTeX와 진단별 분류가 필요합니다.
+
+근거: 독립 review LINT-01: ChkTeX exit_code 2, diagnostic_count 34, global resource file 미발견; README.md의 Markdown 재생성 및 기존 경고 서술.
+
+## INTEGRITY-01 — addressed
+
+현재 keyed citation과 inspired/style 구분을 유지하고 원문을 직접 읽어 checkpoint functional embeddings와 원 방법의 Functional Rows의 개념적 대응을 명시했습니다. 구현 동등성이나 표절 부재·전역 독창성은 보증하지 않습니다. 정확한 원문 위치는 응답의 evidence에 기록하며 패치에 새 절 번호 숫자는 추가하지 않았습니다.
+
+근거: sources/kang2025dcsm.html.txt §5.1 Training의 functional-word dictionary 및 FR overwrite, Appendix B.1의 token rows/image columns/EOS padding/z-score normalization; 원고 §2.1의 MaskCLIP Sec. 3.3 및 인용 유지.
+
+## INTEGRITY-02 — unresolved
+
+CLIP·COCO·OWL-ViT·FG-OVD 원문과 최신 공식 서지정보는 제공되지 않았습니다. 인용과 서지 레코드를 보존했으며 미검증을 verified로 바꾸지 않았습니다. 저자가 원문 또는 공식 메타데이터를 제공해야 대조할 수 있습니다.
+
+근거: read_revision_context의 available_input_files에는 네 비교 원문만 존재; references.bib 및 원고 References의 나머지 항목은 메타데이터이지 해당 원문 근거가 아님.
+
+## ARXIV-01 — partial
+
+Evidence Availability 문구에서 로컬 경로·빌드 지침이 portable submission bundle이나 독립 검증을 뜻하지 않음을 명시했습니다. 최소 번들 목록·상대 경로·해시·의존성, clean-directory 빌드, 최신 공식 지침, 공개 증거 접근 방식 및 저자·라이선스·분류 결정은 미해결입니다. README의 과거 성공 서술을 이번 실행 검증으로 사용하지 않았고 외부 제출도 하지 않았습니다.
+
+근거: README.md Build and validate의 사용자 홈 절대 Tectonic 경로와 Supporting material의 ../evidence 의존성; figure_data.json#/source; README.md 최소 archive 및 과거 build 서술; 원고 Acknowledgements and Evidence Availability.

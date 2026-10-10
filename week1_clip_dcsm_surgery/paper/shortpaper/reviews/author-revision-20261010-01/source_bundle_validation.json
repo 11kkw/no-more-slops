@@ -1,0 +1,17 @@
+{
+  "archive": "reviews/author-revision-20261010-01/source-bundle.tar.gz",
+  "archive_sha256": "b5ec3f18cbc92f03eb1e3448d7673421ad0fbb5073f23f3762d74c6c511b0bdc",
+  "members": [
+    "shortpaper.tex",
+    "references.bib",
+    "shortpaper.bbl",
+    "figures/spatial_balanced.pdf"
+  ],
+  "compilation_exit": 0,
+  "pages": 5,
+  "pdf_text_equal": true,
+  "arxiv_side_compilation": "not_run",
+  "engine": "Tectonic 0.17.0, not arXiv TeX Live",
+  "package_dependencies": "Standard TeX packages resolved by local Tectonic; no custom style files; arXiv package-version compatibility not verified",
+  "absolute_input_paths": false
+}

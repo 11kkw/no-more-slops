@@ -1,0 +1,216 @@
+{
+  "engine": "ChkTeX",
+  "version": "1.7.9",
+  "status": "warnings_found",
+  "exit_code": 2,
+  "diagnostic_count": 34,
+  "diagnostics": [
+    {
+      "line": "14",
+      "column": "14",
+      "rule": "1",
+      "message": "Command terminated with space."
+    },
+    {
+      "line": "27",
+      "column": "10",
+      "rule": "9",
+      "message": "`]' expected, found `}'."
+    },
+    {
+      "line": "27",
+      "column": "22",
+      "rule": "9",
+      "message": "`}' expected, found `]'."
+    },
+    {
+      "line": "27",
+      "column": "38",
+      "rule": "9",
+      "message": "`]' expected, found `}'."
+    },
+    {
+      "line": "27",
+      "column": "50",
+      "rule": "9",
+      "message": "`}' expected, found `]'."
+    },
+    {
+      "line": "48",
+      "column": "41",
+      "rule": "8",
+      "message": "Wrong length of dash may have been used."
+    },
+    {
+      "line": "53",
+      "column": "14",
+      "rule": "8",
+      "message": "Wrong length of dash may have been used."
+    },
+    {
+      "line": "60",
+      "column": "66",
+      "rule": "8",
+      "message": "Wrong length of dash may have been used."
+    },
+    {
+      "line": "77",
+      "column": "11",
+      "rule": "1",
+      "message": "Command terminated with space."
+    },
+    {
+      "line": "89",
+      "column": "50",
+      "rule": "13",
+      "message": "Intersentence spacing (`\\@') should perhaps be used."
+    },
+    {
+      "line": "108",
+      "column": "36",
+      "rule": "8",
+      "message": "Wrong length of dash may have been used."
+    },
+    {
+      "line": "123",
+      "column": "17",
+      "rule": "13",
+      "message": "Intersentence spacing (`\\@') should perhaps be used."
+    },
+    {
+      "line": "131",
+      "column": "66",
+      "rule": "13",
+      "message": "Intersentence spacing (`\\@') should perhaps be used."
+    },
+    {
+      "line": "139",
+      "column": "47",
+      "rule": "8",
+      "message": "Wrong length of dash may have been used."
+    },
+    {
+      "line": "143",
+      "column": "6",
+      "rule": "8",
+      "message": "Wrong length of dash may have been used."
+    },
+    {
+      "line": "167",
+      "column": "53",
+      "rule": "8",
+      "message": "Wrong length of dash may have been used."
+    },
+    {
+      "line": "173",
+      "column": "44",
+      "rule": "13",
+      "message": "Intersentence spacing (`\\@') should perhaps be used."
+    },
+    {
+      "line": "195",
+      "column": "64",
+      "rule": "13",
+      "message": "Intersentence spacing (`\\@') should perhaps be used."
+    },
+    {
+      "line": "196",
+      "column": "60",
+      "rule": "13",
+      "message": "Intersentence spacing (`\\@') should perhaps be used."
+    },
+    {
+      "line": "204",
+      "column": "63",
+      "rule": "13",
+      "message": "Intersentence spacing (`\\@') should perhaps be used."
+    },
+    {
+      "line": "259",
+      "column": "57",
+      "rule": "13",
+      "message": "Intersentence spacing (`\\@') should perhaps be used."
+    },
+    {
+      "line": "266",
+      "column": "6",
+      "rule": "8",
+      "message": "Wrong length of dash may have been used."
+    },
+    {
+      "line": "270",
+      "column": "1",
+      "rule": "24",
+      "message": "Delete this space to maintain correct pagereferences."
+    },
+    {
+      "line": "294",
+      "column": "19",
+      "rule": "13",
+      "message": "Intersentence spacing (`\\@') should perhaps be used."
+    },
+    {
+      "line": "309",
+      "column": "1",
+      "rule": "24",
+      "message": "Delete this space to maintain correct pagereferences."
+    },
+    {
+      "line": "334",
+      "column": "1",
+      "rule": "24",
+      "message": "Delete this space to maintain correct pagereferences."
+    },
+    {
+      "line": "339",
+      "column": "23",
+      "rule": "9",
+      "message": "`]' expected, found `}'."
+    },
+    {
+      "line": "339",
+      "column": "34",
+      "rule": "9",
+      "message": "`}' expected, found `]'."
+    },
+    {
+      "line": "340",
+      "column": "23",
+      "rule": "9",
+      "message": "`]' expected, found `}'."
+    },
+    {
+      "line": "340",
+      "column": "35",
+      "rule": "9",
+      "message": "`}' expected, found `]'."
+    },
+    {
+      "line": "372",
+      "column": "9",
+      "rule": "1",
+      "message": "Command terminated with space."
+    },
+    {
+      "line": "424",
+      "column": "53",
+      "rule": "8",
+      "message": "Wrong length of dash may have been used."
+    },
+    {
+      "line": "430",
+      "column": "1",
+      "rule": "24",
+      "message": "Delete this space to maintain correct pagereferences."
+    },
+    {
+      "line": "432",
+      "column": "11",
+      "rule": "1",
+      "message": "Command terminated with space."
+    }
+  ],
+  "stdout": "14:14:1:Command terminated with space.\n27:10:9:`]' expected, found `}'.\n27:22:9:`}' expected, found `]'.\n27:38:9:`]' expected, found `}'.\n27:50:9:`}' expected, found `]'.\n48:41:8:Wrong length of dash may have been used.\n53:14:8:Wrong length of dash may have been used.\n60:66:8:Wrong length of dash may have been used.\n77:11:1:Command terminated with space.\n89:50:13:Intersentence spacing (`\\@') should perhaps be used.\n108:36:8:Wrong length of dash may have been used.\n123:17:13:Intersentence spacing (`\\@') should perhaps be used.\n131:66:13:Intersentence spacing (`\\@') should perhaps be used.\n139:47:8:Wrong length of dash may have been used.\n143:6:8:Wrong length of dash may have been used.\n167:53:8:Wrong length of dash may have been used.\n173:44:13:Intersentence spacing (`\\@') should perhaps be used.\n195:64:13:Intersentence spacing (`\\@') should perhaps be used.\n196:60:13:Intersentence spacing (`\\@') should perhaps be used.\n204:63:13:Intersentence spacing (`\\@') should perhaps be used.\n259:57:13:Intersentence spacing (`\\@') should perhaps be used.\n266:6:8:Wrong length of dash may have been used.\n270:1:24:Delete this space to maintain correct pagereferences.\n294:19:13:Intersentence spacing (`\\@') should perhaps be used.\n309:1:24:Delete this space to maintain correct pagereferences.\n334:1:24:Delete this space to maintain correct pagereferences.\n339:23:9:`]' expected, found `}'.\n339:34:9:`}' expected, found `]'.\n340:23:9:`]' expected, found `}'.\n340:35:9:`}' expected, found `]'.\n372:9:1:Command terminated with space.\n424:53:8:Wrong length of dash may have been used.\n430:1:24:Delete this space to maintain correct pagereferences.\n432:11:1:Command terminated with space.\n",
+  "stderr": "/home/happy5700x/.cache/paper-review-local/chktex/usr/bin/chktex: WARNING -- Could not find global resource file.\n",
+  "limitations": "Static LaTeX typography only; no prose grammar, visual layout, arXiv compilation or acceptance judgment. Input-file traversal disabled."
+}

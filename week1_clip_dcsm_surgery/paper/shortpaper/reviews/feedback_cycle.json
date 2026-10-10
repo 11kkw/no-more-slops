@@ -1,0 +1,9 @@
+{
+  "cycle_id": "writing-feedback-20261010-user-request",
+  "authorization": "User requests persistent bot connection, mutual feedback and automatic handoff to paper writer",
+  "baseline_review_id": "auto-c322eb7a99a934eda26c",
+  "baseline_review_count": 1,
+  "max_writer_revisions": 2,
+  "max_reviews": 3,
+  "scientific_experiments_allowed": false
+}

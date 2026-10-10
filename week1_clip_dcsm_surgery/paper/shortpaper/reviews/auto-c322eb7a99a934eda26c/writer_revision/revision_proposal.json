@@ -1,0 +1,161 @@
+{
+  "review_id": "auto-c322eb7a99a934eda26c",
+  "input_digest": "c322eb7a99a934eda26cda9623e3be178ef792f5752ee2b0e73a56354f13b621",
+  "status": "staged",
+  "patch_count": 13,
+  "patches": [
+    {
+      "finding_id": "METHOD-01",
+      "old": "We report a separation between category-sensitive localization and relational object selection in evaluated CLIP pipelines. A map that highlights a category need not identify the intended instance among objects of that category. We analyze saved COCO experiments with a frozen ViT-B/16, ordinary and modified final-block readouts, and released Dense Cosine Similarity Map (DCSM) scorers. At 224-pixel input resolution, a ClearCLIP-style readout increases proposal-based detection AP from 2.6 to 27.3 on 4,952 images, yet its mean-map scorer obtains 39.4% balanced spatial-selection accuracy, versus 50.3% for the ordinary readout. On 527 spatial queries from 375 images, released DCSM ObjA and COCO scorers reach 58.1% [53.7, 62.4] and 57.3% [53.2, 61.2], respectively, against 45.7% expected chance (exploratory percentile 95% image-cluster bootstrap intervals). These conditional, annotation-derived results motivate separate validation of localization and relational selection; they neither isolate a causal mechanism nor test learned DCSM scoring on modified features.",
+      "new": "We report a descriptive separation between category-sensitive localization and relational object selection in evaluated CLIP pipelines. Category localization need not select the intended instance. We analyze saved COCO experiments with a frozen ViT-B/16, ordinary and modified final-block readouts, and local Dense Cosine Similarity Map (DCSM) adapters. At 224-pixel input resolution, a ClearCLIP-style readout increases proposal-based detection AP from 2.6 to 27.3 on 4,952 images, yet its pooled-text map scorer obtains 39.4% balanced spatial-selection accuracy, versus 50.3% for the ordinary readout. On 527 spatial queries from 375 images, DCSM ObjA and COCO adapters reach 58.1% [53.7, 62.4] and 57.3% [53.2, 61.2], respectively, against 45.7% expected chance (exploratory percentile 95% image-cluster bootstrap intervals). Release identities remain unverified. These conditional, annotation-derived results motivate separate validation of localization and relational selection; they neither isolate a causal mechanism nor test learned DCSM scoring on modified features.",
+      "reason": "공식 released 모델 재현이라는 인상을 제거하고 서술적 관찰의 범위 및 pooled-text 용어를 명시합니다. 수치와 순서를 유지합니다. Layout-aware compression retains the numerical evidence and qualified claims."
+    },
+    {
+      "finding_id": "METHOD-01",
+      "old": "Two released DCSM checkpoints [@kang2025dcsm], locally called ObjA and COCO, score context crops using ordinary CLIP features and an already trained CNN. The adapter supplies an image-position-by-text-position matrix (197-by-30), including image CLS and text BOS/EOS/padding positions, with two convolutional layers and a 128-unit hidden fully connected layer. It inserts checkpoint functional embeddings using inherited whitespace positions and standardizes over all entries of the candidate-by-channel-by-image-position-by-text-position tensor for a query. Tokenizer alignment is not independently certified; normalization makes scores candidate-batch dependent. No new training is performed here, but these scorers are not training-free components. Modified readouts with the learned CNN were not evaluated. Local filenames and implementation provenance are recorded in the non-public supplement; checkpoint hashes and release versions remain unavailable.",
+      "new": "Local DCSM adapters [@kang2025dcsm], labeled ObjA and COCO, score context crops with ordinary CLIP features and a pretrained CNN. Their image-position-by-text-position matrix (197-by-30) includes CLS and BOS/EOS/padding; the scorer has two convolutional layers and a 128-unit hidden layer. Checkpoint functional embeddings use inherited whitespace positions; alignment is unverified. Unlike the original text-token-row/image-patch-column description with EOS padding and z-score normalization, the adapter standardizes the full candidate-by-channel-by-image-by-text tensor per query, making scores batch dependent. Equivalence is unverified. No training or modified-feature CNN evaluation is performed here. Filenames and implementation provenance are recorded locally; release identities, hashes, versions and original execution revisions remain unverified.",
+      "reason": "Kang 원문 Appendix B.1 및 §5.1을 직접 확인하여 원 방법과 로컬 어댑터를 구분합니다. 전치 오류나 공식 구현 동등성을 단정하지 않으며 기존 숫자 순서를 보존합니다. Layout-aware compression retains the numerical evidence and qualified claims."
+    },
+    {
+      "finding_id": "METHOD-02",
+      "old": "Its two box-area strata contain 233 target-largest and 294 target-not-largest items.",
+      "new": "Its two box-area strata contain 233 target-largest and 294 target-not-largest items. Separation thresholds, reference disambiguation, duplicate/tie handling, candidate order and sentence templates remain unverified.",
+      "reason": "자료에 없는 핵심 생성 규칙을 추정하지 않고 재구성 및 유일성 검증의 미해결 한계를 해당 방법 문맥에서 명시합니다. Layout-aware compression retains the numerical evidence and qualified claims."
+    },
+    {
+      "finding_id": "PROSE-01",
+      "old": "We therefore do not claim a new detector, a first compositional benchmark, or established novelty over that literature.",
+      "new": "Our contribution is a cross-task analysis under a conditional object-selection protocol.",
+      "reason": "신규성 부정의 반복을 긍정형 연구 범위 문장으로 대체하되 신규 방법이나 최초성을 주장하지 않습니다. Layout-aware compression retains the numerical evidence and qualified claims."
+    },
+    {
+      "finding_id": "PROSE-01",
+      "old": "Dense maps discard CLS. With normalized patch feature $z_p$ and pooled text embedding $t_{\\mathrm{EOS}}$, the principal map is $h(p,q)=z_p^\\top t_{\\mathrm{EOS}}(q)$.",
+      "new": "Dense maps discard CLS. With normalized patch feature $z_p$ and pooled text embedding $t_{\\mathrm{EOS}}$, the pooled-text map is $h(p,q)=z_p^\\top t_{\\mathrm{EOS}}(q)$.",
+      "reason": "mean-map과 pooled map의 혼동을 줄이고 map 정의와 후보 내부 평균을 분리합니다. 수식은 보존합니다. Layout-aware compression retains the numerical evidence and qualified claims."
+    },
+    {
+      "finding_id": "STAT-01",
+      "old": "Detection and pointing uncertainty is unavailable from retained summaries.",
+      "new": "Detection and pointing uncertainty is unavailable from retained summaries. Saved paired contrasts are located in `../evidence/cluster_bootstrap.json`, under `subsets.spatial.paired_differences`; their provenance still requires verification.",
+      "reason": "확인된 figure_data 출처와 확인되지 않은 paired 대조 포인터를 구분하며 비겹침을 paired 검정으로 해석하지 않도록 명시합니다. Layout-aware compression retains the numerical evidence and qualified claims."
+    },
+    {
+      "finding_id": "PROSE-01",
+      "old": "**Table 1.** Pooled-text results at 224 pixels. Pointing uses a 500-image oracle-category probe; detection uses 4,952 images. AP is on a 0--100 scale. Native OWLv2, under different proposal selection and confidence scoring, obtains 46.8 AP and is not a P2 row. Detection and pointing intervals are unavailable.",
+      "new": "**Table 1.** Pooled-text maps at 224 pixels. Pointing averages eligible image--category trials in a 500-image oracle-category probe; detection uses 4,952 images. AP uses a 0--100 scale. Native OWLv2 obtains 46.8 AP with different proposals and confidence scores and is not a P2 row. Intervals are unavailable.",
+      "reason": "표 캡션에서 pointing 분모가 이미지 수가 아니라 image-category 시행임을 명료화합니다. 표 숫자 셀은 변경하지 않습니다. Layout-aware compression retains the numerical evidence and qualified claims."
+    },
+    {
+      "finding_id": "METHOD-01",
+      "old": "**Table 2.** Balanced spatial-selection accuracy (%) on 527 queries/375 images. Intervals are exploratory percentile 95% image-cluster bootstrap intervals from the recorded resamples. All arms are conditional on the supplied candidates; crop geometry, training, and OWL matching differ. Chance is balanced expected uniform selection.",
+      "new": "**Table 2.** Balanced spatial-selection accuracy (%) on 527 queries/375 images; exploratory percentile 95% image-cluster bootstrap intervals. DCSM labels denote local adapters with unverified release identities. Candidates are supplied; crops, training and OWL matching differ. Chance is balanced expected uniform selection.",
+      "reason": "DCSM의 로컬 파이프라인 범위를 표에 명시합니다. 캡션 숫자 순서 및 모든 표 숫자 셀을 보존합니다. Layout-aware compression retains the numerical evidence and qualified claims."
+    },
+    {
+      "finding_id": "VISUAL-01",
+      "old": "**Figure 1.** Selected spatial scorers with exploratory percentile 95% intervals from 10,000 image-cluster resamples; dashed line: balanced expected chance. MaskCLIP-style pooled maps are retained in Table 2 rather than plotted because their estimate matches ClearCLIP-style at the reported precision. Map denotes pooled-text whole-image scoring, context denotes candidate--reference union crops, and matched denotes OWL predicted-box matching. Methods differ in input construction and learned scoring, so the figure is not a factorial ablation of readout and CNN.",
+      "new": "**Figure 1.** Balanced spatial-selection accuracy with exploratory percentile 95% intervals from 10,000 image-cluster resamples; dashed: balanced expected chance. MaskCLIP-style appears only in Table 2 because its rounded estimate matches ClearCLIP-style. DCSM denotes local adapters; inputs differ, so this is not a factorial ablation.",
+      "reason": "캡션을 줄이고 DCSM 해석 범위를 명시합니다. 방법 차이는 이미 방법·결과 본문에 있으므로 반복을 줄이며 그림 경로와 숫자 순서를 유지합니다. Layout-aware compression retains the numerical evidence and qualified claims."
+    },
+    {
+      "finding_id": "METHOD-01",
+      "old": "Released DCSM ObjA and COCO pipelines reach 58.1% and 57.3%, respectively. ObjA exceeds expected chance by 12.4 percentage points, with paired interval [8.0, 16.7], and exceeds ClearCLIP-style pooled maps by 18.7 points [13.1, 24.2]. These are measured advantages for the evaluated pretrained pipeline on this sample. Ordinary maps are also numerically above chance, so DCSM is not uniquely above that reference. Context, prior training, functional embeddings, and richer matrix scoring all differ; these comparisons do not identify which component explains the advantage.",
+      "new": "Local DCSM ObjA and COCO adapters reach 58.1% and 57.3%. ObjA exceeds balanced expected chance by 12.4 percentage points, with paired difference interval [8.0, 16.7], and ClearCLIP-style pooled-text maps by 18.7 points [13.1, 24.2]. These are sample-specific pretrained-pipeline advantages with unverified release identities. Ordinary pooled-text maps also exceed chance numerically. Context, training, functional embeddings and matrix scoring differ, preventing component-level causal attribution.",
+      "reason": "결과 귀속·paired difference 의미·비요인 설계를 명료화하고 캡션에서 줄인 제한을 본문에 보존합니다. 수치 순서는 그대로 둡니다. Layout-aware compression retains the numerical evidence and qualified claims."
+    },
+    {
+      "finding_id": "METRIC-01",
+      "old": "DCSM without accuracies are 38.7% and 37.5% against 48.1% chance, but ordinary token-max reaches 55.7%.",
+      "new": "DCSM balanced without-selection accuracies are 38.7% and 37.5% against 48.1% balanced expected chance; ordinary token-max reaches 55.7%. These equally weight target-largest/not-largest strata within the without subset, unlike raw accuracy or size-query balancing.",
+      "reason": "balanced 표의 층 정의 및 measurements.json의 balanced_top1/negation과 balanced_chance/negation을 확인했습니다. raw와 balanced를 분리하며 새 숫자나 계산을 추가하지 않습니다. Layout-aware compression retains the numerical evidence and qualified claims."
+    },
+    {
+      "finding_id": "STAT-01",
+      "old": "The evaluated CLIP readouts improve category localization and proposal-based detection without consistently improving relational candidate selection. Released DCSM scorers have a spatial advantage on this constructed sample, but unmatched inputs and training prevent causal attribution. Separate localization, detection, and selection measurements expose this boundary without overstating universal reasoning limitations.",
+      "new": "The evaluated readouts improve category localization and detection, but their pooled-text maps show a descriptive ranking reversal in relational selection. Local DCSM adapters have a spatial advantage; unverified release identities and unmatched inputs and training prevent causal attribution. Separate task measurements support task-specific validation.",
+      "reason": "결론에도 descriptive ranking reversal과 로컬 DCSM 한계를 유지하고 기존 결과보다 강한 유의성·일반화 주장을 하지 않습니다. Layout-aware compression retains the numerical evidence and qualified claims."
+    },
+    {
+      "finding_id": "PROSE-01",
+      "old": "This local supplement is not a public release; the accompanying README gives exact paths and build instructions. No model inference was rerun for this short paper.",
+      "new": "The local supplement and README provide evidence paths and build instructions, without establishing a public release, portable submission bundle or independently verified build.",
+      "reason": "서론의 saved-artifact 설계를 유지하면서 재실행 부정 반복을 줄이고 로컬 문서와 검증된 제출 번들을 구분합니다. Layout-aware compression retains the numerical evidence and qualified claims."
+    }
+  ],
+  "responses": [
+    {
+      "finding_id": "META-01",
+      "status": "unresolved",
+      "explanation": "저자 이름·순서·소속과 공개 버전의 working-paper 표시는 저자 결정입니다. placeholder를 보존했으며 제출 메타데이터를 만들지 않았습니다.",
+      "evidence": "read_revision_context의 원고 첫머리: Authors and affiliations: to be determined; README.md의 Scope and submission readiness."
+    },
+    {
+      "finding_id": "METHOD-01",
+      "status": "partial",
+      "explanation": "초록·방법·표·그림 캡션·결과·결론에서 로컬 checkpoint-adapter pipelines로 범위를 통일하고 원 방법의 Functional Rows, 축 관례, EOS padding과 로컬 구현을 구분했습니다. 신원·해시·버전·실행 리비전·정렬·정규화 동등성은 확인되지 않아 해결하지 못했습니다. 그림 자산 내부 라벨은 수정하지 않았습니다.",
+      "evidence": "sources/kang2025dcsm.html.txt §5.1 Model Pipeline/Training 및 Appendix B.1 Implementation Details; README.md DCSM adapter provenance; measurements.json#/compositional_args/dcsm_ckpts; 원고 §2.3."
+    },
+    {
+      "finding_id": "METHOD-02",
+      "status": "partial",
+      "explanation": "방법 문단에 분리 조건·reference 규칙·중복/동률·후보 순서·템플릿의 미확인을 명시했습니다. 제공 파일에는 생성 인자와 코드 해시만 있고 규칙을 발췌할 원 코드/쿼리 본문이 없어 프로토콜 재구성은 미해결입니다.",
+      "evidence": "measurements.json#/benchmark_args; manifest.json#/inputs의 build_comp_queries.py와 comp_queries.json 해시 기록; README.md Supporting material 경로; 원고 §2.3."
+    },
+    {
+      "finding_id": "STAT-01",
+      "status": "partial",
+      "explanation": "서술적 순위 역전을 명료화하고 저장된 paired contrast 경로를 명시했습니다. 원 계산의 구현·프로비넌스 검증은 별도 확인이 필요합니다.",
+      "evidence": "../evidence/cluster_bootstrap.json#/subsets/spatial/paired_differences 및 Figure 1의 marginal intervals를 구분합니다."
+    },
+    {
+      "finding_id": "METRIC-01",
+      "status": "addressed",
+      "explanation": "without의 DCSM 수치·chance·ordinary token-max를 모두 balanced 지표로 명시하고 target-largest/not-largest box-area 층의 동등 가중과 chance 적용 방식을 설명했습니다. size의 big/small 및 raw without와 구분하며 기존 숫자를 유지했습니다.",
+      "evidence": "evidence_export/tables/compositional_balanced.md 첫 줄: Size: big/small; others: target-largest/not-largest; measurements.json#/balanced_top1/dcsm_obja_ctx/negation, #/balanced_top1/dcsm_coco_ctx/negation, #/balanced_top1/readout~1naive~1dcsm_tok/negation, #/balanced_chance/negation; raw_top1은 별도 키."
+    },
+    {
+      "finding_id": "PROSE-01",
+      "status": "addressed",
+      "explanation": "반복적인 novelty 면책을 긍정형 연구 범위 문장으로 바꾸고 pooled-text map 정의 및 캡션을 명료화했습니다. saved-artifact 설계, 인과 한계와 AI assistance 공개는 유지하면서 마지막 재실행 면책의 반복을 줄였습니다.",
+      "evidence": "원고 §1 기여 목록·saved-artifact 분석 문단, §2.1 h(p,q) 정의, §4 인과 제한 및 Acknowledgements의 AI assistance 공개."
+    },
+    {
+      "finding_id": "VISUAL-01",
+      "status": "partial",
+      "explanation": "Figure 1 캡션을 줄이고 Table 1의 pointing 분모를 명시했습니다. 방법 차이는 본문에 유지됩니다. float 배치, 페이지 경계, 양끝 맞춤 제목, 참고문헌 페이지 선택은 prose patch만으로 검증·해결할 수 없어 그대로 남겼습니다. 수정 후 전체 PDF 픽셀 검토는 후속 독립 단계입니다.",
+      "evidence": "첨부 원 PDF pp.1–5와 review VISUAL-01; 원고 Table 1/2 및 Figure 1 캡션. 그림 경로 figures/spatial_balanced.pdf는 보존."
+    },
+    {
+      "finding_id": "LINT-01",
+      "status": "unresolved",
+      "explanation": "생성 TeX나 빌드 설정을 직접 편집할 권한이 없으므로 label·escape·suppression을 임의 변경하지 않았습니다. 기존 진단을 warning-free나 오류 해결로 표시하지 않습니다. 새 빌드 후 같은 설정의 필수 ChkTeX와 진단별 분류가 필요합니다.",
+      "evidence": "독립 review LINT-01: ChkTeX exit_code 2, diagnostic_count 34, global resource file 미발견; README.md의 Markdown 재생성 및 기존 경고 서술."
+    },
+    {
+      "finding_id": "INTEGRITY-01",
+      "status": "addressed",
+      "explanation": "현재 keyed citation과 inspired/style 구분을 유지하고 원문을 직접 읽어 checkpoint functional embeddings와 원 방법의 Functional Rows의 개념적 대응을 명시했습니다. 구현 동등성이나 표절 부재·전역 독창성은 보증하지 않습니다. 정확한 원문 위치는 응답의 evidence에 기록하며 패치에 새 절 번호 숫자는 추가하지 않았습니다.",
+      "evidence": "sources/kang2025dcsm.html.txt §5.1 Training의 functional-word dictionary 및 FR overwrite, Appendix B.1의 token rows/image columns/EOS padding/z-score normalization; 원고 §2.1의 MaskCLIP Sec. 3.3 및 인용 유지."
+    },
+    {
+      "finding_id": "INTEGRITY-02",
+      "status": "unresolved",
+      "explanation": "CLIP·COCO·OWL-ViT·FG-OVD 원문과 최신 공식 서지정보는 제공되지 않았습니다. 인용과 서지 레코드를 보존했으며 미검증을 verified로 바꾸지 않았습니다. 저자가 원문 또는 공식 메타데이터를 제공해야 대조할 수 있습니다.",
+      "evidence": "read_revision_context의 available_input_files에는 네 비교 원문만 존재; references.bib 및 원고 References의 나머지 항목은 메타데이터이지 해당 원문 근거가 아님."
+    },
+    {
+      "finding_id": "ARXIV-01",
+      "status": "partial",
+      "explanation": "Evidence Availability 문구에서 로컬 경로·빌드 지침이 portable submission bundle이나 독립 검증을 뜻하지 않음을 명시했습니다. 최소 번들 목록·상대 경로·해시·의존성, clean-directory 빌드, 최신 공식 지침, 공개 증거 접근 방식 및 저자·라이선스·분류 결정은 미해결입니다. README의 과거 성공 서술을 이번 실행 검증으로 사용하지 않았고 외부 제출도 하지 않았습니다.",
+      "evidence": "README.md Build and validate의 사용자 홈 절대 Tectonic 경로와 Supporting material의 ../evidence 의존성; figure_data.json#/source; README.md 최소 archive 및 과거 build 서술; 원고 Acknowledgements and Evidence Availability."
+    }
+  ],
+  "summary": "기존 수치·표 값을 보존하며 DCSM을 신원이 미확인된 로컬 어댑터로 명시하고, pooled-text map 용어·without 균형 지표·표와 그림 설명·서술적 순위 역전을 정리했습니다. 분량 검사에서 발견된 초과 페이지는 반복 설명을 압축하여 보완했습니다. 저자 정보, 체크포인트 신원, 쿼리 생성 규칙 등 근거가 없는 항목은 미해결로 남깁니다. 새 실험이나 추론은 수행하지 않았습니다.",
+  "original_markdown_sha256": "2f106b7270b274cee6da18484de8f84ff7d0d3db99c4b52a70adc1f63d16a964",
+  "layout_adjustment": {
+    "reason": "Initial proposal exceeded the existing four-body-page requirement",
+    "method": "Prose compression; scientific numeric tokens, table cells and figure paths unchanged",
+    "initial_patch_count": 13
+  }
+}

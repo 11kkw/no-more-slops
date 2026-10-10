@@ -1,0 +1,83 @@
+{
+  "revision": "author-revision-20261010-01",
+  "review_items_count": 13,
+  "review_ids": [
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R05",
+    "R06",
+    "R07",
+    "R08",
+    "R09",
+    "R10",
+    "R11",
+    "R12",
+    "R13"
+  ],
+  "numeric_layout_passed": 16,
+  "numeric_layout_total": 17,
+  "old_snapshot_mismatch": [
+    {
+      "name": "existing_project_inputs_preserved",
+      "status": "failed",
+      "details": {
+        "files_compared": 114,
+        "changed_files": [
+          "plan/03_paper_pipeline.md"
+        ]
+      }
+    }
+  ],
+  "pages": {
+    "body": 4,
+    "references": 1,
+    "total": 5
+  },
+  "visual_review": {
+    "status": "completed_author_side",
+    "pages": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "method": "Inspected actual newly regenerated full-page PNGs through native vision",
+    "clipping_or_overlap_found": false,
+    "remaining_minor_flow": "Page 2–3 sentence continuation, page 3 column continuation, and short diagnostic conclusion below figure on page 4"
+  },
+  "lint": {
+    "status": "warnings_found",
+    "count": 34,
+    "rules": {
+      "1": 4,
+      "9": 8,
+      "8": 9,
+      "13": 9,
+      "24": 4
+    },
+    "resource_warning_retained": true
+  },
+  "source_bundle": {
+    "archive": "reviews/author-revision-20261010-01/source-bundle.tar.gz",
+    "archive_sha256": "b5ec3f18cbc92f03eb1e3448d7673421ad0fbb5073f23f3762d74c6c511b0bdc",
+    "members": [
+      "shortpaper.tex",
+      "references.bib",
+      "shortpaper.bbl",
+      "figures/spatial_balanced.pdf"
+    ],
+    "compilation_exit": 0,
+    "pages": 5,
+    "pdf_text_equal": true,
+    "arxiv_side_compilation": "not_run",
+    "engine": "Tectonic 0.17.0, not arXiv TeX Live",
+    "package_dependencies": "Standard TeX packages resolved by local Tectonic; no custom style files; arXiv package-version compatibility not verified",
+    "absolute_input_paths": false
+  },
+  "pdf_sha256": "b0ee73d9a6b024adf2fec61c7de8e7c17b7f40252841fd9309d8424897064867",
+  "submission_ready": false,
+  "new_experiments": false
+}

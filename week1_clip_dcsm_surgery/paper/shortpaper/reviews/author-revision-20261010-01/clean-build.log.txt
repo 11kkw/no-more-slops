@@ -1,0 +1,281 @@
+note: Running TeX ...
+note: Running BibTeX on shortpaper.aux ...
+note: Rerunning TeX because bibtex was run ...
+note: Running xdvipdfmx ...
+note: Writing `shortpaper.log` (35.0849609375 KiB)
+note: Writing `shortpaper.out` (2.6416015625 KiB)
+note: Writing `shortpaper.aux` (7.5927734375 KiB)
+note: Writing `shortpaper.blg` (200 B)
+note: Writing `shortpaper.pdf` (75.099609375 KiB)
+note: Writing `shortpaper.bbl` (3.2080078125 KiB)
+warning: hyperref.sty:4873: Requested font "pzdr" at 0.00002pt
+warning: hyperref.sty:4873:  -> pzdr
+warning: shortpaper.tex:13: 
+Requested font "[TeXGyreTermesX-Regular.otf]/OT" at 9.99997pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Regular.otf]/OT" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Italic.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Slanted.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-BoldItalic.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-BoldSlanted.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 10.0pt
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 17.28pt
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 12.0pt
+warning: shortpaper.tex:16: 
+Requested font "ntx-Regular-tlf-ot1" at 12.0pt
+warning: shortpaper.tex:16:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:16: Requested font "ntx-Regular-tlf-ot1" at 8.8pt
+warning: shortpaper.tex:16:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:16: Requested font "ntx-Regular-tlf-ot1" at 6.6pt
+warning: shortpaper.tex:16:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:16: Requested font "ntxmi" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxmi
+warning: shortpaper.tex:16: Requested font "ntxmi" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxmi
+warning: shortpaper.tex:16: Requested font "ntxmi7" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxmi7
+warning: shortpaper.tex:16: Requested font "ntxsy" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxsy
+warning: shortpaper.tex:16: Requested font "ntxsy" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxsy
+warning: shortpaper.tex:16: Requested font "ntxsy7" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxsy7
+warning: shortpaper.tex:16: Requested font "ntxexx" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxexx
+warning: shortpaper.tex:16: Requested font "ntxexx" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxexx
+warning: shortpaper.tex:16: Requested font "ntxexx" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxexx
+warning: shortpaper.tex:16: 
+Requested font "ntxmia" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxmia
+warning: shortpaper.tex:16: Requested font "ntxmia" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxmia
+warning: shortpaper.tex:16: Requested font "ntxmia" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxmia
+warning: shortpaper.tex:16: 
+Requested font "ntxsym" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxsym
+warning: shortpaper.tex:16: Requested font "ntxsym" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxsym
+warning: shortpaper.tex:16: Requested font "ntxsym" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxsym
+warning: shortpaper.tex:16: 
+Requested font "ntxsyc" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxsyc
+warning: shortpaper.tex:16: Requested font "ntxsyc" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxsyc
+warning: shortpaper.tex:16: Requested font "ntxsyc" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxsyc
+warning: shortpaper.tex:16: Requested font "ntxexa" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxexa
+warning: shortpaper.tex:16: Requested font "ntxexa" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxexa
+warning: shortpaper.tex:16: Requested font "ntxexa" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxexa
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 14.4pt
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 14.4pt
+warning: shortpaper.tex:34: Underfull \hbox (badness 1910) in paragraph at lines 17--34
+warning: shortpaper.tex:34: Underfull \hbox (badness 1142) in paragraph at lines 17--34
+warning: shortpaper.tex:39: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 10.0pt
+warning: shortpaper.tex:46: Underfull \hbox (badness 3907) in paragraph at lines 38--46
+warning: shortpaper.tex:94: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 12.0pt
+warning: shortpaper.tex:97: Requested font "[lmmono10-regular]:" at 10.0pt
+warning: shortpaper.tex:97: Requested font "ntx-Regular-tlf-ot1" at 10.0pt
+warning: shortpaper.tex:97:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:97: Requested font "ntx-Regular-tlf-ot1" at 7.3pt
+warning: shortpaper.tex:97:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:97: Requested font "ntx-Regular-tlf-ot1" at 5.5pt
+warning: shortpaper.tex:97:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:97: Requested font "ntxmi" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxmi
+warning: shortpaper.tex:97: Requested font "ntxmi7" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxmi7
+warning: shortpaper.tex:97: Requested font "ntxmi5" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxmi5
+warning: shortpaper.tex:97: Requested font "ntxsy" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxsy
+warning: shortpaper.tex:97: Requested font "ntxsy7" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxsy7
+warning: shortpaper.tex:97: Requested font "ntxsy5" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxsy5
+warning: shortpaper.tex:97: Requested font "ntxexx" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxexx
+warning: shortpaper.tex:97: Requested font "ntxexx" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxexx
+warning: shortpaper.tex:97: Requested font "ntxexx" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxexx
+warning: shortpaper.tex:97: Requested font "ntxmia" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxmia
+warning: shortpaper.tex:97: Requested font "ntxmia" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxmia
+warning: shortpaper.tex:97: Requested font "ntxmia" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxmia
+warning: shortpaper.tex:97: Requested font "ntxsym" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxsym
+warning: shortpaper.tex:97: Requested font "ntxsym" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxsym
+warning: shortpaper.tex:97: Requested font "ntxsym" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxsym
+warning: shortpaper.tex:97: Requested font "ntxsyc" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxsyc
+warning: shortpaper.tex:97: Requested font "ntxsyc" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxsyc
+warning: shortpaper.tex:97: Requested font "ntxsyc" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxsyc
+warning: shortpaper.tex:97: Requested font "ntxexa" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxexa
+warning: shortpaper.tex:97: Requested font "ntxexa" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxexa
+warning: shortpaper.tex:97: Requested font "ntxexa" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxexa
+warning: shortpaper.tex:134: Underfull \hbox (badness 10000) in paragraph at lines 127--134
+warning: shortpaper.tex:134: Underfull \hbox (badness 1082) in paragraph at lines 127--134
+warning: shortpaper.tex:245: Underfull \hbox (badness 1496) in paragraph at lines 237--245
+warning: shortpaper.tex:245: Underfull \hbox (badness 2197) in paragraph at lines 237--245
+warning: shortpaper.tex:259: Underfull \hbox (badness 1087) in paragraph at lines 251--259
+warning: shortpaper.tex:284: Underfull \hbox (badness 10000) in paragraph at lines 279--284
+warning: shortpaper.tex:400: Underfull \hbox (badness 1701) in paragraph at lines 392--400
+warning: shortpaper.tex:417: Underfull \hbox (badness 10000) in paragraph at lines 417--417
+warning: shortpaper.bbl:47: Underfull \hbox (badness 2689) in paragraph at lines 40--47
+warning: shortpaper.bbl:47: Underfull \hbox (badness 2376) in paragraph at lines 40--47
+warning: shortpaper.bbl:47: Underfull \hbox (badness 4621) in paragraph at lines 40--47
+warning: shortpaper.bbl:62: Requested font "[TeXGyreTermesX-Italic.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 10.0pt
+warning: shortpaper.bbl:64: Underfull \hbox (badness 4792) in paragraph at lines 56--64
+warning: hyperref.sty:4873: Requested font "pzdr" at 0.00002pt
+warning: hyperref.sty:4873:  -> pzdr
+warning: shortpaper.tex:13: 
+Requested font "[TeXGyreTermesX-Regular.otf]/OT" at 9.99997pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Regular.otf]/OT" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Italic.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Slanted.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-BoldItalic.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-BoldSlanted.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 10.0pt
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 17.28pt
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 12.0pt
+warning: shortpaper.tex:16: 
+Requested font "ntx-Regular-tlf-ot1" at 12.0pt
+warning: shortpaper.tex:16:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:16: Requested font "ntx-Regular-tlf-ot1" at 8.8pt
+warning: shortpaper.tex:16:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:16: Requested font "ntx-Regular-tlf-ot1" at 6.6pt
+warning: shortpaper.tex:16:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:16: Requested font "ntxmi" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxmi
+warning: shortpaper.tex:16: Requested font "ntxmi" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxmi
+warning: shortpaper.tex:16: Requested font "ntxmi7" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxmi7
+warning: shortpaper.tex:16: Requested font "ntxsy" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxsy
+warning: shortpaper.tex:16: Requested font "ntxsy" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxsy
+warning: shortpaper.tex:16: Requested font "ntxsy7" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxsy7
+warning: shortpaper.tex:16: Requested font "ntxexx" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxexx
+warning: shortpaper.tex:16: Requested font "ntxexx" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxexx
+warning: shortpaper.tex:16: Requested font "ntxexx" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxexx
+warning: shortpaper.tex:16: 
+Requested font "ntxmia" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxmia
+warning: shortpaper.tex:16: Requested font "ntxmia" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxmia
+warning: shortpaper.tex:16: Requested font "ntxmia" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxmia
+warning: shortpaper.tex:16: 
+Requested font "ntxsym" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxsym
+warning: shortpaper.tex:16: Requested font "ntxsym" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxsym
+warning: shortpaper.tex:16: Requested font "ntxsym" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxsym
+warning: shortpaper.tex:16: 
+Requested font "ntxsyc" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxsyc
+warning: shortpaper.tex:16: Requested font "ntxsyc" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxsyc
+warning: shortpaper.tex:16: Requested font "ntxsyc" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxsyc
+warning: shortpaper.tex:16: Requested font "ntxexa" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxexa
+warning: shortpaper.tex:16: Requested font "ntxexa" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxexa
+warning: shortpaper.tex:16: Requested font "ntxexa" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxexa
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 14.4pt
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 14.4pt
+warning: shortpaper.tex:34: Underfull \hbox (badness 1910) in paragraph at lines 17--34
+warning: shortpaper.tex:34: Underfull \hbox (badness 1142) in paragraph at lines 17--34
+warning: shortpaper.tex:46: Underfull \hbox (badness 3907) in paragraph at lines 38--46
+warning: shortpaper.tex:94: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 12.0pt
+warning: shortpaper.tex:97: Requested font "[lmmono10-regular]:" at 10.0pt
+warning: shortpaper.tex:97: Requested font "ntx-Regular-tlf-ot1" at 10.0pt
+warning: shortpaper.tex:97:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:97: Requested font "ntx-Regular-tlf-ot1" at 7.3pt
+warning: shortpaper.tex:97:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:97: Requested font "ntx-Regular-tlf-ot1" at 5.5pt
+warning: shortpaper.tex:97:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:97: Requested font "ntxmi" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxmi
+warning: shortpaper.tex:97: Requested font "ntxmi7" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxmi7
+warning: shortpaper.tex:97: Requested font "ntxmi5" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxmi5
+warning: shortpaper.tex:97: Requested font "ntxsy" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxsy
+warning: shortpaper.tex:97: Requested font "ntxsy7" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxsy7
+warning: shortpaper.tex:97: Requested font "ntxsy5" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxsy5
+warning: shortpaper.tex:97: Requested font "ntxexx" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxexx
+warning: shortpaper.tex:97: Requested font "ntxexx" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxexx
+warning: shortpaper.tex:97: Requested font "ntxexx" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxexx
+warning: shortpaper.tex:97: Requested font "ntxmia" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxmia
+warning: shortpaper.tex:97: Requested font "ntxmia" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxmia
+warning: shortpaper.tex:97: Requested font "ntxmia" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxmia
+warning: shortpaper.tex:97: Requested font "ntxsym" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxsym
+warning: shortpaper.tex:97: Requested font "ntxsym" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxsym
+warning: shortpaper.tex:97: Requested font "ntxsym" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxsym
+warning: shortpaper.tex:97: Requested font "ntxsyc" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxsyc
+warning: shortpaper.tex:97: Requested font "ntxsyc" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxsyc
+warning: shortpaper.tex:97: Requested font "ntxsyc" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxsyc
+warning: shortpaper.tex:97: Requested font "ntxexa" at 10.0pt
+warning: shortpaper.tex:97:  -> ntxexa
+warning: shortpaper.tex:97: Requested font "ntxexa" at 7.3pt
+warning: shortpaper.tex:97:  -> ntxexa
+warning: shortpaper.tex:97: Requested font "ntxexa" at 5.5pt
+warning: shortpaper.tex:97:  -> ntxexa
+warning: shortpaper.tex:134: Underfull \hbox (badness 10000) in paragraph at lines 127--134
+warning: shortpaper.tex:134: Underfull \hbox (badness 1082) in paragraph at lines 127--134
+warning: shortpaper.tex:153: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 10.0pt
+warning: shortpaper.tex:245: Underfull \hbox (badness 1496) in paragraph at lines 237--245
+warning: shortpaper.tex:245: Underfull \hbox (badness 2197) in paragraph at lines 237--245
+warning: shortpaper.tex:259: Underfull \hbox (badness 1087) in paragraph at lines 251--259
+warning: shortpaper.tex:284: Underfull \hbox (badness 10000) in paragraph at lines 279--284
+warning: shortpaper.tex:400: Underfull \hbox (badness 1701) in paragraph at lines 392--400
+warning: shortpaper.tex:417: Underfull \hbox (badness 10000) in paragraph at lines 417--417
+warning: shortpaper.bbl:47: Underfull \hbox (badness 2689) in paragraph at lines 40--47
+warning: shortpaper.bbl:47: Underfull \hbox (badness 2376) in paragraph at lines 40--47
+warning: shortpaper.bbl:47: Underfull \hbox (badness 4621) in paragraph at lines 40--47
+warning: shortpaper.bbl:62: Requested font "[TeXGyreTermesX-Italic.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 10.0pt
+warning: shortpaper.bbl:64: Underfull \hbox (badness 4792) in paragraph at lines 56--64
+warning: warnings were issued by the TeX engine; use --print and/or --keep-logs for details.

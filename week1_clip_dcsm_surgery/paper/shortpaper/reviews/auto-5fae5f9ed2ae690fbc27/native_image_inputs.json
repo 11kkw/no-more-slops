@@ -1,0 +1,26 @@
+{
+  "image_input_mode": "native",
+  "attached_pages": 5,
+  "pages": [
+    {
+      "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/renders/page-1.png",
+      "sha256": "81136df063afe0a2c6b5bdafa7cd947f8d29d5ed69547a2a04d3edb463eef5e6"
+    },
+    {
+      "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/renders/page-2.png",
+      "sha256": "bde2d22ff08ac87ace4344df96d2989ee70c5fea92fc24841de79ea0d4846c7e"
+    },
+    {
+      "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/renders/page-3.png",
+      "sha256": "1720e7ce8a64f2a3690214d5fef3dc437e90eb83147bdee8f629effbe46b4936"
+    },
+    {
+      "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/renders/page-4.png",
+      "sha256": "c1c5be6c90e25e46301209f6facd0e9557b49eb7e304ba52c4b0da3d984eb8e3"
+    },
+    {
+      "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/renders/page-5.png",
+      "sha256": "68d2ad139081d224bb32c0852e15af9b6ef5971264e0815957dedef555aaee6e"
+    }
+  ]
+}

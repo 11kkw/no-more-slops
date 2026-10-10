@@ -1,0 +1,8 @@
+{
+  "status": "writer_revision_blocked",
+  "review_id": "auto-c322eb7a99a934eda26c",
+  "at": "2026-10-10T12:19:32.334780+00:00",
+  "review_rounds": 1,
+  "error_type": "RuntimeError",
+  "reason": "Candidate CPU compilation or evidence validation failed; originals unchanged"
+}

@@ -1,0 +1,71 @@
+warning: shortpaper.tex:35: Underfull \hbox (badness 1137) in paragraph at lines 17--35
+warning: shortpaper.tex:47: Underfull \hbox (badness 3907) in paragraph at lines 39--47
+warning: shortpaper.tex:134: Underfull \hbox (badness 10000) in paragraph at lines 127--134
+warning: shortpaper.tex:134: Underfull \hbox (badness 1082) in paragraph at lines 127--134
+warning: shortpaper.tex:216: Underfull \hbox (badness 1728) in paragraph at lines 203--216
+warning: shortpaper.tex:216: Underfull \hbox (badness 2277) in paragraph at lines 203--216
+warning: shortpaper.tex:216: Underfull \hbox (badness 1902) in paragraph at lines 203--216
+warning: shortpaper.tex:248: Underfull \hbox (badness 1496) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 3019) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 1325) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 3219) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 10000) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 1946) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 2772) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 2495) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 4899) in paragraph at lines 237--248
+warning: shortpaper.tex:262: Underfull \hbox (badness 1087) in paragraph at lines 254--262
+warning: shortpaper.tex:287: Underfull \hbox (badness 10000) in paragraph at lines 282--287
+warning: shortpaper.tex:333: Underfull \hbox (badness 3302) in paragraph at lines 333--333
+warning: shortpaper.tex:401: Underfull \hbox (badness 1701) in paragraph at lines 393--401
+warning: shortpaper.tex:417: Underfull \hbox (badness 10000) in paragraph at lines 417--417
+warning: shortpaper.tex:431: Overfull \vbox (1.10751pt too high) has occurred while \output is active
+warning: shortpaper.bbl:47: Underfull \hbox (badness 2689) in paragraph at lines 40--47
+warning: shortpaper.bbl:47: Underfull \hbox (badness 2376) in paragraph at lines 40--47
+warning: shortpaper.bbl:47: Underfull \hbox (badness 4621) in paragraph at lines 40--47
+warning: shortpaper.bbl:64: Underfull \hbox (badness 4792) in paragraph at lines 56--64
+warning: shortpaper.tex:35: Underfull \hbox (badness 1137) in paragraph at lines 17--35
+warning: shortpaper.tex:47: Underfull \hbox (badness 3907) in paragraph at lines 39--47
+warning: shortpaper.tex:134: Underfull \hbox (badness 10000) in paragraph at lines 127--134
+warning: shortpaper.tex:134: Underfull \hbox (badness 1082) in paragraph at lines 127--134
+warning: shortpaper.tex:216: Underfull \hbox (badness 1728) in paragraph at lines 203--216
+warning: shortpaper.tex:216: Underfull \hbox (badness 2277) in paragraph at lines 203--216
+warning: shortpaper.tex:216: Underfull \hbox (badness 1902) in paragraph at lines 203--216
+warning: shortpaper.tex:248: Underfull \hbox (badness 1496) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 3019) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 1325) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 3219) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 10000) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 1946) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 2772) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 2495) in paragraph at lines 237--248
+warning: shortpaper.tex:248: Underfull \hbox (badness 4899) in paragraph at lines 237--248
+warning: shortpaper.tex:262: Underfull \hbox (badness 1087) in paragraph at lines 254--262
+warning: shortpaper.tex:287: Underfull \hbox (badness 10000) in paragraph at lines 282--287
+warning: shortpaper.tex:333: Underfull \hbox (badness 3302) in paragraph at lines 333--333
+warning: shortpaper.tex:401: Underfull \hbox (badness 1701) in paragraph at lines 393--401
+warning: shortpaper.tex:417: Underfull \hbox (badness 10000) in paragraph at lines 417--417
+warning: shortpaper.tex:431: Overfull \vbox (1.10751pt too high) has occurred while \output is active
+warning: shortpaper.bbl:47: Underfull \hbox (badness 2689) in paragraph at lines 40--47
+warning: shortpaper.bbl:47: Underfull \hbox (badness 2376) in paragraph at lines 40--47
+warning: shortpaper.bbl:47: Underfull \hbox (badness 4621) in paragraph at lines 40--47
+warning: shortpaper.bbl:64: Underfull \hbox (badness 4792) in paragraph at lines 56--64
+Compilation exit: 0 Pandoc: 3.9
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+ACTUAL PAGES 5
+PAGE 1 chars 4530 first Dense CLIP Localization Gains Do Not Consistently Transfer to / Relational Object Selection / Authors and affiliations to be determined / Abstract last  output, / a MaskCLIP-style value-only output, and a ClearCLIP-style / query–query output: / 𝑍ordinary = Block(𝑋), / 𝑍value = 𝑊𝑂𝑉, / 𝑍QQ = 𝑊𝑂 / [ / softmax(𝑄𝑄⊤/ / √ / 𝑑ℎ)𝑉 / ] / . / 1 / 
+PAGE 2 chars 5865 first Here 𝑑ℎis the head dimension; head outputs are merged / before 𝑊𝑂. Modified outputs omit the final residual and feed- / forward paths. Unlike th last accuracy counts correct candidate choices. Bal- / anced spatial accuracy equally weights the two target-box-area / strata: / 𝐴bal = 1 / 2 / (𝐴largest + 𝐴not largest / ). / 2 / 
+PAGE 3 chars 4179 first Table 1: Pooled-text maps at 224 pixels. Pointing averages / eligible image–category trials in a 500-image oracle-category / probe; detection us last that dense representations cannot support rela- / tions. / Local DCSM ObjA and COCO adapters reach 58.1% and / 57.3%. / ObjA exceeds balanced expected chance by 12.4 / 3 / 
+PAGE 4 chars 4658 first percentage points, with paired difference interval [8.0, 16.7], / and ClearCLIP-style pooled-text maps by 18.7 points [13.1, / 24.2]. These are  last  README / provide evidence paths and build instructions, without estab- / lishing a public release, portable submission bundle or inde- / pendently verified build. / 4 / 
+PAGE 5 chars 1938 first References / [1] Lorenzo Bianchi, Fabio Carrara, Nicola Messina, Clau- / dio Gennaro, and Fabrizio Falchi. / The devil is in the / fine-grained deta last r. / press/v139/radford21a.html. / [8] Chong Zhou, Chen Change Loy, and Bo Dai. Extract Free / Dense Labels from CLIP, 2021. URL https://arxiv. / org/abs/2112.01071. / 5 / 
+{
+  "status": "passed_with_warnings",
+  "pages": {
+    "body": 4,
+    "references": 1,
+    "total": 5
+  },
+  "check_count": 17,
+  "failed": [],
+  "underfull_count": 25
+}

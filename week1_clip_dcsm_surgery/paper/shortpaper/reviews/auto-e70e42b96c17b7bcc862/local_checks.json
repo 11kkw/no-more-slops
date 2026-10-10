@@ -1,0 +1,482 @@
+{
+  "schema_version": 1,
+  "tool_version": "0.2.1",
+  "checked_at": "2026-10-10T11:14:46.679481+00:00",
+  "package": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper",
+  "manuscript": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/shortpaper.md",
+  "input_files": [
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/shortpaper.md",
+      "sha256": "e4f1b2897be0ed90fa0576076d462814ba524b087b68292675b32529a6d470a7"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/references.bib",
+      "sha256": "28db8accb1cc06376079f1a1e5980c64b3c202379e18c7f6fe186360b205d515"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/shortpaper.tex",
+      "sha256": "371b7f44f440584f6175a12fa2772c72dbb65a70e20427e8ea0020e71c1ec9b4"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/figures/spatial_balanced.pdf",
+      "sha256": "75d581111d6393c1d63f6403aeaf9ee732ae097c77c066fd3088a8a30387435e"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/shortpaper.pdf",
+      "sha256": "5d60b2b190fc1800c50bcd6f2b389f0596c690c6aeb1c54fddd0894ea895f0c8"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/build_validation.json",
+      "sha256": "25dc515570694be46d1bbb2372cd646b4f3cc9aed2f74270c42052cb2ea62c7d"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/task_state.json",
+      "sha256": "472eb5e4c427f2bb809c383328294d559747b18983b4bb8c0f4d3ad103b44025"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/sources/kang2025dcsm.html.txt",
+      "sha256": "6311acda689f8432fdee06822a463bff509d35fc95005213375ceee6abd2484d"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/sources/lan2024clearclip.pdf.txt",
+      "sha256": "5208321d809aff7f1fc89da2dc22c85f05d1873f7d49a964ee71c74dfb12f3c4"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/sources/minderer2023owlv2.txt",
+      "sha256": "802b719a7ef883fdfff2d6d79b2aa337b91ae9efdb43a32b4c95a1c649b190b2"
+    },
+    {
+      "path": "week1_clip_dcsm_surgery/paper/shortpaper/sources/zhou2021maskclip.pdf.txt",
+      "sha256": "3d7f9989c048bd6b7cb4bc0d16aa1a0dd146a717c9c261cfa1637d64602c2af5"
+    }
+  ],
+  "checks": [
+    {
+      "name": "section_abstract",
+      "status": "passed",
+      "details": "Section presence only; content adequacy requires review"
+    },
+    {
+      "name": "section_introduction",
+      "status": "passed",
+      "details": "Section presence only; content adequacy requires review"
+    },
+    {
+      "name": "section_methods",
+      "status": "passed",
+      "details": "Section presence only; content adequacy requires review"
+    },
+    {
+      "name": "section_results",
+      "status": "passed",
+      "details": "Section presence only; content adequacy requires review"
+    },
+    {
+      "name": "section_conclusion",
+      "status": "passed",
+      "details": "Section presence only; content adequacy requires review"
+    },
+    {
+      "name": "section_references",
+      "status": "passed",
+      "details": "Section presence only; content adequacy requires review"
+    },
+    {
+      "name": "bibliography_keys",
+      "status": "passed",
+      "details": {
+        "cited": [
+          "bianchi2023fgovd",
+          "kang2025dcsm",
+          "lan2024clearclip",
+          "lin2014coco",
+          "minderer2022owlvit",
+          "minderer2023owlv2",
+          "radford2021clip",
+          "zhou2021maskclip"
+        ],
+        "missing": []
+      }
+    },
+    {
+      "name": "figure_files",
+      "status": "passed",
+      "details": [
+        {
+          "reference": "figures/spatial_balanced.pdf",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "name": "latex_document",
+      "status": "passed",
+      "details": "Source structure only; no arXiv-side compilation"
+    },
+    {
+      "name": "pdf_readable",
+      "status": "passed",
+      "details": {
+        "pages": 5,
+        "text_chars_per_page": [
+          4469,
+          5752,
+          4360,
+          3716,
+          1940
+        ]
+      }
+    },
+    {
+      "name": "build_record_matches_pdf",
+      "status": "passed",
+      "details": {
+        "recorded_status": "passed_with_warnings",
+        "recorded_pages": {
+          "body": 4,
+          "references": 1,
+          "total": 5
+        },
+        "scope": "PDF hash agreement only; manual rendering review still required"
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "author_placeholder",
+      "priority": "required",
+      "evidence": "Authors and affiliations: to be determined",
+      "line": 3
+    },
+    {
+      "id": "working_draft_label",
+      "priority": "recommended",
+      "evidence": "Venue-neutral working short paper",
+      "line": 3
+    },
+    {
+      "id": "internal_status_in_body",
+      "priority": "recommended",
+      "evidence": "Novelty, authorship, and venue compliance also remain pending",
+      "line": 132
+    },
+    {
+      "id": "internal_readiness_in_body",
+      "priority": "recommended",
+      "evidence": "rather than submission readiness",
+      "line": 132
+    },
+    {
+      "id": "pointing_unit",
+      "priority": "recommended",
+      "evidence": "Table header Pointing lacks explicit (%)"
+    }
+  ],
+  "local_similarity": {
+    "scope": "Exact English word sequences in supplied local texts; references excluded",
+    "minimum_words": 8,
+    "plagiarism_percentage": null,
+    "external_database_comparison": "not_run",
+    "semantic_overlap_review": "not_run",
+    "sources": [
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/kang2025dcsm.html.txt",
+        "sha256": "6311acda689f8432fdee06822a463bff509d35fc95005213375ceee6abd2484d",
+        "source_tokens": 14564,
+        "candidate_count": 0,
+        "matches": [],
+        "matches_truncated": false
+      },
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/lan2024clearclip.pdf.txt",
+        "sha256": "5208321d809aff7f1fc89da2dc22c85f05d1873f7d49a964ee71c74dfb12f3c4",
+        "source_tokens": 9683,
+        "candidate_count": 0,
+        "matches": [],
+        "matches_truncated": false
+      },
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/minderer2023owlv2.txt",
+        "sha256": "802b719a7ef883fdfff2d6d79b2aa337b91ae9efdb43a32b4c95a1c649b190b2",
+        "source_tokens": 11260,
+        "candidate_count": 0,
+        "matches": [],
+        "matches_truncated": false
+      },
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/zhou2021maskclip.pdf.txt",
+        "sha256": "3d7f9989c048bd6b7cb4bc0d16aa1a0dd146a717c9c261cfa1637d64602c2af5",
+        "source_tokens": 8329,
+        "candidate_count": 0,
+        "matches": [],
+        "matches_truncated": false
+      }
+    ],
+    "source_count": 4,
+    "status": "no_exact_candidates_in_supplied_sources",
+    "interpretation": "Neither a plagiarism verdict nor proof of originality"
+  },
+  "near_similarity": {
+    "engine": "RapidFuzz",
+    "version": "3.14.6",
+    "method": "normalized sentence fuzz.ratio",
+    "candidate_threshold": 90,
+    "segment_words": [
+      12,
+      150
+    ],
+    "source_count": 4,
+    "status": "no_near_candidates_in_supplied_sources",
+    "sources": [
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/kang2025dcsm.html.txt",
+        "candidate_count": 0,
+        "matches": []
+      },
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/lan2024clearclip.pdf.txt",
+        "candidate_count": 0,
+        "matches": []
+      },
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/minderer2023owlv2.txt",
+        "candidate_count": 0,
+        "matches": []
+      },
+      {
+        "path": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/sources/zhou2021maskclip.pdf.txt",
+        "candidate_count": 0,
+        "matches": []
+      }
+    ],
+    "plagiarism_percentage": null,
+    "limitations": "Pairwise string scores only. Sentence splitting and PDF extraction may miss overlap; no semantic or web/database comparison."
+  },
+  "latex_lint": {
+    "engine": "ChkTeX",
+    "version": "1.7.9",
+    "status": "warnings_found",
+    "exit_code": 2,
+    "diagnostic_count": 33,
+    "diagnostics": [
+      {
+        "line": "14",
+        "column": "14",
+        "rule": "1",
+        "message": "Command terminated with space."
+      },
+      {
+        "line": "27",
+        "column": "38",
+        "rule": "9",
+        "message": "`]' expected, found `}'."
+      },
+      {
+        "line": "27",
+        "column": "50",
+        "rule": "9",
+        "message": "`}' expected, found `]'."
+      },
+      {
+        "line": "27",
+        "column": "66",
+        "rule": "9",
+        "message": "`]' expected, found `}'."
+      },
+      {
+        "line": "28",
+        "column": "6",
+        "rule": "9",
+        "message": "`}' expected, found `]'."
+      },
+      {
+        "line": "46",
+        "column": "41",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "51",
+        "column": "14",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "58",
+        "column": "66",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "76",
+        "column": "11",
+        "rule": "1",
+        "message": "Command terminated with space."
+      },
+      {
+        "line": "88",
+        "column": "50",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "107",
+        "column": "36",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "119",
+        "column": "57",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "129",
+        "column": "4",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "136",
+        "column": "47",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "160",
+        "column": "53",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "166",
+        "column": "44",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "186",
+        "column": "64",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "187",
+        "column": "60",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "195",
+        "column": "70",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "196",
+        "column": "39",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "245",
+        "column": "57",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "256",
+        "column": "1",
+        "rule": "24",
+        "message": "Delete this space to maintain correct pagereferences."
+      },
+      {
+        "line": "280",
+        "column": "19",
+        "rule": "13",
+        "message": "Intersentence spacing (`\\@') should perhaps be used."
+      },
+      {
+        "line": "292",
+        "column": "1",
+        "rule": "24",
+        "message": "Delete this space to maintain correct pagereferences."
+      },
+      {
+        "line": "316",
+        "column": "1",
+        "rule": "24",
+        "message": "Delete this space to maintain correct pagereferences."
+      },
+      {
+        "line": "321",
+        "column": "24",
+        "rule": "9",
+        "message": "`]' expected, found `}'."
+      },
+      {
+        "line": "321",
+        "column": "35",
+        "rule": "9",
+        "message": "`}' expected, found `]'."
+      },
+      {
+        "line": "322",
+        "column": "23",
+        "rule": "9",
+        "message": "`]' expected, found `}'."
+      },
+      {
+        "line": "322",
+        "column": "35",
+        "rule": "9",
+        "message": "`}' expected, found `]'."
+      },
+      {
+        "line": "353",
+        "column": "9",
+        "rule": "1",
+        "message": "Command terminated with space."
+      },
+      {
+        "line": "408",
+        "column": "47",
+        "rule": "8",
+        "message": "Wrong length of dash may have been used."
+      },
+      {
+        "line": "414",
+        "column": "1",
+        "rule": "24",
+        "message": "Delete this space to maintain correct pagereferences."
+      },
+      {
+        "line": "416",
+        "column": "11",
+        "rule": "1",
+        "message": "Command terminated with space."
+      }
+    ],
+    "stdout": "14:14:1:Command terminated with space.\n27:38:9:`]' expected, found `}'.\n27:50:9:`}' expected, found `]'.\n27:66:9:`]' expected, found `}'.\n28:6:9:`}' expected, found `]'.\n46:41:8:Wrong length of dash may have been used.\n51:14:8:Wrong length of dash may have been used.\n58:66:8:Wrong length of dash may have been used.\n76:11:1:Command terminated with space.\n88:50:13:Intersentence spacing (`\\@') should perhaps be used.\n107:36:8:Wrong length of dash may have been used.\n119:57:13:Intersentence spacing (`\\@') should perhaps be used.\n129:4:13:Intersentence spacing (`\\@') should perhaps be used.\n136:47:8:Wrong length of dash may have been used.\n160:53:8:Wrong length of dash may have been used.\n166:44:13:Intersentence spacing (`\\@') should perhaps be used.\n186:64:13:Intersentence spacing (`\\@') should perhaps be used.\n187:60:13:Intersentence spacing (`\\@') should perhaps be used.\n195:70:13:Intersentence spacing (`\\@') should perhaps be used.\n196:39:8:Wrong length of dash may have been used.\n245:57:13:Intersentence spacing (`\\@') should perhaps be used.\n256:1:24:Delete this space to maintain correct pagereferences.\n280:19:13:Intersentence spacing (`\\@') should perhaps be used.\n292:1:24:Delete this space to maintain correct pagereferences.\n316:1:24:Delete this space to maintain correct pagereferences.\n321:24:9:`]' expected, found `}'.\n321:35:9:`}' expected, found `]'.\n322:23:9:`]' expected, found `}'.\n322:35:9:`}' expected, found `]'.\n353:9:1:Command terminated with space.\n408:47:8:Wrong length of dash may have been used.\n414:1:24:Delete this space to maintain correct pagereferences.\n416:11:1:Command terminated with space.\n",
+    "stderr": "/home/happy5700x/.cache/paper-review-local/chktex/usr/bin/chktex: WARNING -- Could not find global resource file.\n",
+    "limitations": "Static LaTeX typography only; no prose grammar, visual layout, arXiv compilation or acceptance judgment. Input-file traversal disabled."
+  },
+  "manual_checks_required": [
+    "actual PDF layout",
+    "academic prose and claim support",
+    "figure provenance and representative selection",
+    "paraphrase/idea attribution",
+    "author and arXiv metadata decisions"
+  ],
+  "arxiv_submission_status": "not_ready_author_metadata_and_manual_review_pending",
+  "external_similarity": {
+    "status": "not_connected",
+    "score": null,
+    "upload_performed": false
+  },
+  "originals_modified": false,
+  "review_id": "auto-e70e42b96c17b7bcc862",
+  "input_digest": "e70e42b96c17b7bcc86272b5176d505ca1b45ac93ccdc7561718ee9c06c392d1",
+  "review_directory": "/home/happy5700x/work/paper-lab/repos/no-more-slops/week1_clip_dcsm_surgery/paper/shortpaper/reviews/auto-e70e42b96c17b7bcc862"
+}

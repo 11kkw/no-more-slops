@@ -1,0 +1,659 @@
+note: generating format "latex"
+note: downloading tectonic-format-latex.tex
+note: downloading xelatex.ini
+note: downloading latex.ltx
+note: downloading texsys.cfg
+note: downloading expl3.ltx
+note: downloading expl3-code.tex
+note: downloading cmr10.tfm
+note: downloading UnicodeData.txt
+note: downloading CaseFolding.txt
+note: downloading SpecialCasing.txt
+note: downloading fonttext.cfg
+note: downloading fonttext.ltx
+note: downloading omlenc.def
+note: downloading omsenc.def
+note: downloading ot1enc.def
+note: downloading t1enc.def
+note: downloading ts1enc.def
+note: downloading tuenc.def
+note: downloading tulmr.fd
+note: downloading tulmss.fd
+note: downloading tulmtt.fd
+note: downloading ts1lmr.fd
+note: downloading t1cmr.fd
+note: downloading ot1cmr.fd
+note: downloading ot1cmss.fd
+note: downloading ot1cmtt.fd
+note: downloading fontmath.cfg
+note: downloading fontmath.ltx
+note: downloading omlcmm.fd
+note: downloading omscmsy.fd
+note: downloading omxcmex.fd
+note: downloading ucmr.fd
+note: downloading preload.cfg
+note: downloading preload.ltx
+note: downloading cmex10.tfm
+note: downloading line10.tfm
+note: downloading linew10.tfm
+note: downloading lcircle10.tfm
+note: downloading lcirclew10.tfm
+note: downloading cmr5.tfm
+note: downloading cmr7.tfm
+note: downloading cmmi5.tfm
+note: downloading cmmi7.tfm
+note: downloading cmmi10.tfm
+note: downloading cmsy5.tfm
+note: downloading cmsy7.tfm
+note: downloading cmsy10.tfm
+note: downloading atveryend.sty
+note: downloading atveryend-ltx.sty
+note: downloading atbegshi.sty
+note: downloading atbegshi-ltx.sty
+note: downloading load-unicode-data.tex
+note: downloading hyphen.cfg
+note: downloading xebabel.def
+note: downloading language.dat
+note: downloading hyphen.tex
+note: downloading dumyhyph.tex
+note: downloading zerohyph.tex
+note: downloading dehypht-x-2022-03-16.tex
+note: downloading dehypht-x-2022-03-16.pat
+note: downloading dehyphn-x-2022-03-16.tex
+note: downloading dehyphn-x-2022-03-16.pat
+note: downloading loadhyph-af.tex
+note: downloading hyph-af.tex
+note: downloading hyph-quote-af.tex
+note: downloading loadhyph-grc.tex
+note: downloading hyph-grc.tex
+note: downloading ibyhyph.tex
+note: downloading loadhyph-hy.tex
+note: downloading hyph-hy.tex
+note: downloading loadhyph-eu.tex
+note: downloading hyph-eu.tex
+note: downloading loadhyph-be.tex
+note: downloading hyph-be.tex
+note: downloading hyph-quote-be.tex
+note: downloading loadhyph-bg.tex
+note: downloading hyph-bg.tex
+note: downloading loadhyph-ca.tex
+note: downloading hyph-ca.tex
+note: downloading loadhyph-zh-latn-pinyin.tex
+note: downloading hyph-zh-latn-pinyin.tex
+note: downloading loadhyph-cu.tex
+note: downloading hyph-cu.tex
+note: downloading loadhyph-cop.tex
+note: downloading hyph-cop.tex
+note: downloading loadhyph-hr.tex
+note: downloading hyph-hr.tex
+note: downloading loadhyph-cs.tex
+note: downloading hyph-cs.tex
+note: downloading loadhyph-da.tex
+note: downloading hyph-da.tex
+note: downloading loadhyph-nl.tex
+note: downloading hyph-nl.tex
+note: downloading loadhyph-en-gb.tex
+note: downloading hyph-en-gb.tex
+note: downloading loadhyph-en-us.tex
+note: downloading hyph-en-us.tex
+note: downloading loadhyph-eo.tex
+note: downloading hyph-eo.tex
+note: downloading loadhyph-et.tex
+note: downloading hyph-et.tex
+note: downloading loadhyph-mul-ethi.tex
+note: downloading hyph-mul-ethi.tex
+note: downloading loadhyph-fi.tex
+note: downloading hyph-fi.tex
+note: downloading loadhyph-fi-x-school.tex
+note: downloading hyph-fi-x-school.tex
+note: downloading loadhyph-fr.tex
+note: downloading hyph-fr.tex
+note: downloading hyph-quote-fr.tex
+note: downloading loadhyph-fur.tex
+note: downloading hyph-fur.tex
+note: downloading hyph-quote-fur.tex
+note: downloading loadhyph-gl.tex
+note: downloading hyph-gl.tex
+note: downloading loadhyph-ka.tex
+note: downloading hyph-ka.tex
+note: downloading loadhyph-de-1901.tex
+note: downloading hyph-de-1901.tex
+note: downloading loadhyph-de-1996.tex
+note: downloading hyph-de-1996.tex
+note: downloading loadhyph-de-ch-1901.tex
+note: downloading hyph-de-ch-1901.tex
+note: downloading loadhyph-el-polyton.tex
+note: downloading hyph-el-polyton.tex
+note: downloading loadhyph-el-monoton.tex
+note: downloading hyph-el-monoton.tex
+note: downloading loadhyph-hu.tex
+note: downloading hyph-hu.tex
+note: downloading loadhyph-is.tex
+note: downloading hyph-is.tex
+note: downloading loadhyph-as.tex
+note: downloading hyph-as.tex
+note: downloading loadhyph-bn.tex
+note: downloading hyph-bn.tex
+note: downloading loadhyph-gu.tex
+note: downloading hyph-gu.tex
+note: downloading loadhyph-hi.tex
+note: downloading hyph-hi.tex
+note: downloading loadhyph-kn.tex
+note: downloading hyph-kn.tex
+note: downloading loadhyph-ml.tex
+note: downloading hyph-ml.tex
+note: downloading loadhyph-mr.tex
+note: downloading hyph-mr.tex
+note: downloading loadhyph-or.tex
+note: downloading hyph-or.tex
+note: downloading loadhyph-pi.tex
+note: downloading hyph-pi.tex
+note: downloading loadhyph-pa.tex
+note: downloading hyph-pa.tex
+note: downloading loadhyph-ta.tex
+note: downloading hyph-ta.tex
+note: downloading loadhyph-te.tex
+note: downloading hyph-te.tex
+note: downloading loadhyph-id.tex
+note: downloading hyph-id.tex
+note: downloading loadhyph-ia.tex
+note: downloading hyph-ia.tex
+note: downloading loadhyph-ga.tex
+note: downloading hyph-ga.tex
+note: downloading loadhyph-it.tex
+note: downloading hyph-it.tex
+note: downloading hyph-quote-it.tex
+note: downloading loadhyph-kmr.tex
+note: downloading hyph-kmr.tex
+note: downloading loadhyph-la-x-classic.tex
+note: downloading hyph-la-x-classic.tex
+note: downloading loadhyph-la.tex
+note: downloading hyph-la.tex
+note: downloading loadhyph-la-x-liturgic.tex
+note: downloading hyph-la-x-liturgic.tex
+note: downloading loadhyph-lv.tex
+note: downloading hyph-lv.tex
+note: downloading loadhyph-lt.tex
+note: downloading hyph-lt.tex
+note: downloading loadhyph-mk.tex
+note: downloading hyph-mk.tex
+note: downloading loadhyph-mn-cyrl.tex
+note: downloading hyph-mn-cyrl.tex
+note: downloading loadhyph-mn-cyrl-x-lmc.tex
+note: downloading hyph-mn-cyrl-x-lmc.tex
+note: downloading loadhyph-nb.tex
+note: downloading hyph-nb.tex
+note: downloading hyph-no.tex
+note: downloading loadhyph-nn.tex
+note: downloading hyph-nn.tex
+note: downloading loadhyph-oc.tex
+note: downloading hyph-oc.tex
+note: downloading hyph-quote-oc.tex
+note: downloading loadhyph-pms.tex
+note: downloading hyph-pms.tex
+note: downloading hyph-quote-pms.tex
+note: downloading loadhyph-pl.tex
+note: downloading hyph-pl.tex
+note: downloading loadhyph-pt.tex
+note: downloading hyph-pt.tex
+note: downloading loadhyph-ro.tex
+note: downloading hyph-ro.tex
+note: downloading loadhyph-rm.tex
+note: downloading hyph-rm.tex
+note: downloading hyph-quote-rm.tex
+note: downloading loadhyph-ru.tex
+note: downloading hyph-ru.tex
+note: downloading loadhyph-sa.tex
+note: downloading hyph-sa.tex
+note: downloading loadhyph-sr-latn.tex
+note: downloading hyph-sh-latn.tex
+note: downloading hyph-sh-cyrl.tex
+note: downloading loadhyph-sr-cyrl.tex
+note: downloading loadhyph-sk.tex
+note: downloading hyph-sk.tex
+note: downloading loadhyph-sl.tex
+note: downloading hyph-sl.tex
+note: downloading loadhyph-es.tex
+note: downloading hyph-es.tex
+note: downloading loadhyph-sv.tex
+note: downloading hyph-sv.tex
+note: downloading loadhyph-th.tex
+note: downloading hyph-th.tex
+note: downloading loadhyph-tr.tex
+note: downloading hyph-tr.tex
+note: downloading loadhyph-tk.tex
+note: downloading hyph-tk.tex
+note: downloading loadhyph-uk.tex
+note: downloading hyph-uk.tex
+note: downloading hyph-quote-uk.tex
+note: downloading loadhyph-hsb.tex
+note: downloading hyph-hsb.tex
+note: downloading loadhyph-cy.tex
+note: downloading hyph-cy.tex
+note: downloading latex2e-first-aid-for-external-files.ltx
+note: Running TeX ...
+note: downloading article.cls
+note: downloading size10.clo
+note: downloading lmroman10-regular.otf
+note: downloading tex-text.tec
+note: downloading geometry.sty
+note: downloading keyval.sty
+note: downloading ifvtex.sty
+note: downloading iftex.sty
+note: downloading newtxtext.sty
+note: downloading xkeyval.sty
+note: downloading xkeyval.tex
+note: downloading xkvutils.tex
+note: downloading etoolbox.sty
+note: downloading textcomp.sty
+note: downloading xstring.sty
+note: downloading xstring.tex
+note: downloading ifthen.sty
+note: downloading scalefnt.sty
+note: downloading mweights.sty
+note: downloading binhex.tex
+note: downloading fontspec.sty
+note: downloading xparse.sty
+note: downloading expl3.sty
+note: downloading l3backend-xetex.def
+note: downloading fontspec-xetex.sty
+note: downloading fontenc.sty
+note: downloading fontspec.cfg
+note: downloading lmroman10-bold.otf
+note: downloading realscripts.sty
+note: downloading newtxmath.sty
+note: downloading amsmath.sty
+note: downloading amsopn.sty
+note: downloading amstext.sty
+note: downloading amsgen.sty
+note: downloading amsbsy.sty
+note: downloading ifxetex.sty
+note: downloading ifluatex.sty
+note: downloading centernot.sty
+note: downloading microtype.sty
+note: downloading microtype-xetex.def
+note: downloading microtype.cfg
+note: downloading booktabs.sty
+note: downloading graphicx.sty
+note: downloading graphics.sty
+note: downloading trig.sty
+note: downloading graphics.cfg
+note: downloading xetex.def
+note: downloading balance.sty
+note: downloading natbib.sty
+note: downloading hyperref.sty
+note: downloading ltxcmds.sty
+note: downloading pdftexcmds.sty
+note: downloading infwarerr.sty
+note: downloading kvsetkeys.sty
+note: downloading kvdefinekeys.sty
+note: downloading pdfescape.sty
+note: downloading hycolor.sty
+note: downloading letltxmacro.sty
+note: downloading auxhook.sty
+note: downloading kvoptions.sty
+note: downloading pd1enc.def
+note: downloading intcalc.sty
+note: downloading etexcmds.sty
+note: downloading puenc.def
+note: downloading url.sty
+note: downloading pzdr.tfm
+note: downloading bitset.sty
+note: downloading bigintcalc.sty
+note: downloading hxetex.def
+note: downloading stringenc.sty
+note: downloading rerunfilecheck.sty
+note: downloading uniquecounter.sty
+note: downloading TeXGyreTermesX.fontspec
+note: downloading TeXGyreTermesX-Regular.otf
+note: downloading TeXGyreTermesX-Bold.otf
+note: downloading TeXGyreTermesX-Italic.otf
+note: downloading TeXGyreTermesX-Slanted.otf
+note: downloading TeXGyreTermesX-BoldItalic.otf
+note: downloading TeXGyreTermesX-BoldSlanted.otf
+note: downloading omlntxmi.fd
+note: downloading ts1cmr.fd
+note: downloading untxexa.fd
+note: downloading lmsntxsy.fd
+note: downloading lmxntxexx.fd
+note: downloading nameref.sty
+note: downloading refcount.sty
+note: downloading gettitlestring.sty
+note: downloading ot1minntx.fd
+note: downloading ntx-Regular-tlf-ot1.tfm
+note: downloading ntxmi.tfm
+note: downloading ntxmi7.tfm
+note: downloading ntxsy.tfm
+note: downloading ntxsy7.tfm
+note: downloading ntxexx.tfm
+note: downloading untxmia.fd
+note: downloading ntxmia.tfm
+note: downloading untxsym.fd
+note: downloading ntxsym.tfm
+note: downloading untxsyc.fd
+note: downloading ntxsyc.tfm
+note: downloading ntxexa.tfm
+note: downloading lmmono10-regular.otf
+note: downloading ntxmi5.tfm
+note: downloading ntxsy5.tfm
+note: Running BibTeX on shortpaper.aux ...
+note: downloading plainnat.bst
+note: Rerunning TeX because bibtex was run ...
+note: Running xdvipdfmx ...
+note: downloading pdftex.map
+note: downloading kanjix.map
+note: downloading ckx.map
+note: downloading texglyphlist.txt
+note: downloading pdfglyphlist.txt
+note: downloading glyphlist.txt
+note: downloading ntxmi.vf
+note: downloading NewTXMI.tfm
+note: downloading NewTXMI.pfb
+note: downloading stxscr.tfm
+note: downloading stxscr.pfb
+note: downloading ntx-Regular-tlf-ot1.vf
+note: downloading txmiaX.tfm
+note: downloading txmiaX.pfb
+note: downloading ntx-Regular-tlf-ot1r.tfm
+note: downloading ntx-ot1-tlf.enc
+note: downloading ztmr.pfb
+note: downloading ntxmia.vf
+note: downloading txmiaSTbb.tfm
+note: downloading txmiaSTbb.pfb
+note: downloading ntxsy.vf
+note: downloading txsys.tfm
+note: downloading txsys.pfb
+note: downloading txex-bar.tfm
+note: downloading txex-bar.pfb
+note: downloading ntxmi7.vf
+note: downloading NewTXMI7.tfm
+note: downloading NewTXMI7.pfb
+note: downloading ntxexx.vf
+note: downloading txexs.tfm
+note: downloading txexs.pfb
+note: downloading ntxsy7.vf
+note: Writing `shortpaper.blg` (200 B)
+note: Writing `shortpaper.out` (2.6416015625 KiB)
+note: Writing `shortpaper.pdf` (77.2822265625 KiB)
+note: Writing `shortpaper.aux` (7.4814453125 KiB)
+note: Writing `shortpaper.bbl` (3.2080078125 KiB)
+note: Writing `shortpaper.log` (35.7392578125 KiB)
+warning: hyperref.sty:4873: Requested font "pzdr" at 0.00002pt
+warning: hyperref.sty:4873:  -> pzdr
+warning: shortpaper.tex:13: 
+Requested font "[TeXGyreTermesX-Regular.otf]/OT" at 9.99997pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Regular.otf]/OT" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Italic.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Slanted.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-BoldItalic.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-BoldSlanted.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 10.0pt
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 17.28pt
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 12.0pt
+warning: shortpaper.tex:16: 
+Requested font "ntx-Regular-tlf-ot1" at 12.0pt
+warning: shortpaper.tex:16:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:16: Requested font "ntx-Regular-tlf-ot1" at 8.8pt
+warning: shortpaper.tex:16:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:16: Requested font "ntx-Regular-tlf-ot1" at 6.6pt
+warning: shortpaper.tex:16:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:16: Requested font "ntxmi" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxmi
+warning: shortpaper.tex:16: Requested font "ntxmi" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxmi
+warning: shortpaper.tex:16: Requested font "ntxmi7" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxmi7
+warning: shortpaper.tex:16: Requested font "ntxsy" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxsy
+warning: shortpaper.tex:16: Requested font "ntxsy" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxsy
+warning: shortpaper.tex:16: Requested font "ntxsy7" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxsy7
+warning: shortpaper.tex:16: Requested font "ntxexx" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxexx
+warning: shortpaper.tex:16: Requested font "ntxexx" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxexx
+warning: shortpaper.tex:16: Requested font "ntxexx" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxexx
+warning: shortpaper.tex:16: 
+Requested font "ntxmia" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxmia
+warning: shortpaper.tex:16: Requested font "ntxmia" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxmia
+warning: shortpaper.tex:16: Requested font "ntxmia" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxmia
+warning: shortpaper.tex:16: 
+Requested font "ntxsym" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxsym
+warning: shortpaper.tex:16: Requested font "ntxsym" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxsym
+warning: shortpaper.tex:16: Requested font "ntxsym" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxsym
+warning: shortpaper.tex:16: 
+Requested font "ntxsyc" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxsyc
+warning: shortpaper.tex:16: Requested font "ntxsyc" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxsyc
+warning: shortpaper.tex:16: Requested font "ntxsyc" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxsyc
+warning: shortpaper.tex:16: Requested font "ntxexa" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxexa
+warning: shortpaper.tex:16: Requested font "ntxexa" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxexa
+warning: shortpaper.tex:16: Requested font "ntxexa" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxexa
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 14.4pt
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 14.4pt
+warning: shortpaper.tex:48: Underfull \hbox (badness 3907) in paragraph at lines 40--48
+warning: shortpaper.tex:96: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 12.0pt
+warning: shortpaper.tex:99: Requested font "[lmmono10-regular]:" at 10.0pt
+warning: shortpaper.tex:99: Requested font "ntx-Regular-tlf-ot1" at 10.0pt
+warning: shortpaper.tex:99:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:99: Requested font "ntx-Regular-tlf-ot1" at 7.3pt
+warning: shortpaper.tex:99:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:99: Requested font "ntx-Regular-tlf-ot1" at 5.5pt
+warning: shortpaper.tex:99:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:99: Requested font "ntxmi" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxmi
+warning: shortpaper.tex:99: Requested font "ntxmi7" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxmi7
+warning: shortpaper.tex:99: Requested font "ntxmi5" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxmi5
+warning: shortpaper.tex:99: Requested font "ntxsy" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxsy
+warning: shortpaper.tex:99: Requested font "ntxsy7" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxsy7
+warning: shortpaper.tex:99: Requested font "ntxsy5" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxsy5
+warning: shortpaper.tex:99: Requested font "ntxexx" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxexx
+warning: shortpaper.tex:99: Requested font "ntxexx" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxexx
+warning: shortpaper.tex:99: Requested font "ntxexx" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxexx
+warning: shortpaper.tex:99: Requested font "ntxmia" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxmia
+warning: shortpaper.tex:99: Requested font "ntxmia" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxmia
+warning: shortpaper.tex:99: Requested font "ntxmia" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxmia
+warning: shortpaper.tex:99: Requested font "ntxsym" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxsym
+warning: shortpaper.tex:99: Requested font "ntxsym" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxsym
+warning: shortpaper.tex:99: Requested font "ntxsym" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxsym
+warning: shortpaper.tex:99: Requested font "ntxsyc" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxsyc
+warning: shortpaper.tex:99: Requested font "ntxsyc" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxsyc
+warning: shortpaper.tex:99: Requested font "ntxsyc" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxsyc
+warning: shortpaper.tex:99: Requested font "ntxexa" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxexa
+warning: shortpaper.tex:99: Requested font "ntxexa" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxexa
+warning: shortpaper.tex:99: Requested font "ntxexa" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxexa
+warning: shortpaper.tex:138: Underfull \hbox (badness 10000) in paragraph at lines 131--138
+warning: shortpaper.tex:138: Underfull \hbox (badness 1082) in paragraph at lines 131--138
+warning: shortpaper.tex:157: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 10.0pt
+warning: shortpaper.tex:265: Underfull \hbox (badness 1496) in paragraph at lines 252--265
+warning: shortpaper.tex:265: Underfull \hbox (badness 2197) in paragraph at lines 252--265
+warning: shortpaper.tex:265: Underfull \hbox (badness 1997) in paragraph at lines 252--265
+warning: shortpaper.tex:279: Underfull \hbox (badness 1087) in paragraph at lines 271--279
+warning: shortpaper.tex:305: Underfull \hbox (badness 10000) in paragraph at lines 300--305
+warning: shortpaper.tex:353: Underfull \hbox (badness 3302) in paragraph at lines 353--353
+warning: shortpaper.tex:353: Underfull \hbox (badness 4713) in paragraph at lines 353--353
+warning: shortpaper.tex:369: Underfull \hbox (badness 1939) in paragraph at lines 357--369
+warning: shortpaper.tex:399: Underfull \hbox (badness 1097) in paragraph at lines 383--399
+warning: shortpaper.tex:429: Underfull \hbox (badness 1701) in paragraph at lines 421--429
+warning: shortpaper.tex:448: Underfull \hbox (badness 10000) in paragraph at lines 448--448
+warning: shortpaper.tex:463: Overfull \vbox (1.34499pt too high) has occurred while \output is active
+warning: shortpaper.bbl:47: Underfull \hbox (badness 2689) in paragraph at lines 40--47
+warning: shortpaper.bbl:47: Underfull \hbox (badness 2376) in paragraph at lines 40--47
+warning: shortpaper.bbl:47: Underfull \hbox (badness 4621) in paragraph at lines 40--47
+warning: shortpaper.bbl:62: Requested font "[TeXGyreTermesX-Italic.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 10.0pt
+warning: shortpaper.bbl:64: Underfull \hbox (badness 4792) in paragraph at lines 56--64
+warning: hyperref.sty:4873: Requested font "pzdr" at 0.00002pt
+warning: hyperref.sty:4873:  -> pzdr
+warning: shortpaper.tex:13: 
+Requested font "[TeXGyreTermesX-Regular.otf]/OT" at 9.99997pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Regular.otf]/OT" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Italic.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Slanted.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-BoldItalic.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-BoldSlanted.otf]/OT:script=latn;language=dflt;" at 10.00003pt
+warning: shortpaper.tex:13: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 10.0pt
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 17.28pt
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 12.0pt
+warning: shortpaper.tex:16: 
+Requested font "ntx-Regular-tlf-ot1" at 12.0pt
+warning: shortpaper.tex:16:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:16: Requested font "ntx-Regular-tlf-ot1" at 8.8pt
+warning: shortpaper.tex:16:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:16: Requested font "ntx-Regular-tlf-ot1" at 6.6pt
+warning: shortpaper.tex:16:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:16: Requested font "ntxmi" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxmi
+warning: shortpaper.tex:16: Requested font "ntxmi" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxmi
+warning: shortpaper.tex:16: Requested font "ntxmi7" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxmi7
+warning: shortpaper.tex:16: Requested font "ntxsy" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxsy
+warning: shortpaper.tex:16: Requested font "ntxsy" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxsy
+warning: shortpaper.tex:16: Requested font "ntxsy7" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxsy7
+warning: shortpaper.tex:16: Requested font "ntxexx" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxexx
+warning: shortpaper.tex:16: Requested font "ntxexx" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxexx
+warning: shortpaper.tex:16: Requested font "ntxexx" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxexx
+warning: shortpaper.tex:16: 
+Requested font "ntxmia" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxmia
+warning: shortpaper.tex:16: Requested font "ntxmia" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxmia
+warning: shortpaper.tex:16: Requested font "ntxmia" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxmia
+warning: shortpaper.tex:16: 
+Requested font "ntxsym" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxsym
+warning: shortpaper.tex:16: Requested font "ntxsym" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxsym
+warning: shortpaper.tex:16: Requested font "ntxsym" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxsym
+warning: shortpaper.tex:16: 
+Requested font "ntxsyc" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxsyc
+warning: shortpaper.tex:16: Requested font "ntxsyc" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxsyc
+warning: shortpaper.tex:16: Requested font "ntxsyc" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxsyc
+warning: shortpaper.tex:16: Requested font "ntxexa" at 12.0pt
+warning: shortpaper.tex:16:  -> ntxexa
+warning: shortpaper.tex:16: Requested font "ntxexa" at 8.8pt
+warning: shortpaper.tex:16:  -> ntxexa
+warning: shortpaper.tex:16: Requested font "ntxexa" at 6.6pt
+warning: shortpaper.tex:16:  -> ntxexa
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 14.4pt
+warning: shortpaper.tex:16: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 14.4pt
+warning: shortpaper.tex:48: Underfull \hbox (badness 3907) in paragraph at lines 40--48
+warning: shortpaper.tex:96: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 12.0pt
+warning: shortpaper.tex:99: Requested font "[lmmono10-regular]:" at 10.0pt
+warning: shortpaper.tex:99: Requested font "ntx-Regular-tlf-ot1" at 10.0pt
+warning: shortpaper.tex:99:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:99: Requested font "ntx-Regular-tlf-ot1" at 7.3pt
+warning: shortpaper.tex:99:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:99: Requested font "ntx-Regular-tlf-ot1" at 5.5pt
+warning: shortpaper.tex:99:  -> ntx-Regular-tlf-ot1
+warning: shortpaper.tex:99: Requested font "ntxmi" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxmi
+warning: shortpaper.tex:99: Requested font "ntxmi7" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxmi7
+warning: shortpaper.tex:99: Requested font "ntxmi5" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxmi5
+warning: shortpaper.tex:99: Requested font "ntxsy" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxsy
+warning: shortpaper.tex:99: Requested font "ntxsy7" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxsy7
+warning: shortpaper.tex:99: Requested font "ntxsy5" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxsy5
+warning: shortpaper.tex:99: Requested font "ntxexx" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxexx
+warning: shortpaper.tex:99: Requested font "ntxexx" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxexx
+warning: shortpaper.tex:99: Requested font "ntxexx" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxexx
+warning: shortpaper.tex:99: Requested font "ntxmia" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxmia
+warning: shortpaper.tex:99: Requested font "ntxmia" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxmia
+warning: shortpaper.tex:99: Requested font "ntxmia" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxmia
+warning: shortpaper.tex:99: Requested font "ntxsym" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxsym
+warning: shortpaper.tex:99: Requested font "ntxsym" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxsym
+warning: shortpaper.tex:99: Requested font "ntxsym" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxsym
+warning: shortpaper.tex:99: Requested font "ntxsyc" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxsyc
+warning: shortpaper.tex:99: Requested font "ntxsyc" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxsyc
+warning: shortpaper.tex:99: Requested font "ntxsyc" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxsyc
+warning: shortpaper.tex:99: Requested font "ntxexa" at 10.0pt
+warning: shortpaper.tex:99:  -> ntxexa
+warning: shortpaper.tex:99: Requested font "ntxexa" at 7.3pt
+warning: shortpaper.tex:99:  -> ntxexa
+warning: shortpaper.tex:99: Requested font "ntxexa" at 5.5pt
+warning: shortpaper.tex:99:  -> ntxexa
+warning: shortpaper.tex:138: Underfull \hbox (badness 10000) in paragraph at lines 131--138
+warning: shortpaper.tex:138: Underfull \hbox (badness 1082) in paragraph at lines 131--138
+warning: shortpaper.tex:157: Requested font "[TeXGyreTermesX-Bold.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 10.0pt
+warning: shortpaper.tex:265: Underfull \hbox (badness 1496) in paragraph at lines 252--265
+warning: shortpaper.tex:265: Underfull \hbox (badness 2197) in paragraph at lines 252--265
+warning: shortpaper.tex:265: Underfull \hbox (badness 1997) in paragraph at lines 252--265
+warning: shortpaper.tex:279: Underfull \hbox (badness 1087) in paragraph at lines 271--279
+warning: shortpaper.tex:305: Underfull \hbox (badness 10000) in paragraph at lines 300--305
+warning: shortpaper.tex:353: Underfull \hbox (badness 3302) in paragraph at lines 353--353
+warning: shortpaper.tex:353: Underfull \hbox (badness 4713) in paragraph at lines 353--353
+warning: shortpaper.tex:369: Underfull \hbox (badness 1939) in paragraph at lines 357--369
+warning: shortpaper.tex:399: Underfull \hbox (badness 1097) in paragraph at lines 383--399
+warning: shortpaper.tex:429: Underfull \hbox (badness 1701) in paragraph at lines 421--429
+warning: shortpaper.tex:448: Underfull \hbox (badness 10000) in paragraph at lines 448--448
+warning: shortpaper.tex:463: Overfull \vbox (1.34499pt too high) has occurred while \output is active
+warning: shortpaper.bbl:47: Underfull \hbox (badness 2689) in paragraph at lines 40--47
+warning: shortpaper.bbl:47: Underfull \hbox (badness 2376) in paragraph at lines 40--47
+warning: shortpaper.bbl:47: Underfull \hbox (badness 4621) in paragraph at lines 40--47
+warning: shortpaper.bbl:62: Requested font "[TeXGyreTermesX-Italic.otf]/OT:script=latn;language=dflt;-ss05;+tnum;+lnum;mapping=tex-text;" at 10.0pt
+warning: shortpaper.bbl:64: Underfull \hbox (badness 4792) in paragraph at lines 56--64
+warning: warnings were issued by the TeX engine; use --print and/or --keep-logs for details.

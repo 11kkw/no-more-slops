@@ -1,0 +1,96 @@
+--- before-shortpaper.md
++++ shortpaper.md
+@@ -4,7 +4,7 @@
+ 
+ ## Abstract
+ 
+-We report a separation between category-sensitive localization and relational object selection in evaluated CLIP pipelines. A map that highlights a category need not identify the intended instance among objects of that category. We analyze saved COCO experiments with a frozen ViT-B/16, ordinary and modified final-block readouts, and released Dense Cosine Similarity Map (DCSM) scorers. At 224-pixel input resolution, a ClearCLIP-style readout increases proposal-based detection AP from 2.6 to 27.3 on 4,952 images, yet its mean-map scorer obtains 39.4% balanced spatial-selection accuracy, versus 50.3% for the ordinary readout. On 527 spatial queries from 375 images, released DCSM ObjA and COCO scorers reach 58.1% [53.7, 62.4] and 57.3% [53.2, 61.2], respectively, against 45.7% expected chance. These conditional, annotation-derived results motivate separate validation of localization and relational selection; they neither isolate a causal mechanism nor test learned DCSM scoring on modified features.
++We report a separation between category-sensitive localization and relational object selection in evaluated CLIP pipelines. A map that highlights a category need not identify the intended instance among objects of that category. We analyze saved COCO experiments with a frozen ViT-B/16, ordinary and modified final-block readouts, and released Dense Cosine Similarity Map (DCSM) scorers. At 224-pixel input resolution, a ClearCLIP-style readout increases proposal-based detection AP from 2.6 to 27.3 on 4,952 images, yet its mean-map scorer obtains 39.4% balanced spatial-selection accuracy, versus 50.3% for the ordinary readout. On 527 spatial queries from 375 images, released DCSM ObjA and COCO scorers reach 58.1% [53.7, 62.4] and 57.3% [53.2, 61.2], respectively, against 45.7% expected chance (exploratory percentile 95% image-cluster bootstrap intervals). These conditional, annotation-derived results motivate separate validation of localization and relational selection; they neither isolate a causal mechanism nor test learned DCSM scoring on modified features.
+ 
+ ## 1. Introduction and Related Work
+ 
+@@ -14,7 +14,7 @@
+ 
+ Detection provides a second reference point. OWL-ViT adapts image--text pretraining through detection fine-tuning [@minderer2022owlvit], and OWLv2 scales detection supervision through self-training [@minderer2023owlv2]. Their learned box and score mechanisms differ from frozen-CLIP map pooling. Moreover, fine-grained detector evaluation has precedent in FG-OVD [@bianchi2023fgovd]. We therefore do not claim a new detector, a first compositional benchmark, or established novelty over that literature.
+ 
+-Our focused observation is that **localization and detection gains from the evaluated CLIP readouts do not consistently transfer to relational candidate selection**. We connect three existing measurements: oracle-category pointing, category-conditioned detection, and selection among supplied same-category boxes. The main comparison uses spatial descriptions; size and attachment diagnostics constrain its interpretation. The study contributes:
++Our focused observation is that localization and detection gains from the evaluated CLIP readouts do not consistently transfer to relational candidate selection. We connect three existing measurements: oracle-category pointing, category-conditioned detection, and selection among supplied same-category boxes. The main comparison uses spatial descriptions; size and attachment diagnostics constrain its interpretation. The study contributes:
+ 
+ - A cross-task comparison separating category localization from relational selection.
+ - A protocol and construction audit bounding the observed transfer differences.
+@@ -38,19 +38,19 @@
+ \end{aligned}
+ $$
+ 
+-Here $d_h$ is the head dimension; head outputs are merged before $W_O$. Modified outputs omit the final residual and feed-forward paths. Every readout receives the same post-layer normalization, visual projection, and L2 normalization. Dense maps discard CLS. With normalized patch feature $z_p$ and pooled text embedding $t_{\mathrm{EOS}}$, the principal map is $h(p,q)=z_p^\top t_{\mathrm{EOS}}(q)$.
++Here $d_h$ is the head dimension; head outputs are merged before $W_O$. Modified outputs omit the final residual and feed-forward paths. Unlike the ViT adaptation in MaskCLIP (Sec. 3.3), our value-only variant omits the residual and uses neither key smoothing nor prompt denoising [@zhou2021maskclip]. Every readout receives the same post-layer normalization, visual projection, and L2 normalization. Dense maps discard CLS. With normalized patch feature $z_p$ and pooled text embedding $t_{\mathrm{EOS}}$, the principal map is $h(p,q)=z_p^\top t_{\mathrm{EOS}}(q)$.
+ 
+-A token-max variant replaces this scalar by $\max_{j\in\mathcal C(q)}z_p^\top t_j(q)$. Its content set excludes BOS, EOS, and padding, but includes ordinary prompt words and prepositions; text is padded or truncated to 30 positions. The code name `dcsm_tok` denotes this maximum, **not** the learned DCSM CNN. Aggregation removes explicit token-column order, although contextual token embeddings still depend on the sentence.
++A token-max variant replaces this scalar by $\max_{j\in\mathcal C(q)}z_p^\top t_j(q)$. Its content set excludes BOS, EOS, and padding, but includes ordinary prompt words and prepositions; text is padded or truncated to 30 positions. The code name `dcsm_tok` denotes this maximum, not the learned DCSM CNN. Aggregation removes explicit token-column order, although contextual token embeddings still depend on the sentence.
+ 
+ ### 2.2. Localization and detection
+ 
+-The oracle-category probe uses the first 500 eligible COCO val2017 images in sorted ID order. A trial is an image--category pair: pointing succeeds if the maximum patch center lies in any non-crowd box of the known category. It does not ask which same-category instance a relational description intends. The probe is non-random and its retained aggregate results do not support image-cluster intervals.
++The oracle-category probe uses the first 500 eligible COCO val2017 images in sorted ID order. A trial is an image--category pair: pointing succeeds if the maximum patch center lies in any non-crowd box of the known category. It does not ask which same-category instance a relational description intends. Pointing is micro-averaged over eligible image--category trials, not images; the trial count was not retained in the summary. The non-random probe does not support image-cluster intervals from the retained aggregates.
+ 
+ Detection covers 4,952 images with non-crowd annotations. We report COCO bbox AP averaged over IoU thresholds 0.50--0.95 on a 0--100 scale. Class prompts are `a photo of a {category}.` for the 80 COCO categories [@lin2014coco]. Two protocols connect the same maps to different box mechanisms:
+ 
+-**P1, dense components.** Upsample maps, apply an 80-way class softmax with multiplier 100, retain winning-class pixels with probability above 0.3, and extract connected components of at least four pixels. Maximum component probability is the box score.
++**P1, dense components.** Bilinearly upsample maps to the input square (224 or 448 pixels, `align_corners=False`), apply an 80-way class softmax with multiplier 100, retain winning-class pixels with probability above 0.3, and extract four-connected components of at least four upsampled pixels. Maximum component probability is the box score.
+ 
+-**P2, supplied proposals.** Select the top 100 OWLv2 boxes by sigmoid objectness. Average class maps over patch centers inside each box, using a fallback patch for empty memberships. Apply the same softmax multiplier, retain three classes per box, and multiply each class probability by objectness. Readout variants share proposals and scoring rules within P2.
++**P2, supplied proposals.** Select the top 100 OWLv2 boxes by sigmoid objectness. Average class maps over patch centers inside each box, using the patch containing the box center, clamped to the grid, for empty memberships. Apply the same softmax multiplier, retain three classes per box, and multiply each class probability by objectness. Readout variants share proposals and scoring rules within P2.
+ 
+ Native OWL references instead retain the top 300 box--class pairs by sigmoid class logits across predicted boxes. Native OWLv2 and P2 therefore do not have identical final proposals or confidence rules. An AP difference between them is not a pure classification comparison. Reference models are `google/owlvit-base-patch32` and `google/owlv2-base-patch16-ensemble`; their training and backbones are also unmatched to frozen CLIP.
+ 
+@@ -58,9 +58,9 @@
+ 
+ Spatial items derive from COCO boxes. Each query supplies two to six same-category candidates $A$ and a single annotated reference instance $B$. One target lies on the requested side of $B$, with a center margin of 0.05 of the relevant image dimension and separation constraints; all distractor centers lie on the opposite side. Relations are left, right, above, and below in the image plane, not three-dimensional judgments. All non-crowd target-category instances must have annotation-area ratio at least 0.002 and box side lengths at least 24 pixels. Generation uses seed 0 and per-subset caps of 60 items per category and two per image. The spatial subset contains 527 queries from 375 images and 57 target categories. Its two box-area strata contain 233 target-largest and 294 target-not-largest items.
+ 
+-Whole-image map scorers average query similarities over patches inside each supplied candidate box at 224 resolution, using nearest-patch fallback when necessary, without a class softmax or learned CNN. CLIP crop scoring compares the crop CLS embedding with query EOS. Candidate crops add 10% padding per side; spatial context crops use the union of the candidate and the reference box. These context crops use privileged annotations and can change object scale and layout. The task is consequently **conditional candidate selection**, not end-to-end referring-expression detection.
++Whole-image map scorers average query similarities over patches inside each supplied candidate box at 224 resolution, using nearest-patch fallback when necessary, without a class softmax or learned CNN. CLIP crop scoring compares the crop CLS embedding with query EOS. Candidate crops add 10% padding per side; spatial context crops use the union of the candidate and the reference box. These context crops use privileged annotations and can change object scale and layout. The task is consequently conditional candidate selection, not end-to-end referring-expression detection.
+ 
+-Two released DCSM checkpoints, locally called ObjA and COCO, score context crops using ordinary CLIP features and an already trained CNN. The adapter supplies a 197-by-30 token--patch similarity matrix including CLS, with two convolutional layers and a 128-unit hidden fully connected layer. It inserts checkpoint functional embeddings using inherited whitespace positions and standardizes similarities jointly across candidate crops for a query. Tokenizer alignment is not independently certified; normalization makes scores candidate-batch dependent. No new training is performed here, but these scorers are not training-free components. **Modified readouts with the learned CNN were not evaluated.**
++Two released DCSM checkpoints [@kang2025dcsm], locally called ObjA and COCO, score context crops using ordinary CLIP features and an already trained CNN. The adapter supplies an image-position-by-text-position matrix (197-by-30), including image CLS and text BOS/EOS/padding positions, with two convolutional layers and a 128-unit hidden fully connected layer. It inserts checkpoint functional embeddings using inherited whitespace positions and standardizes over all entries of the candidate-by-channel-by-image-position-by-text-position tensor for a query. Tokenizer alignment is not independently certified; normalization makes scores candidate-batch dependent. No new training is performed here, but these scorers are not training-free components. Modified readouts with the learned CNN were not evaluated. Local filenames and implementation provenance are recorded in the non-public supplement; checkpoint hashes and release versions remain unavailable.
+ 
+ OWL candidate scoring matches predicted boxes to each supplied candidate at IoU at least 0.5 and takes the maximum matching query logit. If no prediction matches, the best-IoU prediction supplies its logit minus 10. OWL selection thus includes localization and matching effects, unlike directly scoring supplied crops.
+ 
+@@ -94,9 +94,9 @@
+ 
+ ### 3.2. Relational gains do not follow the same ranking
+ 
+-Table 2 and Figure 1 test whether the localization ranking transfers to spatial selection. Ordinary pooled maps obtain 50.3% balanced accuracy. Both modified pooled readouts obtain 39.4%, despite their much better pointing and P2 AP. Token-max does not reverse the ordering: ordinary, MaskCLIP-style, and ClearCLIP-style spatial accuracies are 50.0%, 43.4%, and 42.5%. The observed transfer failure is specific to these scalar-map reductions and candidate rules, not evidence that dense representations cannot support relations.
++Table 2 and Figure 1 test whether the localization ranking transfers to spatial selection. Ordinary pooled maps obtain 50.3% balanced accuracy. Both modified pooled readouts obtain 39.4%, despite their much better pointing and P2 AP. This is a descriptive ranking reversal: a paired ordinary-versus-modified interval is unavailable in the retained bootstrap export. Token-max does not reverse the ordering: ordinary, MaskCLIP-style, and ClearCLIP-style spatial accuracies are 50.0%, 43.4%, and 42.5%. The observed transfer failure is specific to these scalar-map reductions and candidate rules, not evidence that dense representations cannot support relations.
+ 
+-**Table 2.** Balanced spatial-selection accuracy (%) on 527 queries/375 images. Intervals reuse the recorded paired image-cluster bootstrap. All arms are conditional on the supplied candidates; crop geometry, training, and OWL matching differ. Chance is balanced expected uniform selection.
++**Table 2.** Balanced spatial-selection accuracy (%) on 527 queries/375 images. Intervals are exploratory percentile 95% image-cluster bootstrap intervals from the recorded resamples. All arms are conditional on the supplied candidates; crop geometry, training, and OWL matching differ. Chance is balanced expected uniform selection.
+ 
+ | Scorer | Accuracy ↑ | Exploratory 95% interval |
+ | --- | --- | --- |
+@@ -111,7 +111,7 @@
+ 
+ ![Balanced spatial accuracy and image-cluster intervals](figures/spatial_balanced.pdf)
+ 
+-**Figure 1.** Selected spatial scorers with percentile 95% intervals from 10,000 image-cluster resamples; dashed line: balanced expected chance. Methods differ in input construction and learned scoring, so the figure is not a factorial ablation of readout and CNN.
++**Figure 1.** Selected spatial scorers with exploratory percentile 95% intervals from 10,000 image-cluster resamples; dashed line: balanced expected chance. MaskCLIP-style pooled maps are retained in Table 2 rather than plotted because their estimate matches ClearCLIP-style at the reported precision. Map denotes pooled-text whole-image scoring, context denotes candidate--reference union crops, and matched denotes OWL predicted-box matching. Methods differ in input construction and learned scoring, so the figure is not a factorial ablation of readout and CNN.
+ 
+ Released DCSM ObjA and COCO pipelines reach 58.1% and 57.3%, respectively. ObjA exceeds expected chance by 12.4 percentage points, with paired interval [8.0, 16.7], and exceeds ClearCLIP-style pooled maps by 18.7 points [13.1, 24.2]. These are measured advantages for the evaluated pretrained pipeline on this sample. Ordinary maps are also numerically above chance, so DCSM is not uniquely above that reference. Context, prior training, functional embeddings, and richer matrix scoring all differ; these comparisons do not identify which component explains the advantage.
+ 
+@@ -129,7 +129,7 @@
+ 
+ Training/evaluation overlap, exact checkpoint hashes, and original execution revisions remain incompletely audited. Frozen evaluation does not imply no prior training. Retained summaries and predictions support arithmetic checks, not a newly reproduced inference run. Original hardware and complete package inventories are unavailable, and no matched speed claim is made. Bootstrap intervals capture sample variability only; they cannot repair proxy labels or certify generalization.
+ 
+-A controlled follow-up would match crop geometry and supervision across readouts and learned scorers, use paired positive/negative descriptions, and validate labels on an independent collection. Those studies are not part of this report. Novelty, authorship, and venue compliance also remain pending; the present evidence supports a scoped working short paper rather than submission readiness.
++A controlled follow-up would match crop geometry and supervision across readouts and learned scorers, use paired positive/negative descriptions, and validate labels on an independent collection. Those studies are not part of this report. 
+ 
+ ## 5. Conclusion
+ 
+@@ -139,7 +139,7 @@
+ 
+ This work was created as part of the No-More-Slops group activities at Pseudo Lab.
+ 
+-AI assistance supported evidence inspection, writing, and internal review; it is not independent human peer review. The preserved detailed draft (`../manuscript.md`, Appendices A--B), measurement and bootstrap JSON, claim map, and evaluation code provide supporting material. This local supplement is not a public release; the accompanying README gives exact paths and build instructions. No model inference was rerun for this short paper.
++AI assistance supported evidence inspection, writing, and internal review; it is not independent human peer review. The non-public supplement contains the detailed draft (Appendices A--B), measurement and bootstrap JSON, claim map, and evaluation code. This local supplement is not a public release; the accompanying README gives exact paths and build instructions. No model inference was rerun for this short paper.
+ 
+ ## References
+ 

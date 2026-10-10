@@ -1,0 +1,6 @@
+{
+  "excluded_authorized_workflow_document": "plan/03_paper_pipeline.md",
+  "baseline_sha256": "22f88b01a6f76ac2386dbf22385e4b1fa78b1902edd86a8e380fb4a4ba2a0287",
+  "current_sha256": "6098ab1f6f18d291fc66d8e03cd181d513a52f3273fd9c1d0d3dfc431eb468f4",
+  "reason": "User-authorized pipeline configuration documentation; all scientific inputs remain checked"
+}

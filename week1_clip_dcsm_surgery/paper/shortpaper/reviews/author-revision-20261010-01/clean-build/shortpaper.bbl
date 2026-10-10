@@ -1,0 +1,70 @@
+\begin{thebibliography}{8}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bianchi et~al.(2023)Bianchi, Carrara, Messina, Gennaro, and
+  Falchi]{bianchi2023fgovd}
+Lorenzo Bianchi, Fabio Carrara, Nicola Messina, Claudio Gennaro, and Fabrizio
+  Falchi.
+\newblock {The devil is in the fine-grained details: Evaluating open-vocabulary
+  object detectors for fine-grained understanding}, 2023.
+\newblock URL \url{https://arxiv.org/abs/2311.17518}.
+
+\bibitem[Kang et~al.(2025)Kang, Song, Gkioxari, and Perona]{kang2025dcsm}
+Raphi Kang, Yue Song, Georgia Gkioxari, and Pietro Perona.
+\newblock {Is CLIP ideal? No. Can we fix it? Yes!}, 2025.
+\newblock URL \url{https://arxiv.org/abs/2503.08723}.
+
+\bibitem[Lan et~al.(2024)Lan, Chen, Ke, Wang, Feng, and
+  Zhang]{lan2024clearclip}
+Mengcheng Lan, Chaofeng Chen, Yiping Ke, Xinjiang Wang, Litong Feng, and Wayne
+  Zhang.
+\newblock {ClearCLIP: Decomposing CLIP Representations for Dense
+  Vision-Language Inference}, 2024.
+\newblock URL \url{https://arxiv.org/abs/2407.12442}.
+
+\bibitem[Lin et~al.(2014)Lin, Maire, Belongie, Bourdev, Girshick, Hays, Perona,
+  Ramanan, Zitnick, and Dollár]{lin2014coco}
+Tsung-Yi Lin, Michael Maire, Serge Belongie, Lubomir Bourdev, Ross Girshick,
+  James Hays, Pietro Perona, Deva Ramanan, C.~Lawrence Zitnick, and Piotr
+  Dollár.
+\newblock {Microsoft COCO: Common Objects in Context}, 2014.
+\newblock URL \url{https://arxiv.org/abs/1405.0312}.
+
+\bibitem[Minderer et~al.(2022)Minderer, Gritsenko, Stone, Neumann, Weissenborn,
+  Dosovitskiy, Mahendran, Arnab, Dehghani, Shen, Wang, Zhai, Kipf, and
+  Houlsby]{minderer2022owlvit}
+Matthias Minderer, Alexey Gritsenko, Austin Stone, Maxim Neumann, Dirk
+  Weissenborn, Alexey Dosovitskiy, Aravindh Mahendran, Anurag Arnab, Mostafa
+  Dehghani, Zhuoran Shen, Xiao Wang, Xiaohua Zhai, Thomas Kipf, and Neil
+  Houlsby.
+\newblock {Simple Open-Vocabulary Object Detection with Vision Transformers},
+  2022.
+\newblock URL \url{https://arxiv.org/abs/2205.06230}.
+
+\bibitem[Minderer et~al.(2023)Minderer, Gritsenko, and
+  Houlsby]{minderer2023owlv2}
+Matthias Minderer, Alexey Gritsenko, and Neil Houlsby.
+\newblock {Scaling Open-Vocabulary Object Detection}, 2023.
+\newblock URL \url{https://arxiv.org/abs/2306.09683}.
+
+\bibitem[Radford et~al.(2021)Radford, Kim, Hallacy, Ramesh, Goh, Agarwal,
+  Sastry, Askell, Mishkin, Clark, Krueger, and Sutskever]{radford2021clip}
+Alec Radford, Jong~Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh,
+  Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark,
+  Gretchen Krueger, and Ilya Sutskever.
+\newblock {Learning Transferable Visual Models From Natural Language
+  Supervision}.
+\newblock In \emph{Proceedings of the 38th International Conference on Machine
+  Learning}, volume 139, pages 8748--8763. PMLR, 2021.
+\newblock URL \url{https://proceedings.mlr.press/v139/radford21a.html}.
+
+\bibitem[Zhou et~al.(2021)Zhou, Loy, and Dai]{zhou2021maskclip}
+Chong Zhou, Chen~Change Loy, and Bo~Dai.
+\newblock {Extract Free Dense Labels from CLIP}, 2021.
+\newblock URL \url{https://arxiv.org/abs/2112.01071}.
+
+\end{thebibliography}

@@ -1,0 +1,833 @@
+{
+  "task_id": "DCSM-SHORT-20261010-001",
+  "status": "needs_revision",
+  "scope": "Local writing, existing-result arithmetic, plotting, CPU compilation and PDF inspection; no model inference/server task/external submission/commit/push.",
+  "repository_snapshot_revision": "c4c560a8a8d4fb0ceb78d5e8363e087ff113a292",
+  "original_execution_revision": "unverified",
+  "build": {
+    "command": "uv run --no-project --python 3.10 --with pypandoc_binary --with matplotlib==3.10.7 --with pymupdf python build.py",
+    "tectonic": "Tectonic 0.17.0",
+    "python": "3.10.19 (main, Feb 12 2026, 00:42:18) [Clang 21.1.4 ]",
+    "packages": {
+      "pypandoc_binary": "1.17",
+      "matplotlib": "3.10.7",
+      "numpy": "2.2.6",
+      "pymupdf": "1.28.2"
+    },
+    "log": "shortpaper.log",
+    "stdout": "compile_stdout.txt"
+  },
+  "pages": {
+    "body": 4,
+    "references": 1,
+    "total": 5,
+    "details": [
+      {
+        "page": 1,
+        "size_pdf_points": [
+          612.0,
+          792.0
+        ],
+        "text_chars": 4561,
+        "left_column_lines": 46,
+        "right_column_lines": 49,
+        "font_counts": [
+          {
+            "font": "TeXGyreTermesX-Regular",
+            "size_pdf_bp": 9.963,
+            "span_count": 682
+          },
+          {
+            "font": "NewTXMI",
+            "size_pdf_bp": 9.963,
+            "span_count": 18
+          },
+          {
+            "font": "txmiaX",
+            "size_pdf_bp": 9.963,
+            "span_count": 6
+          },
+          {
+            "font": "TeXGyreTermesX-Bold",
+            "size_pdf_bp": 14.346,
+            "span_count": 5
+          },
+          {
+            "font": "txsys",
+            "size_pdf_bp": 9.963,
+            "span_count": 5
+          }
+        ],
+        "render": "renders/page-1.png"
+      },
+      {
+        "page": 2,
+        "size_pdf_points": [
+          612.0,
+          792.0
+        ],
+        "text_chars": 5888,
+        "left_column_lines": 44,
+        "right_column_lines": 45,
+        "font_counts": [
+          {
+            "font": "TeXGyreTermesX-Regular",
+            "size_pdf_bp": 9.963,
+            "span_count": 732
+          },
+          {
+            "font": "NewTXMI",
+            "size_pdf_bp": 9.963,
+            "span_count": 23
+          },
+          {
+            "font": "LMMono10-Regular",
+            "size_pdf_bp": 9.963,
+            "span_count": 18
+          },
+          {
+            "font": "TeXGyreTermesX-Regular",
+            "size_pdf_bp": 7.273,
+            "span_count": 10
+          },
+          {
+            "font": "NewTXMI7",
+            "size_pdf_bp": 7.273,
+            "span_count": 8
+          }
+        ],
+        "render": "renders/page-2.png"
+      },
+      {
+        "page": 3,
+        "size_pdf_points": [
+          612.0,
+          792.0
+        ],
+        "text_chars": 5150,
+        "left_column_lines": 48,
+        "right_column_lines": 52,
+        "font_counts": [
+          {
+            "font": "TeXGyreTermesX-Regular",
+            "size_pdf_bp": 9.963,
+            "span_count": 767
+          },
+          {
+            "font": "TeXGyreTermesX-Bold",
+            "size_pdf_bp": 11.955,
+            "span_count": 28
+          },
+          {
+            "font": "TeXGyreTermesX-Bold",
+            "size_pdf_bp": 14.346,
+            "span_count": 2
+          },
+          {
+            "font": "txsys",
+            "size_pdf_bp": 9.963,
+            "span_count": 1
+          },
+          {
+            "font": "NewTXMI",
+            "size_pdf_bp": 9.963,
+            "span_count": 1
+          }
+        ],
+        "render": "renders/page-3.png"
+      },
+      {
+        "page": 4,
+        "size_pdf_points": [
+          612.0,
+          792.0
+        ],
+        "text_chars": 3655,
+        "left_column_lines": 30,
+        "right_column_lines": 30,
+        "font_counts": [
+          {
+            "font": "TeXGyreTermesX-Regular",
+            "size_pdf_bp": 9.963,
+            "span_count": 410
+          },
+          {
+            "font": "DejaVuSans",
+            "size_pdf_bp": 8.804,
+            "span_count": 11
+          },
+          {
+            "font": "TeXGyreTermesX-Bold",
+            "size_pdf_bp": 14.346,
+            "span_count": 9
+          }
+        ],
+        "render": "renders/page-4.png"
+      },
+      {
+        "page": 5,
+        "size_pdf_points": [
+          612.0,
+          792.0
+        ],
+        "text_chars": 1938,
+        "left_column_lines": 37,
+        "right_column_lines": 0,
+        "font_counts": [
+          {
+            "font": "TeXGyreTermesX-Regular",
+            "size_pdf_bp": 9.963,
+            "span_count": 326
+          },
+          {
+            "font": "TeXGyreTermesX-Italic",
+            "size_pdf_bp": 9.963,
+            "span_count": 19
+          },
+          {
+            "font": "LMMono10-Regular",
+            "size_pdf_bp": 9.963,
+            "span_count": 12
+          },
+          {
+            "font": "TeXGyreTermesX-Bold",
+            "size_pdf_bp": 14.346,
+            "span_count": 1
+          }
+        ],
+        "render": "renders/page-5.png"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "name": "table1_all_9_numeric_cells",
+      "status": "passed",
+      "details": [
+        {
+          "row": "Ordinary",
+          "actual": [
+            "12.0",
+            "0.7",
+            "2.6"
+          ],
+          "expected": [
+            "12.0",
+            "0.7",
+            "2.6"
+          ],
+          "match": true
+        },
+        {
+          "row": "MaskCLIP-style",
+          "actual": [
+            "51.4",
+            "3.4",
+            "26.0"
+          ],
+          "expected": [
+            "51.4",
+            "3.4",
+            "26.0"
+          ],
+          "match": true
+        },
+        {
+          "row": "ClearCLIP-style",
+          "actual": [
+            "62.4",
+            "3.0",
+            "27.3"
+          ],
+          "expected": [
+            "62.4",
+            "3.0",
+            "27.3"
+          ],
+          "match": true
+        }
+      ]
+    },
+    {
+      "name": "table2_estimates_and_ci_endpoints",
+      "status": "passed",
+      "details": [
+        {
+          "key": "readout/naive/pooled",
+          "actual": [
+            "50.3",
+            "[46.6, 53.9]"
+          ],
+          "expected": [
+            "50.3",
+            "[46.6, 53.9]"
+          ],
+          "match": true
+        },
+        {
+          "key": "readout/maskclip/pooled",
+          "actual": [
+            "39.4",
+            "[35.7, 43.0]"
+          ],
+          "expected": [
+            "39.4",
+            "[35.7, 43.0]"
+          ],
+          "match": true
+        },
+        {
+          "key": "readout/clearclip/pooled",
+          "actual": [
+            "39.4",
+            "[35.8, 43.1]"
+          ],
+          "expected": [
+            "39.4",
+            "[35.8, 43.1]"
+          ],
+          "match": true
+        },
+        {
+          "key": "clip_ctx",
+          "actual": [
+            "39.0",
+            "[35.4, 42.7]"
+          ],
+          "expected": [
+            "39.0",
+            "[35.4, 42.7]"
+          ],
+          "match": true
+        },
+        {
+          "key": "dcsm_obja_ctx",
+          "actual": [
+            "58.1",
+            "[53.7, 62.4]"
+          ],
+          "expected": [
+            "58.1",
+            "[53.7, 62.4]"
+          ],
+          "match": true
+        },
+        {
+          "key": "dcsm_coco_ctx",
+          "actual": [
+            "57.3",
+            "[53.2, 61.2]"
+          ],
+          "expected": [
+            "57.3",
+            "[53.2, 61.2]"
+          ],
+          "match": true
+        },
+        {
+          "key": "owlv2",
+          "actual": [
+            "43.2",
+            "[39.5, 46.9]"
+          ],
+          "expected": [
+            "43.2",
+            "[39.5, 46.9]"
+          ],
+          "match": true
+        },
+        {
+          "key": "chance",
+          "actual": [
+            "45.7",
+            "—"
+          ],
+          "expected": [
+            "45.7",
+            "—"
+          ],
+          "match": true
+        }
+      ]
+    },
+    {
+      "name": "export_recomputed_raw_balanced_and_chance",
+      "status": "passed",
+      "details": "Re-exporter compared saved item predictions, query identity, original raw/chance and balanced tables; exported fields agree with preserved evidence."
+    },
+    {
+      "name": "numeric_prose_claims",
+      "status": "passed",
+      "details": {
+        "native_AP": [
+          "46.8",
+          "46.8"
+        ],
+        "clear_P2_448": [
+          "26.4",
+          "26.4"
+        ],
+        "clear_pointing_448": [
+          "67.5",
+          "67.5"
+        ],
+        "largest_raw_size": [
+          "87.3",
+          "87.3"
+        ],
+        "owlv2_raw_size": [
+          "64.7",
+          "64.7"
+        ],
+        "owlv2_bal_size": [
+          "41.7",
+          "41.7"
+        ],
+        "dcsm_obja_without": [
+          "38.7",
+          "38.7"
+        ],
+        "dcsm_coco_without": [
+          "37.5",
+          "37.5"
+        ],
+        "chance_without": [
+          "48.1",
+          "48.1"
+        ],
+        "ordinary_tok_without": [
+          "55.7",
+          "55.7"
+        ],
+        "ordinary_tok_spatial": [
+          "50.0",
+          "50.0"
+        ],
+        "mask_tok_spatial": [
+          "43.4",
+          "43.4"
+        ],
+        "clear_tok_spatial": [
+          "42.5",
+          "42.5"
+        ]
+      }
+    },
+    {
+      "name": "paired_difference_estimates_and_intervals",
+      "status": "passed",
+      "details": [
+        {
+          "key": "dcsm_obja_ctx - chance",
+          "actual": [
+            "12.4",
+            "8.0",
+            "16.7"
+          ],
+          "expected": [
+            "12.4",
+            "8.0",
+            "16.7"
+          ],
+          "match": true
+        },
+        {
+          "key": "dcsm_obja_ctx - readout/clearclip/pooled",
+          "actual": [
+            "18.7",
+            "13.1",
+            "24.2"
+          ],
+          "expected": [
+            "18.7",
+            "13.1",
+            "24.2"
+          ],
+          "match": true
+        }
+      ]
+    },
+    {
+      "name": "figure_estimates_and_intervals",
+      "status": "passed",
+      "details": {
+        "source": "../evidence/cluster_bootstrap.json#/subsets/spatial/balanced",
+        "keys": [
+          "dcsm_obja_ctx",
+          "dcsm_coco_ctx",
+          "readout/naive/pooled",
+          "readout/clearclip/pooled",
+          "clip_ctx",
+          "owlv2"
+        ],
+        "estimates_percent": [
+          58.10414294473154,
+          57.25380280867712,
+          50.27298473037284,
+          39.4178272167236,
+          39.0331669148346,
+          43.21552655396923
+        ],
+        "lower_error_percent": [
+          4.359235433907905,
+          4.075756122991777,
+          3.6990171674740395,
+          3.6077573881798273,
+          3.6803529958122496,
+          3.7054999818667653
+        ],
+        "upper_error_percent": [
+          4.287347718436671,
+          3.9779390671872292,
+          3.67603769633606,
+          3.6894323954794217,
+          3.6435256776194365,
+          3.668288294633072
+        ],
+        "chance_percent": 45.74882241881014
+      }
+    },
+    {
+      "name": "citation_keys_and_bibtex_resolution",
+      "status": "passed",
+      "details": {
+        "cites": [
+          "bianchi2023fgovd",
+          "kang2025dcsm",
+          "lan2024clearclip",
+          "lin2014coco",
+          "minderer2022owlvit",
+          "minderer2023owlv2",
+          "radford2021clip",
+          "zhou2021maskclip"
+        ],
+        "bibkeys": [
+          "bianchi2023fgovd",
+          "kang2025dcsm",
+          "lan2024clearclip",
+          "lin2014coco",
+          "minderer2022owlvit",
+          "minderer2023owlv2",
+          "radford2021clip",
+          "zhou2021maskclip"
+        ],
+        "bblkeys": [
+          "bianchi2023fgovd",
+          "kang2025dcsm",
+          "lan2024clearclip",
+          "lin2014coco",
+          "minderer2022owlvit",
+          "minderer2023owlv2",
+          "radford2021clip",
+          "zhou2021maskclip"
+        ]
+      }
+    },
+    {
+      "name": "bibliography_preserved",
+      "status": "passed",
+      "details": "Copied original verified bibliography without metadata invention."
+    },
+    {
+      "name": "no_duplicate_labels",
+      "status": "passed",
+      "details": [
+        "introduction-and-related-work",
+        "methods-and-evaluation",
+        "dense-readouts-and-aggregation",
+        "localization-and-detection",
+        "conditional-relational-selection",
+        "balancing-and-uncertainty",
+        "results",
+        "category-localization-and-proposal-gains",
+        "tab:1",
+        "relational-gains-do-not-follow-the-same-ranking",
+        "tab:2",
+        "fig:spatial",
+        "construction-diagnostics-constrain-the-interpretation",
+        "discussion-and-limitations",
+        "conclusion",
+        "acknowledgements-and-evidence-availability",
+        "main-text-end"
+      ]
+    },
+    {
+      "name": "figures_exist",
+      "status": "passed",
+      "details": [
+        "figures/spatial_balanced.pdf"
+      ]
+    },
+    {
+      "name": "no_horizontal_overflow_or_critical_vertical_overflow",
+      "status": "passed",
+      "details": {
+        "overfull": [],
+        "undefined_or_missing": [],
+        "policy": "No horizontal overflow accepted. A <=2pt balance-package internal vbox is a reported warning requiring direct visual confirmation and page-region checks, not an invisible ignored error."
+      }
+    },
+    {
+      "name": "no_layout_cheats",
+      "status": "passed",
+      "details": "10pt article, letter paper, 0.75in margins, 0.25in column gap; no negative spacing or text scaling; clearpage only separates references."
+    },
+    {
+      "name": "actual_body4_references_separate",
+      "status": "passed",
+      "details": {
+        "total_pages": 5,
+        "body_pages": 4,
+        "reference_pages": 1,
+        "reference_start_pages": [
+          5
+        ]
+      }
+    },
+    {
+      "name": "abstract_complete_in_pdf",
+      "status": "passed",
+      "details": "First build lost text after an unescaped percent; corrected by converting abstract independently, then wrapping its escaped LaTeX."
+    },
+    {
+      "name": "both_columns_populated_on_body_pages",
+      "status": "passed",
+      "details": [
+        {
+          "page": 1,
+          "size_pdf_points": [
+            612.0,
+            792.0
+          ],
+          "text_chars": 4561,
+          "left_column_lines": 46,
+          "right_column_lines": 49,
+          "font_counts": [
+            {
+              "font": "TeXGyreTermesX-Regular",
+              "size_pdf_bp": 9.963,
+              "span_count": 682
+            },
+            {
+              "font": "NewTXMI",
+              "size_pdf_bp": 9.963,
+              "span_count": 18
+            },
+            {
+              "font": "txmiaX",
+              "size_pdf_bp": 9.963,
+              "span_count": 6
+            },
+            {
+              "font": "TeXGyreTermesX-Bold",
+              "size_pdf_bp": 14.346,
+              "span_count": 5
+            },
+            {
+              "font": "txsys",
+              "size_pdf_bp": 9.963,
+              "span_count": 5
+            }
+          ],
+          "render": "renders/page-1.png"
+        },
+        {
+          "page": 2,
+          "size_pdf_points": [
+            612.0,
+            792.0
+          ],
+          "text_chars": 5888,
+          "left_column_lines": 44,
+          "right_column_lines": 45,
+          "font_counts": [
+            {
+              "font": "TeXGyreTermesX-Regular",
+              "size_pdf_bp": 9.963,
+              "span_count": 732
+            },
+            {
+              "font": "NewTXMI",
+              "size_pdf_bp": 9.963,
+              "span_count": 23
+            },
+            {
+              "font": "LMMono10-Regular",
+              "size_pdf_bp": 9.963,
+              "span_count": 18
+            },
+            {
+              "font": "TeXGyreTermesX-Regular",
+              "size_pdf_bp": 7.273,
+              "span_count": 10
+            },
+            {
+              "font": "NewTXMI7",
+              "size_pdf_bp": 7.273,
+              "span_count": 8
+            }
+          ],
+          "render": "renders/page-2.png"
+        },
+        {
+          "page": 3,
+          "size_pdf_points": [
+            612.0,
+            792.0
+          ],
+          "text_chars": 5150,
+          "left_column_lines": 48,
+          "right_column_lines": 52,
+          "font_counts": [
+            {
+              "font": "TeXGyreTermesX-Regular",
+              "size_pdf_bp": 9.963,
+              "span_count": 767
+            },
+            {
+              "font": "TeXGyreTermesX-Bold",
+              "size_pdf_bp": 11.955,
+              "span_count": 28
+            },
+            {
+              "font": "TeXGyreTermesX-Bold",
+              "size_pdf_bp": 14.346,
+              "span_count": 2
+            },
+            {
+              "font": "txsys",
+              "size_pdf_bp": 9.963,
+              "span_count": 1
+            },
+            {
+              "font": "NewTXMI",
+              "size_pdf_bp": 9.963,
+              "span_count": 1
+            }
+          ],
+          "render": "renders/page-3.png"
+        },
+        {
+          "page": 4,
+          "size_pdf_points": [
+            612.0,
+            792.0
+          ],
+          "text_chars": 3655,
+          "left_column_lines": 30,
+          "right_column_lines": 30,
+          "font_counts": [
+            {
+              "font": "TeXGyreTermesX-Regular",
+              "size_pdf_bp": 9.963,
+              "span_count": 410
+            },
+            {
+              "font": "DejaVuSans",
+              "size_pdf_bp": 8.804,
+              "span_count": 11
+            },
+            {
+              "font": "TeXGyreTermesX-Bold",
+              "size_pdf_bp": 14.346,
+              "span_count": 9
+            }
+          ],
+          "render": "renders/page-4.png"
+        },
+        {
+          "page": 5,
+          "size_pdf_points": [
+            612.0,
+            792.0
+          ],
+          "text_chars": 1938,
+          "left_column_lines": 37,
+          "right_column_lines": 0,
+          "font_counts": [
+            {
+              "font": "TeXGyreTermesX-Regular",
+              "size_pdf_bp": 9.963,
+              "span_count": 326
+            },
+            {
+              "font": "TeXGyreTermesX-Italic",
+              "size_pdf_bp": 9.963,
+              "span_count": 19
+            },
+            {
+              "font": "LMMono10-Regular",
+              "size_pdf_bp": 9.963,
+              "span_count": 12
+            },
+            {
+              "font": "TeXGyreTermesX-Bold",
+              "size_pdf_bp": 14.346,
+              "span_count": 1
+            }
+          ],
+          "render": "renders/page-5.png"
+        }
+      ]
+    },
+    {
+      "name": "content_within_page_text_region",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "name": "existing_project_inputs_preserved",
+      "status": "failed",
+      "details": {
+        "files_compared": 114,
+        "changed_files": [
+          "plan/03_paper_pipeline.md"
+        ]
+      }
+    }
+  ],
+  "warnings": {
+    "underfull_count": 15,
+    "underfull": [
+      "Underfull \\hbox (badness 1910) in paragraph at lines 17--34",
+      "Underfull \\hbox (badness 1142) in paragraph at lines 17--34",
+      "Underfull \\hbox (badness 3907) in paragraph at lines 38--46",
+      "Underfull \\hbox (badness 10000) in paragraph at lines 127--134",
+      "Underfull \\hbox (badness 1082) in paragraph at lines 127--134",
+      "Underfull \\hbox (badness 1496) in paragraph at lines 237--245",
+      "Underfull \\hbox (badness 2197) in paragraph at lines 237--245",
+      "Underfull \\hbox (badness 1087) in paragraph at lines 251--259",
+      "Underfull \\hbox (badness 10000) in paragraph at lines 279--284",
+      "Underfull \\hbox (badness 1701) in paragraph at lines 392--400",
+      "Underfull \\hbox (badness 10000) in paragraph at lines 417--417",
+      "Underfull \\hbox (badness 2689) in paragraph at lines 40--47",
+      "Underfull \\hbox (badness 2376) in paragraph at lines 40--47",
+      "Underfull \\hbox (badness 4621) in paragraph at lines 40--47",
+      "Underfull \\hbox (badness 4792) in paragraph at lines 56--64"
+    ],
+    "meaning": "Nonfatal justified-line spacing warnings; visual review recorded separately.",
+    "overfull": [],
+    "overfull_vbox_pt": [],
+    "microtype_bbox_tolerance_pdf_bp": 3
+  },
+  "visual_review": {
+    "status": "pending_final_render_review",
+    "method": "Native vision inspection of full-page PNG renders; no independent reviewer or automated perception benchmark."
+  },
+  "not_verified": [
+    "Human label validation",
+    "Exact checkpoint identity and training overlap",
+    "Novelty and venue compliance",
+    "Original inference reproducibility",
+    "Detection/localization confidence intervals",
+    "Independent human peer review",
+    "chktex unavailable"
+  ],
+  "artifact_sha256": {
+    "shortpaper.md": "2f106b7270b274cee6da18484de8f84ff7d0d3db99c4b52a70adc1f63d16a964",
+    "shortpaper.tex": "de06eba2f9d577d6f852e290015a70694c65e534d3caa93928f618c6ab80fc8f",
+    "shortpaper.pdf": "b0ee73d9a6b024adf2fec61c7de8e7c17b7f40252841fd9309d8424897064867",
+    "references.bib": "28db8accb1cc06376079f1a1e5980c64b3c202379e18c7f6fe186360b205d515",
+    "figures/spatial_balanced.pdf": "f7a7e9bf48b907eb0280670ef31529083a575e9bb660b6687b96e73d9e68a02f"
+  }
+}

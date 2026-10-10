@@ -1,0 +1,948 @@
+##### Report GitHub Issue
+
+Content selection saved. Describe the issue below:
+
+![](/static/base/1.0.1/images/icons/smileybones-small.svg)
+![arXiv logo](/static/base/1.0.1/images/arxiv-logo-primary-light.svg)
+
+# Is CLIP ideal? No. Can we fix it? Yes!
+
+###### Abstract
+
+Contrastive Language-Image Pre-Training (CLIP) is a popular method for learning multimodal latent spaces with well-organized semantics.
+Despite its wide range of applications, CLIP’s latent space is known to fail at handling complex visual-textual interactions.
+Recent works attempt to address its shortcomings with data-centric or algorithmic approaches. But what if the problem is more fundamental, and lies in the geometry of CLIP?
+Toward this end, we rigorously analyze CLIP’s latent space properties, and prove that no CLIP-like joint embedding space exists which can correctly do any two of the following at the same time: 1. represent basic descriptions and image content, 2. represent attribute binding, 3. represent spatial location and relationships, 4. represent negation.
+Informed by this analysis, we propose Dense Cosine Similarity Maps (DCSMs) as a principled and interpretable scoring method for CLIP-like models, which solves the fundamental limitations of CLIP by retaining the semantic topology of the image patches and text tokens. This method improves upon the performance of classical CLIP-like joint encoder models on a wide array of benchmarks. We share our code and data here for reproducibility: <https://github.com/Raphoo/DCSM_Ideal_CLIP>
+
+## 1 Introduction
+
+Contrastive Language-Image Pre-Training (CLIP) is a widely used method for pretraining vision language model (VLM) embeddings in downstream applications [[49](#bib.bib1)]. It jointly trains an image and text encoder, mapping both modalities into a shared latent space. In this space, cosine similarity between embeddings reflects semantic similarity between the text and image: a high value indicates a semantic match between text and image, while a low value suggests that they are unrelated.
+
+CLIP is simple, computationally efficient, and CLIP-based zero-shot multimodal tasks such as image classification and text-based retrieval can be impressively accurate. Unlike autoregressive models where an increasingly large number of images and texts to compare requires prohibitively longer context windows, CLIP can process each image and text prompt separately and only requires a simple inner product calculation for scoring. As a result, the list of systems that use CLIP embeddings toward more complex capabilities, such as image captioning [[25](#bib.bib40)], visual question answering [[54](#bib.bib38)], and text-guided image manipulation/generation [[20](#bib.bib36), [40](#bib.bib37)], gets longer by the day.
+
+![Refer to caption](2503.08723v2/mainfig-drawio4.png)
+
+CLIP, however, is not perfect. It struggles with spatial reasoning and compositional understanding [[69](#bib.bib18), [19](#bib.bib71), [59](#bib.bib7)], concept and attribute binding [[23](#bib.bib22), [39](#bib.bib57), [8](#bib.bib41)], as well as negation [[1](#bib.bib59), [55](#bib.bib8)], to name a few shortcomings. Examples in Fig. [1](#S1.F1 "Figure 1 ‣ 1 Introduction ‣ Is CLIP ideal? No. Can we fix it? Yes!") demonstrate these failure modes.
+These defects of CLIP impact downstream models and tasks. For example, search engines which use CLIP will bring up images of yellow coats to the prompt “not a yellow coat", and CLIP-based generative models cannot reflect spatial relationships in the text prompt.
+Ever since CLIP’s conception, the vision-language community has worked to improve its semantics via adjustments in the training data [[69](#bib.bib18), [63](#bib.bib14), [55](#bib.bib8), [1](#bib.bib59), [42](#bib.bib5), [48](#bib.bib15), [21](#bib.bib16), [62](#bib.bib26), [30](#bib.bib30)] or the architecture and training procedure [[27](#bib.bib19), [28](#bib.bib28), [53](#bib.bib6), [9](#bib.bib20), [61](#bib.bib4), [37](#bib.bib23), [72](#bib.bib13)].
+But could we be pushing Sisyphus’s boulder?
+In this work, we suggest to take a step back and reassess CLIP’s basic geometry and philosophy from first principles.
+
+We ask two questions: (1) Is it possible for there to exist a CLIP-like latent space which has all the properties necessary to succeed in popular VLM tasks, using cosine similarity as the reference metric?
+(2) If no such space exists - is there a way to “rescue" this latent space without forsaking CLIP altogether?
+
+To address these queries, we first formalize the geometry of the CLIP latent space and establish a list of conditions which must be satisfied in order for it to understand the precise meaning of images and texts, as required by popular VLM benchmarks [[59](#bib.bib7), [69](#bib.bib18), [19](#bib.bib71), [23](#bib.bib22), [1](#bib.bib59), [16](#bib.bib12)]. Second, we show that these conditions are not achievable when using cosine similarity on the unit hypersphere. This answers the first question: an ideal CLIP space cannot exist. Finally, we propose a lightweight downstream CNN which utilizes a topological map relying on cosine similarity scores between each text token and image patch embedding, to produce a more perceptive text-image distance score in lieu of naive cosine similarity in CLIP-space.
+
+In summary, our contributions are:
+
+Problem Identification: We find that naive cosine similarity on unit vector embeddings have fundamental geometric restrictions preventing it from accurately representing (1) attribute binding to distinct object concepts, (2) spatial relationships and location, and (3) negation.
+
+Analysis/Proof: We define the CLIP latent space as a projection of images and texts which are composed of atomic objects, attributes, and spatial relationships, and formalize desired conditions for the latent space in order for it to succeed on existing VLM benchmarks. We prove for each condition that no satisfactory vector space exists.
+
+Topology as a Solution: We propose to use a Dense Cosine Similarity Map (DCSM) from pre-trained CLIP to produce a more comprehensive text-image score. We present a prototype with a simple two-layer CNN module.
+
+Experimental evaluation: We evaluate our method on multiple benchmark regimes against CLIP-like models, and observe consistent performance gain across tasks.
+
+## 2 Prior Work
+
+Vision Language Models. Building upon the principles of large-scale contrastive pretraining and joint representation learning, recent CLIP-like VLMs [[17](#bib.bib64), [67](#bib.bib65), [67](#bib.bib65), [38](#bib.bib66), [26](#bib.bib67), [68](#bib.bib68)] have significantly bridged the gap between vision and language. Beyond CLIP models, autoregressive VLMs  [[33](#bib.bib69), [34](#bib.bib70)] have emerged as compelling alternatives by jointly attending to both text and image embeddings. Neurosymbolic program synthesis methods [[57](#bib.bib50), [15](#bib.bib49), [36](#bib.bib51)] also mitigate some of CLIP’s limitations by formulating text-image semantic distance acquisition as several sub-problems. While these methods are more comprehensive than CLIP in complex visual reasoning, most of them rely on a latent space of CLIP-like models as a core submodule. As such, there remains a strong motivation to continue improving CLIP architectures by addressing their inherent shortcomings.
+
+Empirical Limitations of CLIP. A growing body of work has revealed several limitations of CLIP in handling complex visual-text interactions. Specifically, CLIP struggles with accurately binding attributes to concepts in multi-object scenes [[23](#bib.bib22), [39](#bib.bib57), [8](#bib.bib41)], exhibits misinterpretations of object layouts or conflates multiple entities within a single scene [[69](#bib.bib18), [23](#bib.bib22), [39](#bib.bib57)], and has difficulty in accurately representing negation [[1](#bib.bib59), [55](#bib.bib8)]. To systematically evaluate these limitations, various vision language benchmarks have been proposed targeting different tasks, including attributes, relationships, and order (ARO) [[69](#bib.bib18)], Sugarcrepe [[16](#bib.bib12)], VL-checklist [[75](#bib.bib29)], WhatsUp [[19](#bib.bib71)], Multimodal Visual Patterns (MMVP) [[58](#bib.bib72)], and NegBench [[1](#bib.bib59)].
+
+![Refer to caption](2503.08723v2/concepts_and_embeddings-drawio2.png)
+
+Geometric Analysis of CLIP.
+Several studies have examined the geometric properties of CLIP. Some works empirically assess the CLIP latent space and find that existing CLIP models underutilize the latent space by having a modality gap between text and image embeddings [[31](#bib.bib24)], being highly anisotropic even within the same modality [[22](#bib.bib25)],
+and that CLIP training is empirically unstable [[56](#bib.bib27)]. Beyond these empirical studies, one work rigorously defines CLIP as a mapping from images and texts to a latent unit hypersphere [[7](#bib.bib11)].
+Our work extends this perspective.
+
+Other works propose alternative geometries/similarity measures for CLIP. For instance, [[13](#bib.bib63)] and
+[[46](#bib.bib76)] present hyperbolic CLIP using Lorentzian distance.
+
+These show
+great potential, but as they do not aim to offer formal logical analysis of geometries/metrics, there is no conclusive
+evidence that they resolve the fundamental ambiguity in
+CLIP.
+
+Extended related work is provided in the Supplements.
+
+## 3 The Ideal CLIP
+
+The goal of CLIP is “to efficiently learn visual concepts from natural language supervision” [[49](#bib.bib1)].
+What are visual concepts? We first establish formal notations with which to discuss visual concepts in the latent space. Once we have the tools to discuss CLIP mathematically, we will formalize the properties necessary to make CLIP ideal.
+
+Fig. [2](#S2.F2 "Figure 2 ‣ 2 Prior Work ‣ Is CLIP ideal? No. Can we fix it? Yes!") illustrates how we think about the relationship between the world, its representation in images and language, and the eventual projection of images and text onto CLIP space.
+In this view, the “gist” of scene perception is broken down into categorization of objects, their salient attributes, and the spatial layout of the scene, as proposed by the cognitive psychology literature [[5](#bib.bib55), [52](#bib.bib33), [24](#bib.bib73), [41](#bib.bib43), [14](#bib.bib74), [64](#bib.bib44)]. Theories of perceptual symbol systems [[3](#bib.bib42), [4](#bib.bib48), [18](#bib.bib52)] propose that object categories and spatial relationships are atomic symbols, combinatorially and recursively combined to create scene representations. The Dual Coding theory of cognition [[45](#bib.bib54), [44](#bib.bib53), [43](#bib.bib47)] proposes that these composed concepts can be represented as language, imagery, or both.
+
+In the following we formalize these intuitions with precise definitions, with the goal of analyzing CLIP properties.
+
+### 3.1 Concepts, attributes, and compositions
+
+This section sets up a simplified world, which is a strict subset of the real world, within which we will explore whether it is possible to have an ideal  CLIP. Our goal is to show that this is not possible and therefore, a fortiori, an ideal CLIP is not possible in more general worlds.
+
+###### Definition 1.
+
+(CLIP Embedding Space CC).
+CLIP embeddings are unit vectors which occupy an NN-dimensional unit hypersphere.
+Let 𝕀\mathbb{I} denote any set of images and let 𝕋\mathbb{T} any set of texts. Then a CLIP-like model is a pair of functions (i, t) where for some Euclidean vector space CC, consisting of NN-dimensional unit vectors, we have that i : 𝕀\mathbb{I} → CC and t : 𝕋\mathbb{T}→ CC. That is, i and t are injective functions which map images and text descriptions into C∈SN−1C\in S^{N-1} where SN−1S^{N-1} denotes the unit-(NN-1) sphere: SN−1={i(x),t(x)∈ℝN:‖i(x)‖2=‖t(x)‖2=1}{S^{N-1}=\left\{\textbf{i}(x),\textbf{t}(x)\in\mathbb{R}^{N}:\left\|\textbf{i}(x)\right\|\_{2}=\left\|\textbf{t}(x)\right\|\_{2}=1\right\}}.
+
+###### Definition 2.
+
+(Atomic Concept Set 𝕍\mathbb{V}).
+In the real world, there exist ≫N\gg N object concepts. These have hierarchy, and can be homonyms, polysemous, heteronyms, or synonyms. Let 𝕍\mathbb{V} be a small subset of this real world object concept set, where every xx in 𝕍\mathbb{V} has a distinct visual and linguistic counterpart, and all x∈𝕍x\in\mathbb{V} are semantically mutually exclusive, *e.g.* no xx is a subclass of another. We select 𝕍\mathbb{V} so that it contains fewer than NN objects: |𝕍|=M≤N|\mathbb{V}|=M\leq N.
+
+Each concept, *e.g.* "apple", corresponds to many physical objects, and each object may be portrayed in many different images. Now consider one representative element, one image, for each set of images corresponding to a concept, and one representative element for each set of texts corresponding to a concept. In this way, we are defining injective functions fV,If\_{V,I}: 𝕍→𝕀\mathbb{V}\rightarrow\mathbb{I} and fV,Tf\_{V,T}: 𝕍→𝕋\mathbb{V}\rightarrow\mathbb{T} which act upon every element in 𝕍\mathbb{V}. For the representative image which visually represents concept x∈𝕍x\in\mathbb{V}, let its CLIP embedding be: i​(fV,I​(x))\textbf{i}(f\_{V,I}(x)), which unless otherwise specified we will denote as i​(x)∈SN−1\textbf{i}(x)\in S^{N-1}. Similarly we denote some unique text representation of xx as t​(fV,T​(x))=t​(x)∈SN−1\textbf{t}(f\_{V,T}(x))=\textbf{t}(x)\in S^{N-1}.
+Justifications for assumptions are provided in the supplements.
+
+###### Definition 3.
+
+(Attribute Representation Set 𝔸\mathbb{A}).
+In the real world, there exist ≫N\gg N attribute concepts. An attribute is not itself an object, but rather a property of the object, like color, size, and material.
+Then let 𝔸\mathbb{A} be a subset of this large attribute set, where every aa in 𝔸\mathbb{A} is a discrete and visually distinct attribute, and can be applied to every instance of xx in 𝕍\mathbb{V}.
+For every a∈𝔸a\in\mathbb{A}, aa has one equivalent item in 𝕋\mathbb{T}, such that there exists some injective function fA,Tf\_{A,T}: 𝔸→𝕋\mathbb{A}\rightarrow\mathbb{T}.
+
+Let i​(xa)\textbf{i}(x\_{a}) denote an image embedding where concept xx has attribute aa.
+For any given object, some attributes are highly characteristic (*e.g.,*“red" is a defining feature for an “apple"), some are relatively neutral (*e.g.,* “red" for a “car" may not be as informative), and some are unlikely to be associated with that object (*e.g.,* “red" for a “raccoon").
+The representative embedding i​(x)\textbf{i}(x) ∀x∈𝕍\forall x\in\mathbb{V} implicitly portrays attributes that are most likely or typical for that concept.
+
+###### Definition 4.
+
+(Compositional Concept Set 𝔾\mathbb{G})
+In the real world, there exist ≫N\gg N compositional concepts, *i.e.,* concepts which describe the composition of a scene.
+Then let 𝔾\mathbb{G} be a subset of the real compositional concept set, consisting only of elements which describe the absolute location of one object (denoted g<l​o​c>g^{<loc>}) or the spatial relationship between two objects (denoted g<r​e​l>g^{<rel>}).
+Each element in 𝔾\mathbb{G} has a unique equivalent text description in 𝕋\mathbb{T}. That is, there exists an injective function fG,Tf\_{G,T}: 𝔾→𝕋\mathbb{G}\rightarrow\mathbb{T}.
+
+For example, for the compositional concept of one object being above another object, we use the notation ga​b​o​v​e<r​e​l>g^{<rel>}\_{above}, which has the text representation “above".
+(In the next definition we explain our notation for using compositional concepts in context with other concepts.)
+When two objects xx and yy appear in the same image, a spatial relationship is there between them. If one wishes to marginalize this aspect out one may use the notation i​(x,y)\textbf{i}(x,y) to denote the mean embedding of images depicting concepts xx and yy, averaged over all spatial arrangements of xx and yy in the fixed frame.
+
+###### Definition 5.
+
+(Combinatorial Clause Set
+𝕊\mathbb{S}) 
+In the real world, object, attribute, and compositional concepts can be organized to create semantic clauses. These are a combination of concepts which add context to a unified scene.
+Let 𝕊∗\mathbb{S^{\*}} be a set of all finite ordered combinations of elements from 𝕍\mathbb{V}, 𝔸\mathbb{A}, and 𝔾\mathbb{G}. It is a union of all n-fold Cartesian products of the full outer joined set of the three.
+
+|  |  |  |
+| --- | --- | --- |
+|  | 𝕊∗=⋃n=1∞(𝔸∪𝔾∪𝕍)n\mathbb{S^{\*}}=\bigcup\_{n=1}^{\infty}\bigl(\mathbb{A}\cup\mathbb{G}\cup\mathbb{V}\bigr)^{n} |  |
+
+Every element in 𝕊∗\mathbb{S^{\*}} has an equivalent text description in 𝕋\mathbb{T}. Now, let 𝕊\mathbb{S} be a subset of elements from 𝕊∗\mathbb{S}^{\*} whose textual counterpart is grammatically correct, such that there exist equivalent and distinct mappings between every item in 𝕊\mathbb{S} and 𝕀\mathbb{I},𝕋\mathbb{T}. This means there exist injective functions fS,If\_{S,I}: 𝕊→𝕀\mathbb{S}\rightarrow\mathbb{I} and fS,Tf\_{S,T}: 𝕊→𝕋\mathbb{S}\rightarrow\mathbb{T}. For example, the joined clause of the object concept of a glove and the attribute concept of the color blue, s=(xg​l​o​v​e,ab​l​u​e)∈𝕊s=(x\_{glove},a\_{blue})\in\mathbb{S},
+maps to the textual phrase “blue glove" and to an image of a blue glove.
+
+By convention, any g<l​o​c>g^{<loc>} declares the location of the preceding object in the clause. That is, fS,T​((x,gr​i​g​h​t))=“x to the right"f\_{S,T}((x,g\_{right}))=\text{``$x$ to the right"}. Similarly, any g<r​e​l>g^{<rel>} in between two objects influences both in that order: fS,T​((,,,,,))=“x below y"f\_{S,T}((x,g\_{below},y))=\text{``$x$ below $y$"}. Combinations of concepts are shown in green in Fig. [2](#S2.F2 "Figure 2 ‣ 2 Prior Work ‣ Is CLIP ideal? No. Can we fix it? Yes!").
+For simplicity, we denote i​(fS,I​((x,a)))=i​(xa)\textbf{i}(f\_{S,I}((x,a)))=\textbf{i}(x\_{a}) unless otherwise specified.
+Similarly, we denote scenes composed of multiple objects as i​(fS,I​((x,y)))=i​(x,y),∀x,y∈𝕍\textbf{i}(f\_{S,I}((x,y)))=\textbf{i}(x,y),\forall x,y\in\mathbb{V} as shorthand.
+
+| Notation | Explanation |
+| --- | --- |
+| i​(⋅),t​(⋅)\textbf{i}(\cdot),\textbf{t}(\cdot) | CLIP image and text embeddings |
+| 𝕀,𝕋\mathbb{I},\mathbb{T} | Set of images and texts |
+| 𝕍\mathbb{V} | Set of atomic object concepts |
+| 𝔸\mathbb{A} | Set of atomic attributes |
+| 𝔾\mathbb{G} | Set of compositional relations |
+| 𝕊\mathbb{S} | Finite ordered combinations of elts from 𝕍,𝔸\mathbb{V},\mathbb{A}, ℝ\mathbb{R} |
+| i​(xa)\textbf{i}(x\_{a}) | Image embedding of object xx with attribute aa |
+
+### 3.2 Geometric Requirements for an Ideal CLIP
+
+We will assume that CLIP encoders can project any image and text as vectors in an “ideal” location in the latent space iff there exists such a location. By “ideal location”, we mean the semantic distance between image and text embeddings aligns well with human understanding.
+If under this oracle encoder setting we find inherent contradictions which prohibit an “ideal" latent space from existing, the conclusions will generalize to the real life setting which is a superset of the concepts we consider, with non-oracle i, t. We justify the need for each condition in the supplements. CC is “ideal” if it fulfills all following conditions:
+
+###### Condition 1.
+
+(Concept Categorization)
+Satisfaction of this condition requires that
+(1.1) CC represents basic descriptions and image content.
+
+|  |  |  |  |  |
+| --- | --- | --- | --- | --- |
+|  | i​(x)⋅t​(x)\displaystyle\textbf{i}(x)\cdot\textbf{t}(x) | >\displaystyle> | i​(x)⋅t​(y)\displaystyle\textbf{i}(x)\cdot\textbf{t}(y) |  |
+|  |  |  |  |  |
+| --- | --- | --- | --- | --- |
+|  | i​(x,y)⋅t​(x)\displaystyle\textbf{i}(x,y)\cdot\textbf{t}(x) | >\displaystyle> | i​(x,y)⋅t​(z)∀x​, ​y​, ​z∈𝕍\displaystyle\textbf{i}(x,y)\cdot\textbf{t}(z)\ \ \ \ \forall\ x\text{, }y\text{, }z\ \in\mathbb{V} |  |
+
+(1.2) Images that contain the same semantic concept(s) but differ due to an attribute or scene composition, should have higher cosine similarity with each other than with an image that contains a different set of semantic concepts.
+
+|  |  |  |  |  |
+| --- | --- | --- | --- | --- |
+|  | i​(xa)⋅i​(xb)\displaystyle\textbf{i}(x\_{a})\cdot\textbf{i}(x\_{b}) | >\displaystyle> | i​(xa)⋅i​(y)\displaystyle\textbf{i}(x\_{a})\cdot\textbf{i}(y) |  |
+|  |  |  |  |  |
+| --- | --- | --- | --- | --- |
+|  | i​(x,g1<l​o​c>)⋅i​(x,g2<l​o​c>)\displaystyle\textbf{i}(x,g\_{1}^{<loc>})\cdot\textbf{i}(x,g\_{2}^{<loc>}) | >\displaystyle> | i​(x)⋅i​(y)\displaystyle\textbf{i}(x)\cdot\textbf{i}(y) |  |
+|  |  |  |  |  |
+| --- | --- | --- | --- | --- |
+|  | ∀ x,y ∈𝕍, ∀ a,b∈𝔸,\displaystyle\forall\text{ }x,y\text{ }\in\mathbb{V}\text{, }\forall\text{ }a,b\in\mathbb{A}\text{, } |  | ∀ g1<l​o​c>,g2<l​o​c>∈𝔾\displaystyle\forall\text{ }g\_{1}^{<loc>},g\_{2}^{<loc>}\in\mathbb{G} |  |
+
+###### Condition 2.
+
+(Attribute Binding)
+CC respects attribute binding. More specifically: (2.1) concepts with different attributes are not parallel in CLIP space.
+
+|  |  |  |
+| --- | --- | --- |
+|  | i​(xa)⋅i​(xb)<1∀a,b∈𝔸\textbf{i}(x\_{a})\cdot\textbf{i}(x\_{b})<1\quad\forall a,b\in\mathbb{A} |  |
+
+(2.2) Images representing a concept with a specific attribute are closer in CLIP space to its text embedding.
+
+|  |  |  |
+| --- | --- | --- |
+|  | i​(xa)⋅t​(a)>i​(xb)⋅t​(a)\textbf{i}(x\_{a})\cdot\textbf{t}(a)>\textbf{i}(x\_{b})\cdot\textbf{t}(a) |  |
+
+(2.3) Images with the same concepts and attributes present but in different pairings are not parallel in CLIP space.
+
+|  |  |  |
+| --- | --- | --- |
+|  | i​(xa,yb)⋅i​(xb,ya)<1\textbf{i}(x\_{a},y\_{b})\cdot\textbf{i}(x\_{b},y\_{a})<1 |  |
+
+###### Condition 3.
+
+(Spatial Relationship)
+C respects spatial locations or relationships of objects. This requires that (3.1) images where the same object is in a different location must not have identical embeddings.
+
+|  |  |  |
+| --- | --- | --- |
+|  | i​(x,g1<l​o​c>)⋅i​(x,g2<l​o​c>)<1,∀g1<l​o​c>,g2<l​o​c>∈𝔾\textbf{i}(x,g\_{1}^{<loc>})\cdot\textbf{i}(x,g\_{2}^{<loc>})<1,\quad\forall g\_{1}^{<loc>},g\_{2}^{<loc>}\in\mathbb{G} |  |
+
+(3.2) Images with the same objects but in different spatial relationships must not have identical embeddings.
+
+|  |  |  |
+| --- | --- | --- |
+|  | i​(x,g3<r​e​l>,y)⋅i​(x,g4<r​e​l>,y)<1,∀g3<r​e​l>,g4<r​e​l>∈𝔾\textbf{i}(x,g\_{3}^{<rel>},y)\cdot\textbf{i}(x,g\_{4}^{<rel>},y)<1,\quad\forall g\_{3}^{<rel>},g\_{4}^{<rel>}\in\mathbb{G} |  |
+
+(3.3) Images where an object is in the same location or relationship must be semantically closer than images where it is in a different location or relationship.
+
+|  |  |  |
+| --- | --- | --- |
+|  | i​(x,g1,y)⋅i​(x,g1,z)>i​(x,g1,y)⋅i​(x,g2,z)\textbf{i}(x,g\_{1},y)\cdot\textbf{i}(x,g\_{1},z)>\textbf{i}(x,g\_{1},y)\cdot\textbf{i}(x,g\_{2},z) |  |
+
+###### Condition 4.
+
+(Negation)
+CC respects negation. This requires that (4.1) texts and their negated counterparts must have a similarity score lower than any other pairs.
+
+|  |  |  |
+| --- | --- | --- |
+|  | t​(x)⋅t​(¬x)<t​(y)⋅t​(¬x),∀x,y∈𝕋\textbf{t}(x)\cdot\textbf{t}(\neg x)<\textbf{t}(y)\cdot\textbf{t}(\neg x),\quad\forall\ x,y\in\mathbb{T} |  |
+
+(4.2) An image with some concept must have a lower similarity score with the negated concept text than another text.
+
+|  |  |  |
+| --- | --- | --- |
+|  | i​(x)⋅t​(¬x)<i​(x)⋅t​(y)\textbf{i}(x)\cdot\textbf{t}(\neg x)<\textbf{i}(x)\cdot\textbf{t}(y) |  |
+
+(4.3) Two distinct negated concepts must have higher cosine similarity than the same distinct non-negated concepts, as they have greater semantic overlap.11
+1
+If |𝕍|=M|\mathbb{V}|=M, “not xx” and “not yy” correctly describe M−2M-2 concepts, while “xx” and “yy” describe none of the same things.
+
+|  |  |  |
+| --- | --- | --- |
+|  | t​(x)⋅t​(y)<t​(¬y)⋅t​(¬x)\textbf{t}(x)\cdot\textbf{t}(y)<\textbf{t}(\neg y)\cdot\textbf{t}(\neg x) |  |
+
+## 4 Geometric Contradictions in CLIP
+
+We aim to prove that if some CC meets Condition 1, it cannot meet any other condition to be ideal. Therefore no CC exists which is ideal. Due to space limitations, we only illustrate in detail how fulfillment of Condition 1 prohibits fulfillment of Condition 2 then summarize the rest. Please refer to the Supplements for detailed proofs of the other conditions.
+
+### 4.1 Contradiction for Conditions 1 and 2
+
+###### Lemma 1.
+
+Embeddings of images or texts with two obect concepts must be a linear superposition of the respective single object concept embeddings.
+
+###### Proof.
+
+We derive the ideal placement for i​(x1,x2)\textbf{i}(x^{1},x^{2}) to satisfy Condition 1.1. For this proof, instead of x,yx,y we denote distinct concepts with superscripts: i​(x1),i​(x2),…\textbf{i}(x^{1}),\textbf{i}(x^{2}),... for k∈[1,M]k\in[1,M] (to avoid confusion with attributes, which are denoted as subscripts.)
+The condition states i​(x1,x2)\textbf{i}(x^{1},x^{2}) must have high cosine similarity with i​(x1)\textbf{i}(x^{1}) and i​(x2)\textbf{i}(x^{2}), and low cosine similarity with all other i​(xj)\textbf{i}(x^{j}).
+More formally, CC must solve the following optimization problem:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | i(x1,x2)=argmaxi​(x1,x2)[i(x1,x2)⋅i(x1)+i(x1,x2)⋅i(x2)−∑j=3Mi(x1,x2)⋅i(xj)]s.t.‖i(x1,x2)‖=1\begin{gathered}\textbf{i}(x^{1},x^{2})=\operatorname\*{argmax}\_{\textbf{i}(x^{1},x^{2})}\Big[\textbf{i}(x^{1},x^{2})\cdot\textbf{i}(x^{1})+\textbf{i}(x^{1},x^{2})\cdot\textbf{i}(x^{2})\\ -\sum\_{j=3}^{M}\textbf{i}(x^{1},x^{2})\cdot\textbf{i}(x^{j})\Big]\ \ \text{s.t.}\ \ \left\|\textbf{i}(x^{1},x^{2})\right\|=1\end{gathered} |  | (1) |
+
+i(x1,x2)=argmaxi​(x1,x2)[i(x1,x2)⋅i(x1)+i(x1,x2)⋅i(x2)−∑j=3Mi(x1,x2)⋅i(xj)]s.t.‖i(x1,x2)‖=1\begin{gathered}\textbf{i}(x^{1},x^{2})=\operatorname\*{argmax}\_{\textbf{i}(x^{1},x^{2})}\Big[\textbf{i}(x^{1},x^{2})\cdot\textbf{i}(x^{1})+\textbf{i}(x^{1},x^{2})\cdot\textbf{i}(x^{2})\\
+-\sum\_{j=3}^{M}\textbf{i}(x^{1},x^{2})\cdot\textbf{i}(x^{j})\Big]\ \ \text{s.t.}\ \ \left\|\textbf{i}(x^{1},x^{2})\right\|=1\end{gathered}
+
+Here, the first two terms guide the local placement of i​(x1,x2)\textbf{i}(x^{1},x^{2}), while the last term introduces a global constraint to avoid proximity to other embeddings. The constraint ensures that all embeddings must lie on the unit hypersphere.
+We can expand the sum to see that:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | i(x1,x2)=argmaxi​(x1,x2)[i(x1,x2)⋅(i(x1)+i(x2)+i(x1)+i(x2)−∑j=1Mi(xj))]\begin{split}\textbf{i}(x^{1},x^{2})=\operatorname\*{argmax}\_{\textbf{i}(x^{1},x^{2})}\Big[\textbf{i}(x^{1},x^{2})\\ \cdot\Big(\textbf{i}(x^{1})+\textbf{i}(x^{2})+\textbf{i}(x^{1})+\textbf{i}(x^{2})-\sum\_{j=1}^{M}\textbf{i}(x^{j})\Big)\Big]\end{split} |  | (2) |
+
+Since random vectors in high dimensions will be approximately symmetrically distributed,
+∑j=1Mi​(xj)≈0\sum\_{j=1}^{M}\textbf{i}(x^{j})\approx 0.
+The optimum is then reached when i​(x1,x2)\textbf{i}(x^{1},x^{2}) is parallel to i​(x1)+i​(x2)\textbf{i}(x^{1})+\textbf{i}(x^{2}).
+Thus we see i​(x1,x2)\textbf{i}(x^{1},x^{2}) is a normalized superposition of i​(x1)\textbf{i}(x^{1}) and i​(x2)\textbf{i}(x^{2}), and lies on the geodesic arc between i​(x1)\textbf{i}(x^{1}) and i​(x2)\textbf{i}(x^{2}) on the hypersphere, i.e.,
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | i​(x1,x2)=i​(x1)+i​(x2)‖i​(x1)+i​(x2)‖\boxed{\begin{gathered}\textbf{i}(x^{1},x^{2})=\frac{\textbf{i}(x^{1})+\textbf{i}(x^{2})}{\left\|\textbf{i}(x^{1})+\textbf{i}(x^{2})\right\|}\end{gathered}} |  | (3) |
+
+∎
+
+###### Lemma 2.
+
+CC cannot distinguish between different attribute bindings. That is, i​(xa,yb)=i​(xb,ya)\textbf{i}(x\_{a},y\_{b})=\textbf{i}(x\_{b},y\_{a}).
+
+###### Proof.
+
+We start by deriving the ideal location for i​(xa)\textbf{i}(x\_{a}) in CC where the distance between this unit vector and i​(x)\textbf{i}(x) and t​(a)\textbf{t}(a) is strictly semantically correct per Conditions 1 and 2.1-2.2. Then we derive i​(xa,yb)\textbf{i}(x\_{a},y\_{b}) and i​(xb,ya)\textbf{i}(x\_{b},y\_{a}) to meet Condition 1.1, which will contradict Condition 2.3.
+
+Condition 1.2 states that images of the same object that differ only in attributes (*e.g.,* red car, black car) should be more similar to each other in CC than than images of distinct objects.
+This means that the attribute-specific image embedding can be expressed as a small perturbation of the representative image embedding for that object:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | i​(xa)=(1−δ)​i​(x)+𝐯\textbf{i}(x\_{a})=(1-\delta)\textbf{i}(x)+\mathbf{v} |  | (4) |
+
+where δ≪1\delta\ll 1 is some small positive constant and vector 𝐯\mathbf{v} denotes the attribute-specific change such that ‖i​(xa)‖=1\left\|\textbf{i}(x\_{a})\right\|=1 and i​(xa)⋅i​(x)≥1−δ\textbf{i}(x\_{a})\cdot\textbf{i}(x)\geq 1-\delta.
+
+Now we consider
+two objects xx and yy and two attributes aa and bb where the objects are agnostic to the attributes. More precisely, we consider x,y,a,bx,y,a,b where the semantic distance between each attribute’s text embedding and both objects is equal, *i.e.,*  i​(x)⋅t​(a)=i​(y)⋅t​(a)=cos⁡(θ)\textbf{i}(x)\cdot\textbf{t}(a)=\textbf{i}(y)\cdot\textbf{t}(a)=\cos(\theta) and i​(x)⋅t​(b)=i​(y)⋅t​(b)=cos⁡(ω)\textbf{i}(x)\cdot\textbf{t}(b)=\textbf{i}(y)\cdot\textbf{t}(b)=\cos(\omega). A concept quartet that satisfies this criterion could be xx:car, yy:ball, aa:red, bb: black.
+
+Condition 2.2 states that i​(xa)⋅t​(a)>i​(x)⋅t​(a)\textbf{i}(x\_{a})\cdot\textbf{t}(a)>\textbf{i}(x)\cdot\textbf{t}(a). Therefore, a large component of 𝐯\mathbf{v} in Eq. ([4](#S4.E4 "Equation 4 ‣ Proof. ‣ 4.1 Contradiction for Conditions 1 and 2 ‣ 4 Geometric Contradictions in CLIP ‣ Is CLIP ideal? No. Can we fix it? Yes!")) must be in the direction of t​(a)\textbf{t}(a).
+Below, we will show that if we make the strong assumption that v=p​t​(a)v=p\textbf{t}(a), then i​(xa,yb)=i​(xb,ya)\textbf{i}(x\_{a},y\_{b})=\textbf{i}(x\_{b},y\_{a}). Then we show that the result will be robust even if 𝐯=p​t​(a)+ϵ\mathbf{v}=p\textbf{t}(a)+\boldsymbol{\epsilon} for some noise vector ϵ\boldsymbol{\epsilon}.
+Letting 𝐯=p​t​(a)\mathbf{v}=p\textbf{t}(a), we write
+i​(xa)\textbf{i}(x\_{a}) as a superposition:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | i​(xa)=(1−δ)​i​(x)+p​t​(a)\boxed{\textbf{i}(x\_{a})=(1-\delta)\textbf{i}(x)+p\textbf{t}(a)} |  | (5) |
+
+We derive pp in Sec E.4 of the Supplements as:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | p=−(1−δ)​cos⁡θ±12​4​(1−δ)2​cos2⁡θ+8​δ−4​δ2p=-(1-\delta)\cos\theta\pm\frac{1}{2}\sqrt{4(1-\delta)^{2}\cos^{2}\theta+8\delta-4\delta^{2}} |  | (6) |
+
+p=−(1−δ)​cos⁡θ±12​4​(1−δ)2​cos2⁡θ+8​δ−4​δ2p=-(1-\delta)\cos\theta\pm\frac{1}{2}\sqrt{4(1-\delta)^{2}\cos^{2}\theta+8\delta-4\delta^{2}}
+
+Notice that pp only depends on θ\theta, where θ=arccos⁡(i​(x)⋅t​(a))=arccos⁡(i​(y)⋅t​(a))\theta=\arccos(\textbf{i}(x)\cdot\textbf{t}(a))=\arccos(\textbf{i}(y)\cdot\textbf{t}(a)).
+By the same reasoning as above, for object yy with attribute aa, we have:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | i​(ya)=(1−δ)​i​(y)+p​t​(a)\textbf{i}(y\_{a})=(1-\delta)\textbf{i}(y)+p\textbf{t}(a) |  | (7) |
+
+Similarly for attribute bb, i​(xb)\textbf{i}(x\_{b}) and i​(yb)\textbf{i}(y\_{b}) share the same weighting factor qq for t​(b)\textbf{t}(b) as follows:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | i​(xb)=(1−δ)​i​(x)+q​t​(b)i​(yb)=(1−δ)​i​(y)+q​t​(b)\begin{split}\textbf{i}(x\_{b})=(1-\delta)\textbf{i}(x)+q\textbf{t}(b)\\ \textbf{i}(y\_{b})=(1-\delta)\textbf{i}(y)+q\textbf{t}(b)\end{split} |  | (8) |
+
+Now consider the composite image embedding i​(xa,yb)\textbf{i}(x\_{a},y\_{b}). Per Eq. ([3](#S4.E3 "Equation 3 ‣ Proof. ‣ 4.1 Contradiction for Conditions 1 and 2 ‣ 4 Geometric Contradictions in CLIP ‣ Is CLIP ideal? No. Can we fix it? Yes!")), it is decomposed into a superposition:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | i​(xa,yb)=(1−δ)​(i​(x)+i​(y))+p​t​(a)+q​t​(b)2=i​(xb,ya)\boxed{\begin{aligned} \textbf{i}(x\_{a},y\_{b})&=\frac{(1-\delta)(\textbf{i}(x)+\textbf{i}(y))+p\textbf{t}(a)+q\textbf{t}(b)}{2}\\ &=\textbf{i}(x\_{b},y\_{a})\end{aligned}} |  | (9) |
+
+This shows that the composite embedding is identical regardless of which object is paired with which attribute. In other words, the distinct attribute bindings become indistinguishable in the final embedding. This equivalence violates Condition 2.3, which requires that different attribute-object bindings produce distinct embeddings.
+
+For cases where 𝐯=p​t​(a)+ϵ\mathbf{v}=p\textbf{t}(a)+\boldsymbol{\epsilon} for some random perturbation vector ϵ\boldsymbol{\epsilon}, we show in Sec E.3. of the Supplements that the results in Eq. ([9](#S4.E9 "Equation 9 ‣ Proof. ‣ 4.1 Contradiction for Conditions 1 and 2 ‣ 4 Geometric Contradictions in CLIP ‣ Is CLIP ideal? No. Can we fix it? Yes!")) are robust to the addition of ϵ\boldsymbol{\epsilon}.
+∎
+
+### 4.2 Contradictions to Other Conditions
+
+Now we proceed to illustrate how the linear superposition implied by Condition 1 contradicts other conditions. If Condition 1 is fulfilled, then the following impossibilities occur:
+
+Condition 3: Spatial relationships between objects must embed as
+i​(x,g<r​e​l>,y)=(1−δ)​i​(x,y)+e⟂\textbf{i}(x,g^{<rel>},y)=(1-\delta)\,\textbf{i}(x,y)+\textbf{e}\_{\perp} per Condition 1.2.
+We show that for a simple case of 3 images, where the same localization is present in image 1 and 2 and the same relationship is present in image 1 and 3, we encounter
+e⟂,1⋅e⟂,2=−e⟂,1⋅e⟂,3\textbf{e}\_{\perp,1}\cdot\textbf{e}\_{\perp,2}=-\textbf{e}\_{\perp,1}\cdot\textbf{e}\_{\perp,3}. This means Conditions 3.1 and 3.2 cannot be simultaneously satisfied.
+
+Condition 4:
+We find that satisfaction of Conditions 4.1 and 2 in CC necessitates
+t​(¬x)=−t​(x)\textbf{t}(\neg x)=-\textbf{t}(x). This produces the following effect: t​(¬xj)⋅t​(xk)>t​(¬xj)⋅t​(¬xk)\textbf{t}(\neg x^{j})\cdot\textbf{t}(x^{k})>\textbf{t}(\neg x^{j})\cdot\textbf{t}(\neg x^{k}), violating Condition 4.3.
+
+Please refer to the Supplements for detailed proofs.
+
+## 5 Rescuing the CLIP Latent Space
+
+Is CLIP beyond rescue, or can its learned embeddings be improved? Although its latent space lacks compositional expressivity, its ease of use and powerful image-text organization are undeniable. Hence, we investigate methods to make use of the rich information learned by CLIP for a more principled evaluation of the text to image semantic distance.
+
+Our findings indicate that CLIP is structurally flawed. Re-training, fine-tuning, or simply re-projecting CLIP embeddings will still yield a latent space that lacks the desired properties. Similarly, applying an alternative analytical or learned scoring mechanism on top of the learned embeddings cannot work if two distinct images and texts embed to the same location in CC per Lemma [2](#Thmlemma2 "Lemma 2. ‣ 4.1 Contradiction for Conditions 1 and 2 ‣ 4 Geometric Contradictions in CLIP ‣ Is CLIP ideal? No. Can we fix it? Yes!").
+
+Thus: any fix must alter the fact that CLIP represents images and texts as unit vectors. Rather than designing an approach that imposes re-training a full model, we explore an extension to CLIP that is based on the existing CLIP encoders. More specifically: we explore a solution based on three ideas. First, retain the full token and image patch embeddings from CLIP. Second, score matches through a learned mechanism, rather than using cosine similarity. Third, introduce constant, rather than learned, representations of spatial relationship words.
+These ideas are discussed in detail in the next section.
+
+### 5.1 Dense Cosine Similarity Maps
+
+![Refer to caption](2503.08723v2/dense_map.png)
+![Refer to caption](2503.08723v2/lightweightcnn_drawio-addnew.png)
+
+Instead of deriving a single-point CLIP embedding from EOS token from the text embeddings and the CLS token from the image embeddings, we propose to compute the pairwise cosine similarity between all text tokens and all image patches, and then to use a learned scoring mechanism on the resulting dense cosine similarity map (DCSM). The intuition is that transformers [[60](#bib.bib75)], in learning the correct CLS and EOS token pair, store useful information in the token and patch level embeddings. While dense image patches have been used in tasks like image segmentation or dense label generation  [[76](#bib.bib9), [51](#bib.bib39)], our approach is the first to extract embeddings at both the token and patch level, and densely compute the cosine similarity across the two representations to formulate the task of image-text pair scoring as a pattern recognition problem.
+
+![Refer to caption](2503.08723v2/images/densemap_graphic.PNG)
+
+Fig. [3](#S5.F3 "Figure 3 ‣ 5.1 Dense Cosine Similarity Maps ‣ 5 Rescuing the CLIP Latent Space ‣ Is CLIP ideal? No. Can we fix it? Yes!") depicts dense DCSMs for four distinct sentences and one image prompt. The columns have been rearranged to cluster background (with CLS patch being the first column), backpack, and glove patches. DCSMs clearly encode object and attribute locality. As expected from the contrastive training procedure, the highest score in each DCSM is between the EOS token and CLS patch embedding. Interestingly, text tokens describing a specific object have low cosine similarity scores with the patches containing that object. Relatedly, some studies have observed that CLIP attention maps appear inverted, and that post-hoc architectural "surgery" can produce more interpretable saliency maps [[29](#bib.bib3), [6](#bib.bib2)].
+As our goal is to maximally make use of unaltered CLIP features, we do not perform these surgeries and rely on the scoring tool to recognize inverted patterns. Further analysis in this direction will require evaluating the impact of extracted DCSMs from edited CLIP models.
+
+Functional Rows (FR). We observe that for both correct and incorrect sentence-image pairs, the DCSMs often look very similar. Much like background patches in an image, text embeddings for compositional concepts, which we will refer to as functional words (*e.g.,* “left of",“right of") that lack immediate visual counterparts only contribute spurious information to the DCSM as the joint encoder training emphasizes words with direct visual references.
+
+This motivates our proposed functional rows for DCSMs.
+Specifically, we discard the original rows containing functional words in DCSMs, and replace them with a constant vector with randomly chosen entries.
+
+|  | Attribute Binding | | | Spatial Reasoning | | | Negation | |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Model Name | CLEVRbind | NCD | VG\_attr | WhatsUp | COCO1&2obj | VG1&2obj | NegBenchcoco | NBvoc |
+| CLIPViTB/32 | 22.2 | 71.3 | 61.3 | 31.9 | 47.0 | 47.1 | 39.2 | 38.3 |
+| CLIPViTB/16 | 20.2 | 63.1 | 61.8 | 30.5 | 48.9 | 51.5 | 41.5 | 37.9 |
+| NegCLIP | 21.8 | 79.2 | 72.4 | 33.2 | 46.1 | 47.2 | 31.4 | 26.5 |
+| CoCa | 19.2 | 48.7 | 50.8 | 24.5 | 48.6 | 49.5 | 21.6 | 20.8 |
+| BLIP | 11.1 | 56.2 | 59.4 | 24.4 | 48.5 | 50.4 | 20.5 | 20.7 |
+| SigLIP | 13.3 | 53.6 | 48.4 | 26.0 | 47.4 | 51.1 | 26.3 | 29.7 |
+| DCSMsynth | 31.0 | 93.6 | 60.9 | 62.6 | 65.6 | 64.4 | 38.8 | 35.2 |
+| DCSMcoco | 39.9 | 95.7 | 68.1 | 63.7 | 72.4 | 67.0 | 48.6 | 49.0 |
+| Random Chance | 25.0 | 50.0 | 50.0 | 25.0 | 50.0 | 50.0 | 25.0 | 25.0 |
+
+Model Pipeline (see Fig. [4](#S5.F4 "Figure 4 ‣ 5.1 Dense Cosine Similarity Maps ‣ 5 Rescuing the CLIP Latent Space ‣ Is CLIP ideal? No. Can we fix it? Yes!")). Unlike classical CLIP scoring which discards all but the EOS and CLS tokens to produce a single scalar, our proposed method retains all token embeddings and projects them into a joint latent space to compute the DCSM. For all experiments, we use a lightweight CNN with 2 convolutional layers and a hidden dimension of 128, yielding a 20-fold reduction in parameters.
+
+Training. The network is trained with a batch size of 8, which is 4000 times smaller than CLIP’s original 32,768. Our total training data per model is around 20,000 samples, which is actually 1.5 times smaller than the mini-batch size of CLIP.
+For a small set of functional words (elements of fG,T​(g)f\_{G,T}(g) for all g∈𝔾g\in\mathbb{G}), we keep a dictionary of unique fixed FRs and overwrite the corresponding rows in the DCSM. As illustrated in Fig. [5](#S5.F5 "Figure 5 ‣ 5.1 Dense Cosine Similarity Maps ‣ 5 Rescuing the CLIP Latent Space ‣ Is CLIP ideal? No. Can we fix it? Yes!"), in an idealized setting, DCSMs with FRs allow for clear disambiguation between correct and incorrect image-text pairs, reducing the task of parsing visuolinguistic semantics to pattern recognition. Notably, our model does not see any input image or text at all; it simply learns to recognize the syntactic patterns from the DCSMs.
+
+We train one model on synthetic data created from Objaverse [[12](#bib.bib10)] renders and another on a subset of COCO2017. Additional training details are provided in the Supplements.
+
+### 5.2 Performance Evaluation
+
+We compare our method against a range of models which utilize a joint vision-language embedding space.
+Namely: CLIP from OpenAI [[49](#bib.bib1)] and OpenCLIP [[10](#bib.bib56)], NegCLIP [[69](#bib.bib18)] which is a finetuned version of OpenCLIP with mined hard negatives, Coca [[68](#bib.bib68)] which is an image-text encoder-decoder model trained with contrastive and captioning loss, SigLIP [[72](#bib.bib13)] which uses a sigmoid loss in lieu of cross entropy, and BLIP [[25](#bib.bib40)] which bootstraps noisy web scraped data with synthetic, filtered captions.
+The models are evaluated on datasets of three categories: CLEVR-bind [[23](#bib.bib22)], a composite form of Natural Colors Dataset (NCD) [[2](#bib.bib32)] per [[66](#bib.bib31)], and VG\_attribution from Attribute, Relation, Order (ARO) [[69](#bib.bib18)] for attribute binding; WhatsUp, COCO-QA, and VG-QA [[19](#bib.bib71)] for spatial relationships and localization; and NegBench [[1](#bib.bib59)] for negation. Table [2](#S5.T2 "Table 2 ‣ 5.1 Dense Cosine Similarity Maps ‣ 5 Rescuing the CLIP Latent Space ‣ Is CLIP ideal? No. Can we fix it? Yes!") shows the results.
+
+Our method significantly outperforms CLIP-like baselines, likely due to the increased dimensionality of DCSMs, which replace scalar cosine similarity with a dense topological map. Specifically, patch indices on the image axis store spatial information, while the token indices on the text axis preserve the semantic ordering. DCSMs trained on COCO outperform the baselines across all datasets except on VG-attribution [[69](#bib.bib18)], where NegCLIP benefits from similar hard negatives. Improvements on NegBench are lower, likely due to the data gap between our templated training captions and the natural language captions.
+
+Notably, our model generalizes well to unseen attribute, spatial, and negation concepts despite the limited training set. In particular, our model is only trained on templated two-object captions but works well for single object captions on CLEVR-bind and subsets of COCO and VG-spatial. This suggests the downstream network learns syntactic patterns rather than overfitting to the training templates. Beyond performance gains, DCSMs offer greater interpretability. Unlike naive CLIP embeddings whose actual values can be arbitrary, DCSMs are human interpretable (see Fig. [3](#S5.F3 "Figure 3 ‣ 5.1 Dense Cosine Similarity Maps ‣ 5 Rescuing the CLIP Latent Space ‣ Is CLIP ideal? No. Can we fix it? Yes!")), which makes downstream usage more intuitive.
+
+For detailed ablation studies on the impact of dense maps, FRs, classification performance, and scaling analysis, please refer to Sec. C of the Supplements.
+
+### 5.3 Generalization to Natural Language
+
+To test the generalizability of DCSMs to open vocabulary settings, we incorporate LLMs-in-the-loop to dynamically update the lookup table for FRs and reformat natural language sentences for more compact DCSMs.
+We explore this in a toy setting by training our lightweight CNN from scratch with either 5k or 10k COCO images whose captions have had their nouns swapped.
+We choose this particular type of intervention as CLIP-like VLM performance across the board was lowest for this category of hard negatives in Sugarcrepe [[16](#bib.bib12)].
+On top of the training pipeline described in Sec. [5.1](#S5.SS1 "5.1 Dense Cosine Similarity Maps ‣ 5 Rescuing the CLIP Latent Space ‣ Is CLIP ideal? No. Can we fix it? Yes!"), we prompt gpt-4o-mini to extract newly encountered functional words in the training data. We evaluate this paradigm on the swap-object split of Sugarcrepe and the VG-spatial split of VL-Checklist [[75](#bib.bib29)], against naive and finetuned CLIP. Details for training and prompting are in the Supplements.
+Results are shown in Table [3](#S5.T3 "Table 3 ‣ 5.3 Generalization to Natural Language ‣ 5 Rescuing the CLIP Latent Space ‣ Is CLIP ideal? No. Can we fix it? Yes!").
+
+| Model | VLCvg spatial | SCswap obj |
+| --- | --- | --- |
+| CLIPViTB/16 | 50.8 | 60.2 |
+| CLIPft.synth | 56.9 | 50.0 |
+| DCSMsynth | 50.6 | 59.8 |
+| DCSMopen vocab | 63.5 | 63.8 |
+
+VL-checklist captions are short but contain novel functional words not present in the static lookup table.
+Sugarcrepe captions are longer, with complex syntactic arrangements as well as novel functional words.
+We see that the finetuned CLIP model overfits to simple clauses and fails at the more complex setting, while the closed vocabulary DCSM performance is consistent with that of naive CLIP. The open vocabulary DCSM shows a modest performance increase in both settings.
+This suggests that LLM for dynamic FR update is a promising avenue, though long winded prompts are still a bottleneck for the lightweight CNN model.
+We predict that increasing the dataset size and quality, as well as improving scoring model complexity will help refine natural language performance.
+
+## 6 Conclusions
+
+Through formal logical analyses, we show that inherent geometric limitations in CLIP prevent the correct representation of image content, attribute binding, spatial localization, and negation.
+To address this problem we tap the information from CLIP’s text and image encoders, creating a richer latent space with Dense Cosine Similarity Maps and Functional Rows. We evaluate our simple solution against a wide array of benchmarks and find that it surpasses SoTA performance. Future work includes scaling up our prototyped pipeline to expand on its open vocabulary potential with more sophisticated CLIP base models, scoring models, LLMs, and training data. Further analyses to discover other fundamental properties of latent geometries and to explore alternative embedding manifolds beyond unit spheres will inform the design of next-generation VLM architectures.
+
+## Acknowledgments
+
+We would like to thank Yisong Yue, Damiano Marsili, Laure Delisle, Neehar Kondapaneni, Sevan Brodjian, Anna Ding, and Meir Yossef Levi, for valuable discussions and proofreading. Raphi Kang is supported by the NSF Graduate Research Fellowship. Yue Song is supported by the gift donation from Cisco. Georgia Gkioxari is supported by the Hurt Scholar program, Meta and Google.
+
+## References
+
+## Is CLIP ideal? No. Can we fix it? Yes! –Supplementary Material–
+
+## Appendix A Extended Related Work
+
+Vision Language Models. Recent advancements in VLMs have significantly bridged the gap between vision and language. A seminal work in this area is CLIP [[49](#bib.bib1)], which demonstrated that large-scale contrastive learning can effectively align image and text representations into a shared embedding space. Building upon its core principles of large-scale contrastive pretraining and joint representation learning, several subsequent works have explored alternative architectures and training paradigms, including ALIGN [[17](#bib.bib64)], FILIP [[67](#bib.bib65)], SLIP [[38](#bib.bib66)], ALBEF [[26](#bib.bib67)], and CoCa [[68](#bib.bib68)], to name a few.
+Autoregressive VLMs  [[33](#bib.bib69), [34](#bib.bib70)] have emerged as compelling alternatives to CLIP by jointly attending to both text and image embeddings.
+Neurosymbolic program synthesis methods like ViperGPT [[57](#bib.bib50)], VisProg [[15](#bib.bib49)], and VADAR [[36](#bib.bib51)] also mitigate some of CLIP’s limitations by formulating the text-image semantic distance acquisition as several subproblems. While these methods are more comprehensive than CLIP and can specialize in complex visual reasoning, they are orders of magnitude more expensive to infer and do not offer the same simplicity or gradient retention as CLIP, limiting their downstream applicability. In fact, most of these models rely on a CLIP-like model’s latent space as a submodule. As such there remains a strong motivation to continue refining and extending CLIP-like architectures by addressing their inherent shortcomings.
+
+Empirical Limitations of CLIP. A growing body of work has revealed several limitations of CLIP in handling complex visual-text interactions. One major issue is its difficulty in distinguishing between different attribute-concept bindings in multi-object scenes [[23](#bib.bib22), [39](#bib.bib57), [8](#bib.bib41)]. For example, the text prompt “A purple sphere" will have very high cosine similarity with an image that contains a purple cube and a yellow sphere, despite the yellow attribute not belonging to the spherical object. Lewis *et al.* propose CLEVR-bind as a simple benchmark which isolates the attribute binding capability of VLMs. More comprehensive natural-language benchmarks targeting attribute binding include Attribute, Relation, and Order (ARO), Sugarcrepe [[16](#bib.bib12)], VL-checklist [[75](#bib.bib29)], and Multimodal Visual Patterns (MMVP) [[58](#bib.bib72)]. Additional studies have noted that CLIP’s text embeddings often behave like “bag-of-words" in practice, leading to imsinterpretations of object layouts or conflates multiple entities within a single scene [[69](#bib.bib18), [23](#bib.bib22), [39](#bib.bib57)].
+Yuksekgonul *et. al* specifically propose WhatsUP as a benchmark which isolates spatial reasoning capacities of VLMs. In addition, the suite of compositional understanding benchmarks (ARO, VL-checklist, Sugarcrepe, MMVP) also include captions that require spatial reasoning. Another notable failure mode is CLIP’s inability to accurately represent negation [[1](#bib.bib59), [55](#bib.bib8)]. In response, Alhamoud *et al.* develop NegBench to specifically assess how well VLMs handle various forms of negatory sentences. The aforementioned compositional benchmarks further challenge models with captions that require proper negation understanding.
+
+Some other criticisms of CLIP are its inability to generalize to different reference frames [[74](#bib.bib21)] or to count [[42](#bib.bib5)]. While these issues represent additional challenges for CLIP, they are beyond the scope of our current work.
+
+Proposed Solutions to CLIP Limitations. The most prominent method of corrections have been to change the training data distribution, such as retraining or fine-tuning CLIP with hard negative or positive examples [[69](#bib.bib18), [63](#bib.bib14), [55](#bib.bib8), [1](#bib.bib59), [42](#bib.bib5), [48](#bib.bib15), [21](#bib.bib16)] or increasing the training data for more comprehensive and longer captions [[62](#bib.bib26), [30](#bib.bib30)].
+However, simply scaling the training data to mitigate specific problems will often lead to reduced generalization [[71](#bib.bib34), [35](#bib.bib35), [16](#bib.bib12)].
+
+Some engineering solutions include using object detectors to segment images into smaller ROIs [[27](#bib.bib19)], adding attribution tracing for correct text-image pairs during training [[28](#bib.bib28)], patch clustering for semantic segmentation [[53](#bib.bib6)], using chain of thought spatial reasoning [[9](#bib.bib20)] or altering the self attention mechanism in the vision encoder [[61](#bib.bib4)]. Simpler solutions may be querying CLIP with multiple descriptions [[37](#bib.bib23)]. All of these methods require retraining CLIP from scratch, or typically adding a heavy-handed component to single out the objects in a scene.
+
+## Appendix B Experimental Details
+
+### B.1 Implementation Details
+
+By convention the rows of the dense map correspond to one text token embedding, and the columns to one image patch. Every text and image pair creates a DCSM of shape (30,197), where 30 is the maximum number of text tokens and 197 is the number of 16x16 image patches in an image of shape 224x224. Text prompts shorter than 30 tokens are padded with EOS tokens. FRs are therefore of the shape (num-image-patches, 1).
+For example, for the sentence “An image of a circle above a triangle", the word above is a functional word and the corresponding row in the DCSM gets replaced with the respective FR in the lookup table. For synonymous functional words, we use a single FR. (Somewhat unusually, we consider “front","below", and “behind","above" to be synonymous, as DCSMs use a 2D fixed frame of reference due to the topology being represented by the patch index.) The DCSMs are z-score normalized for stable training.
+
+For all training and experiments, we use a lightweight CNN with 2 convolutional layers and a hidden dimension of 128.
+In addition to a 20-fold reduction in parameters, we train our network with a batch size of 8, a 4000-fold decrease from the original mini-batch size of 32,768. In fact, the sum of all our training data per model is smaller than this number.
+
+Our model outputs a single score for each image and text pair DCSM. During training, we use a contrastive cross-entropy loss as with the original CLIP [[50](#bib.bib17)]. We train with the Adam optimizer with learning rate initialized at 1​e−31e-3. One model is trained with a curated synthetic dataset and another with COCO 2017 training split. Dataset curation is detailed below.
+
+### B.2 Datasets
+
+We train our pipeline on two different datasets - one synthetic dataset composed of open-source 3D assets from Objaverse [[12](#bib.bib10)] placed upon randomized backgrounds, and another generated from COCO-train-2017 [[32](#bib.bib60)].
+
+We are mainly interested in labeling images with text prompts that lie in the Condition 2,3,4 category. That is, for both the synthetic case and the COCO-train case, we generate a dataset for attribute binding, spatial relationships/localization, and negation. Samples from each dataset are shown in Fig. [6](#A2.F6 "Figure 6 ‣ B.2 Datasets ‣ Appendix B Experimental Details ‣ Is CLIP ideal? No. Can we fix it? Yes!").
+
+Attribute Binding Dataset  Every image in this dataset includes two distinct objects of unique colors or sizes. For each image, we generate a “hard negative". So if there is an image with a “red cow and purple ghost", we also generate an image with “red ghost and purple cow". This means that every sample has a positive and negative image, and two positive and negative captions each. The positive image contains object AA with attribute Aa​t​tA\_{att}, and object BB with attribute Ba​t​tB\_{att}. The negative image contains the same objects but with swapped attributes. The positive caption options are: (P1) “Aa​t​tA\_{att} AA and Ba​t​tB\_{att} BB” and (P2) “Ba​t​tB\_{att} BB and Aa​t​tA\_{att} AA”. The negative caption options are: (N1) “Aa​t​tA\_{att} BB and Ba​t​tB\_{att} AA” and (N2) “Ba​t​tB\_{att} AA and Aa​t​tA\_{att} BB”.
+We generate 5,402 images for this dataset, which makes 2701 samples with associated opposites.
+
+For the COCO-train set, we use a natural language processing library to extract adjective-noun pairs in the natural language captions, and select images that have at least two distinct objects A,BA,B with distinct attributes Aa​t​t,Ba​t​tA\_{att},B\_{att}. Captions follow the same format as above. We select 8,547 images from COCO-train towards this dataset.
+
+Spatial Relationships and Localization  Similarly as above, we generate synthetic images where one object is placed either above, below, to the left, or to the right of, another object with random jitter. For every positive image where AA is r​e​lrel to BB, there is a negative image where AA is r​e​lo​p​prel\_{opp} to AA. Here, (above, below) are opposite relation pairs, as are (left of, right of).
+The positive caption options are: (P1) “AA r​e​lrel BB” and (P2) “BB r​e​lo​p​prel\_{opp} AA”. The negative caption options are: (N1) “AA r​e​lo​p​prel\_{opp} BB” and (N2) “BB r​e​lrel AA”. We generate 11,324 images for this dataset, which makes 5662 samples with associated opposites.
+
+For the COCO images, we choose images where at least two distinct objects are present, and use the relationship between their bounding boxes to validate that they satisfy the definition of one of the spatial relationships being considered. Note that, as we are using patch location on the image to preserve topology, we use a fixed frame of reference to determine the meaning of “above", “below", “left", and “right". To make a negative version of the image, we use the CutMix technique [[70](#bib.bib61)] to swap the image content in the two bounding boxes.
+With the positive images from COCO-train and generated hard negatives, there are 11,502 images in this dataset, which makes 5751 samples with associated opposites.
+
+![Refer to caption](2503.08723v2/images/dataset_overview5.PNG)
+
+Negaton  Generating negatory captions is tricky.
+With contrastive training, an entirely negatory caption (e.g., “An image without a turtle") necessitates that all other images in the batch be a positive sample (e.g., they must now all contain a turtle).
+
+As such, for the first pass for the models trained with synthetic data, we generate images with two random objects A​1A1 and A​2A2, and choose as its hard negative another image which contains two non-overlapping objects, B​1B1 and B​2B2. For the negatory term ¬\neg, we choose between [’but not’, ’and no’, ’without’].
+The positive caption options are: (P1) “A​1​¬B​1A1\neg B1” and (P2) “A​2​¬B​2A2\neg B2”. The negative caption options are: (N1) “B​1​¬A​1B1\neg A1” and (N2) “B​2​¬A​2B2\neg A2”.
+We generate 10,000 images for this dataset.
+
+For COCO-train we select two images that have two distinct object labels, and generate captions the same way. We select 10,000 images toward this dataset.
+
+### B.3 Pseudocode
+
+Below we illustrate the process for extracting DCSMs.
+
+## Appendix C Ablation Studies
+
+### C.1 Impact of DCSMs
+
+| Model | WhatsUP | COCO2obj |
+| --- | --- | --- |
+| Ours - DCSM (CNN) | 62.6 | 70.9 |
+| Ours - DCSM (CNN)w/oFR | 48.6 | 55.5 |
+| Ours - DCSM (ViT) | 29.4 | 47.0 |
+| CLIP - ViTB/16 | 30.5 | 45.9 |
+| CLIP - ViTB/16f.t. synth{}\_{\textit{f.t. synth}} | 25.5 | 49.1 |
+| CLIP - ViTB/16MLP scorer{}\_{\textit{MLP scorer}} | 25.4 | 53.6 |
+
+In Sec 5. we said that it follows from our analysis that neither a fine-tuned/reprojected CLIP embedding space, nor a learned scoring module, could alone be the fix to CLIP’s fundamental shortcomings. To verify this conclusion, we perform a series of ablations. First, we finetune OpenAI’s CLIP (ViTB/16) with the same synthetic dataset used for our model training. We also train a MLP scoring module which takes concatenated text and image embeddings as input to output a score, again on the same synthetic dataset. Both attempts fail to improve performance on WhatsUP and COCO-spatial, resulting in accuracies near chance (25% and 50%, respectively).
+
+Further, we alter our training pipeline in two different ways to assess the need for a CNN as well as the FRs. Removal of the FRs decreases performance overall, but the increased information capacity from using the DCSMs and the downstream network still allows the model to perform above fine-tuned CLIP models.
+Replacement of the CNN with a comparably small ViT, with a patch size of 2 and 2 layers of 4 attention heads, resulted in another near-chance performance on the datasets. The ViT appears more prone to overfitting to the training set, as it does not have the imposed constraint of pattern-recognizing kernels as in CNNs.
+
+All networks were trained with learning rate 1e-3 with Adam for 27 epochs. Under minimal compute, the CNN generalized much better.
+Fine-tuning CLIP projection layers with the same dataset for the same number of epochs did not result in any noticeable performance increase.
+
+### C.2 Classification Performance
+
+A known problem with VLMs using CLIP embeddings is the decline in classification capacity [[73](#bib.bib58)]. We evaluate our model on two classification datasets and find that, despite being trained with simple prompts and no image classification captions, the reduction in classification performance is minimal compared to those observed in BLIP or LLaVA.
+
+| Model | Caltech101 | Flowers102 |
+| --- | --- | --- |
+| CLIP-ViT B/16 [[49](#bib.bib1)] | 82.6 | 67.7 |
+| Ours - DCSM + synth | 77.8 | 52.9 |
+| Ours - DCSM + coco | 79.2 | 43.7 |
+| BLIP2-2.7B [[25](#bib.bib40)] | 22.3 | 14.2 |
+| IBLIP-7B [[11](#bib.bib62)] | 58.4 | 26.8 |
+| LLaVA1.5-7B [[34](#bib.bib70)] | 62.1 | 10.2 |
+
+### C.3 Scaling Analysis
+
+In this work, we showcase a very small and computationally light network and training pipeline for the DCSM method. To verify that this method will scale with increasing data, we perform a scaling analysis. Fig. [8](#A3.F8 "Figure 8 ‣ C.3 Scaling Analysis ‣ Appendix C Ablation Studies ‣ Is CLIP ideal? No. Can we fix it? Yes!") shows the results. The x axis is the approximate number of samples from the curated COCO2017 training set. From this we see that our training pipeline is likely to scale with increasing the dataset.
+
+![Refer to caption](2503.08723v2/images/scaling.png)
+
+## Appendix D Empirical Observations of CLIP shortcomings
+
+In Fig. [9](#A4.F9 "Figure 9 ‣ Appendix D Empirical Observations of CLIP shortcomings ‣ Is CLIP ideal? No. Can we fix it? Yes!") we show the empirical effects of the superposition derived in Lemma 1. In summary, the figure serves to show how an image with an increasingly greater number of objects present embeds increasingly farther from the text label for any one of those objects in the CLIP latent space. The degree of this effect is such that beyond 6-8 objects in one image, CLIP embeddings of random noise images are similarly close to those object text labels.
+
+![Refer to caption](2503.08723v2/images/ViT-B_16.png)
+![Refer to caption](2503.08723v2/images/ViT-B_32.png)
+![Refer to caption](2503.08723v2/images/ViT-L_14.png)
+![Refer to caption](2503.08723v2/images/RN101.png)
+
+## Appendix E Definitions and Proofs
+
+### E.1 Definitions Addendum
+
+Definition 1.
+For x = the concept of a bird, its mapping in 𝕀\mathbb{I} is an image of a bird, and its mapping in 𝕋\mathbb{T} is “bird".
+For all concepts x in 𝕍\mathbb{V}, there is an equivalence class in 𝕀\mathbb{I} and 𝕋\mathbb{T} that unambiguously represent that concept, respectively.
+We narrow the scope of all images to 1 representative image per concept. So for the object concept of a “bird", there is one image which is equivalent. Similarly, for each concept x there is only 1 corresponding d∈𝕋d\in\mathbb{T}.
+
+We also choose MM object concept elements toward the subset 𝕍\mathbb{V}.
+In the manner of large ontologies (such as ImageNet1000), we take it to be true that there exist at least M≤M\leq1000 object classes which are mutually exclusive. This means that for any representative image in the set of MM, an expert human reviewer would be able to assign it to that unique object class. These object classes must be subordinate categories on any hierarchical directed tree of visual concepts. (An example concept hierarchy: car and bus are lower-level concepts that are below vehicle.) This ensures no two concepts in 𝕍\mathbb{V} overlap in semantics.
+
+### E.2 Conditions Addendum
+
+Condition 1.
+Semantic separability means: if human annotators would agree that a text caption appropriately describes an image, the embeddings for that caption and image should have high cosine similarity. Conversely, the score should be low if an annotator deems the caption to be inappropriately matched to the image.
+
+Notably, this condition does not require correct hierarchical organization among concepts or semantically accurate placement of synonymous phrases. In reality there exist more than N distinct concept categories and each category may have synonymous text representations and multiple instances and viewpoints of the representative visual object. Our goal is to set up extremely minimal geometric requirements for CC to evaluate whether they are possible to attain.
+
+This condition must be satisfied for CC to perform zero-shot image classification, retrieval, and semantic similarity search. Example benchmarks that pose this challenge include Imagenet, COCO, LAION, and many more.
+
+Condition 2.
+This condition must be satisfied for CC to perform tasks where the model must identify attributes associated with different objects in a scene. This could be towards scene understanding, vision question answering, or accurate image retrieval.
+Specific datasets include CLEVR-bind, NCDataset-grayscale, VL-checklist, Sugarcrepe, ARO, and MMVP.
+
+Condition 3.
+This condition must be satisfied for CC to to perform tasks that require compositional image understanding. This could be for image captioning, text-guided image generation, spatial navigation, and more.
+Specific datasets include WhatsUP, Coco-spatial, MMVP, etc.
+
+Condition 4.
+This condition must be satisfied for CC to perform well on vision-language tasks that include prompts with negations. Note that this condition is a very relaxed interpretation of negation:
+Strictly semantically speaking,“not X" is a correct semantic pair with any image that does not have X, requiring a cosine similarity near 1. But the definition of the negation condition we impose does not require such granularity. Again, we seek to pose minimal constraints to identify whether there is some version of negation CLIP could attain under ideal settings.
+Specific datasets that require negation understanding include NegBench, as well as other compositional benchmarks like VLM-checklist, Sugarcrepe, or MMVP.
+
+### E.3 Lemma 2. Addendum
+
+Derivation of pp. We define the perturbed vector:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | i​(xa)=(1−δ)​ i​(x)+p​t​(a),‖i​(xa)‖2=1\textbf{i}(x\_{a})=(1-\delta)\textbf{ i}(x)+p\textbf{t}(a),\|\textbf{i}(x\_{a})\|^{2}=1 |  | (10) |
+
+Expanding the norm, we have:
+
+|  |  |  |  |  |
+| --- | --- | --- | --- | --- |
+|  | ‖i​(xa)‖2\displaystyle\|\textbf{i}(x\_{a})\|^{2} | =‖(1−δ)​i​(x)+p​t​(a)‖2\displaystyle=\left\|(1-\delta)\textbf{i}(x)+p\textbf{t}(a)\right\|^{2} |  | (11) |
+|  | ‖i​(xa)‖2\displaystyle\|\textbf{i}(x\_{a})\|^{2} | =(1−δ)2​‖i​(x)‖2+p2​‖t​(a)‖2\displaystyle=(1-\delta)^{2}\|\textbf{i}(x)\|^{2}+p^{2}\|\textbf{t}(a)\|^{2} |  |
+|  |  | +2(1−δ)pi(x)⋅t(a)\displaystyle+2(1-\delta)p\textbf{i}(x)\cdot\textbf{t}(a) |  |
+
+Since i​(x)\textbf{i}(x) and t​(a)\textbf{t}(a) are unit vectors, this simplifies to:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | ‖i​(xa)‖2=(1−δ)2+p2+2​(1−δ)​p​cos⁡θ\|\textbf{i}(x\_{a})\|^{2}=(1-\delta)^{2}+p^{2}+2(1-\delta)p\cos\theta |  | (12) |
+
+where cos⁡θ=i​(x)⋅t​(a)\cos\theta=\textbf{i}(x)\cdot\textbf{t}(a). For i​(xa)\textbf{i}(x\_{a}) to be a unit vector, we set the right hand side to 1:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | (1−δ)2+p2+2​(1−δ)​p​cos⁡θ=1−2​δ+δ2+p2+2​(1−δ)​p​cos⁡θ=0\begin{split}(1-\delta)^{2}+p^{2}+2(1-\delta)p\cos\theta=1\\ -2\delta+\delta^{2}+p^{2}+2(1-\delta)p\cos\theta=0\\ \end{split} |  | (13) |
+
+Notice that this is now a quadratic equation in pp:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | p2+2​(1−δ)​p​cos⁡θ−(2​δ−δ2)=0.p^{2}+2(1-\delta)p\cos\theta-(2\delta-\delta^{2})=0. |  | (14) |
+
+Use the quadratic formula:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | p=−2​(1−δ)​cos⁡θ±[2​(1−δ)​cos⁡θ]2+4​(2​δ−δ2)2p=\frac{-2(1-\delta)\cos\theta\pm\sqrt{[2(1-\delta)\cos\theta]^{2}+4(2\delta-\delta^{2})}}{2}\\ |  | (15) |
+
+p=−2​(1−δ)​cos⁡θ±[2​(1−δ)​cos⁡θ]2+4​(2​δ−δ2)2p=\frac{-2(1-\delta)\cos\theta\pm\sqrt{[2(1-\delta)\cos\theta]^{2}+4(2\delta-\delta^{2})}}{2}\\
+
+We can simplify the above to find the correct value of pp that ensures i​(xa)\textbf{i}(x\_{a}) is a unit vector.
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | p=−(1−δ)​cos⁡θ±4​(1−δ)2​cos2⁡θ+8​δ−4​δ22.p=-(1-\delta)\cos\theta\pm\frac{\sqrt{4(1-\delta)^{2}\cos^{2}\theta+8\delta-4\delta^{2}}}{2}. |  | (16) |
+
+Analysis for noise vectors.
+In Lemma 2 we derived
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | i​(xa,yb)=(1−δ)​(i​(x)+i​(y))+p​t​(a)+q​t​(b)2=i​(xb,ya)\boxed{\begin{aligned} \textbf{i}(x\_{a},y\_{b})&=\frac{(1-\delta)(\textbf{i}(x)+\textbf{i}(y))+p\textbf{t}(a)+q\textbf{t}(b)}{2}\\ &=\textbf{i}(x\_{b},y\_{a})\end{aligned}} |  | (17) |
+
+using i​(xa)=(1−δ)​i​(x)+p​t​(a)\textbf{i}(x\_{a})=(1-\delta)\textbf{i}(x)+p\textbf{t}(a).
+
+Now we show that analytically, the inclusion of a noise vector ϵ\boldsymbol{\epsilon} does not change the results. Specifically, we want to simulate
+
+|  |  |  |
+| --- | --- | --- |
+|  | i​(xa)=(1−δ)​i​(x)+δ​t​(a)+ϵ‖n​o​r​m‖\textbf{i}(x\_{a})=\frac{(1-\delta)\textbf{i}(x)+\delta\textbf{t}(a)+\boldsymbol{\epsilon}}{\left\|norm\right\|} |  |
+
+for some randomly sampled ϵ\boldsymbol{\epsilon} and δ\delta.
+
+In Fig. [10](#A5.F10 "Figure 10 ‣ E.3 Lemma 2. Addendum ‣ Appendix E Definitions and Proofs ‣ Is CLIP ideal? No. Can we fix it? Yes!") we showcase the results of sampling ϵ\boldsymbol{\epsilon} from a standard normal distribution, with varying weights.
+
+![Refer to caption](2503.08723v2/images/cosine_similarities_obj0-8_attr0-2_noise0-2.png)
+![Refer to caption](2503.08723v2/images/cosine_similarities_obj0-7_attr0-3_noise0-2.png)
+![Refer to caption](2503.08723v2/images/cosine_similarities_obj0-6_attr0-4_noise0-2.png)
+![Refer to caption](2503.08723v2/images/cosine_similarities_obj0-5_attr0-5_noise0-2.png)
+
+We observe the following relations remain consistent:
+
+As expected of randomly initialized vectors in high dimensions: i​(x)⋅t​(a)≈0\textbf{i}(x)\cdot\textbf{t}(a)\approx 0
+
+For some unrelated object-attribute pairs, their image embeddings are roughly orthogonal as well: i​(wc,zd)⋅i​(xa,yb)≈0\textbf{i}(w\_{c},z\_{d})\cdot\textbf{i}(x\_{a},y\_{b})\approx 0
+
+The strong conclusion from Lemma 2 is approximately always true: i​(xb,ya)⋅i​(xa,yb)≈1\textbf{i}(x\_{b},y\_{a})\cdot\textbf{i}(x\_{a},y\_{b})\approx 1
+
+regardless of i​(xa)⋅t​(a),i​(x)⋅i​(xa)\textbf{i}(x\_{a})\cdot\textbf{t}(a),\textbf{i}(x)\cdot\textbf{i}(x\_{a}).
+As such, we see that even if there is noise in the superpositions described in Lemma 1 and 2, CC still cannot disambiguate between different pairings of the same two attributes and two objects.
+
+### E.4 Contradiction for Condition 1 and 3
+
+Now we show Condition 3 cannot be met if Condition 1 is met. Below we will show two impossibility cases and prove them.
+
+###### Lemma 3.
+
+CC cannot accurately represent both the distance between spatial locations and relationships at the same time.
+
+###### Proof.
+
+We first derive i​(x,g<r​e​l>,y)\textbf{i}(x,g^{<rel>},y) for two antonymous g<r​e​l>g^{<rel>} to satisfy Condition 1.2. Then we consider an example scenario with two objects, two spatial relationships, and two localizing terms. We will find that for three sample images, the cosine similarities between their embeddings and four textual clauses will have to contradict Condition 3 for some pairs.
+
+For two concepts xx and yy, their combined embedding is Eq. ([3](#S4.E3 "Equation 3 ‣ Proof. ‣ 4.1 Contradiction for Conditions 1 and 2 ‣ 4 Geometric Contradictions in CLIP ‣ Is CLIP ideal? No. Can we fix it? Yes!")).
+Now, if we want to express some compositional relationship g<r​e​l>∈𝔾g^{<rel>}\in\mathbb{G} between x and y such that i​(x,g1<r​e​l>,y)≠i​(x,g2<r​e​l>,y)\textbf{i}(x,g\_{1}^{<rel>},y)\neq\textbf{i}(x,g\_{2}^{<rel>},y), we can write
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | i​(x,g1<r​e​l>,y)=(1−δ)​i​(x,y)+v1i​(x,g2<r​e​l>,y)=(1−δ)​i​(x,y)+v2\begin{split}\textbf{i}(x,g^{<rel>}\_{1},y)=(1-\delta)\,\textbf{i}(x,y)\;+\;\textbf{v}\_{1}\\ \textbf{i}(x,g^{<rel>}\_{2},y)=(1-\delta)\,\textbf{i}(x,y)\;+\;\textbf{v}\_{2}\end{split} |  | (18) |
+
+where
+δ≪1\delta\ll 1 and v1≠v2\textbf{v}\_{1}\neq\textbf{v}\_{2}. Similar to Lemma [2](#Thmlemma2 "Lemma 2. ‣ 4.1 Contradiction for Conditions 1 and 2 ‣ 4 Geometric Contradictions in CLIP ‣ Is CLIP ideal? No. Can we fix it? Yes!"), 𝐯\mathbf{v} is a small location-specific component, as i​(x,g<r​e​l>,y)\textbf{i}(x,g^{<rel>},y) must remain close to i​(x,y)\textbf{i}(x,y) per Condition 1.2.
+
+Let gL<r​e​l>=gLg\_{L}^{<rel>}=g\_{L} be the relational concept whose equivalent mapping in 𝕋\mathbb{T} is “\_ left of \_", and gR<r​e​l>=gRg\_{R}^{<rel>}=g\_{R} “\_ right of \_". Then we can write:
+
+|  |  |  |
+| --- | --- | --- |
+|  | i​(x,gL,y)=(1−δ)​i​(x,y)+e⟂,L\textbf{i}(x,g\_{L},y)\;=\;(1-\delta)\,\textbf{i}(x,y)+\textbf{e}\_{\perp,L} |  |
+
+|  |  |  |
+| --- | --- | --- |
+|  | i​(x,gR,y)=(1−δ)​i​(x,y)+e⟂,R\textbf{i}(x,g\_{R},y)\;=\;(1-\delta)\,\textbf{i}(x,y)+\textbf{e}\_{\perp,R} |  |
+
+where e⟂,L,e⟂,R\textbf{e}\_{\perp,L},\textbf{e}\_{\perp,R} both lie in the orthogonal error subspace (of dimension N−1N-1) and have fixed magnitude 2​δ−δ2\sqrt{2\delta-\delta^{2}} such that i​(x,gL,y)\textbf{i}(x,g\_{L},y) is a unit vector.
+Notice that we cannot use the intuition from Lemma 2 that vv must be composed of the textual component of gLg\_{L} - an image with a melon above a bed does not intuitively need to embed closely with the text embedding for “above".
+
+![Refer to caption](2503.08723v2/images/cond3proof_pic.png)
+
+![Refer to caption](2503.08723v2/images/cond3proof_pic.png)
+
+Now we formulate a proof by contradiction.
+Consider three images and three text prompts, as shown in Fig. [11](#A5.F11 "Figure 11 ‣ Proof. ‣ E.4 Contradiction for Condition 1 and 3 ‣ Appendix E Definitions and Proofs ‣ Is CLIP ideal? No. Can we fix it? Yes!"). In addition to gL,gRg\_{L},g\_{R}, we also introduce gl<l​o​c>=gl,gr<l​o​c>=grg\_{l}^{<loc>}=g\_{l},g\_{r}^{<loc>}=g\_{r}, to represent “\_ to the left" and “\_ to the right" in 𝕋\mathbb{T}, respectively. These are the only four compositional concepts we consider for simplicity, but conclusions will generalize.
+
+We denote (1−δ)​i​(x,y)=e|⁣|(1-\delta)\,\textbf{i}(x,y)=\textbf{e}\_{||}, the three images as i​(imagek)=ik\textbf{i}(\text{image}\_{k})=\textbf{i}\_{k} and t​(textj)=tj\textbf{t}(\text{text}\_{j})=\textbf{t}\_{j}, for k,j∈1,2,3k,j\in{1,2,3}.
+ik=e|⁣|+e⟂,k\textbf{i}\_{k}=\textbf{e}\_{||}+\textbf{e}\_{\perp,k} where e|⁣|\textbf{e}\_{||} is the shared parallel component for all ik\textbf{i}\_{k}.
+
+Consider some images iw,w>3\textbf{i}\_{w},w>3, where x,yx,y do not have gL,gR,glg\_{L},g\_{R},g\_{l} or ,gr,g\_{r} as a location or relationship. For example i4\textbf{i}\_{4} could be an image of xx on top of yy in the center of the frame. In this case,
+
+|  |  |  |
+| --- | --- | --- |
+|  | ik⋅iw=(e|⁣|+e⟂,k)⋅(e|⁣|+e⟂,w)=|e|⁣||,k∈(1,2,3)\textbf{i}\_{k}\cdot\textbf{i}\_{w}=(\textbf{e}\_{||}+\textbf{e}\_{\perp,k})\cdot(\textbf{e}\_{||}+\textbf{e}\_{\perp,w})=|\textbf{e}\_{||}|,k\in(1,2,3) |  |
+
+as these image pairs share no compositional aspects in common. Since i1,i2\textbf{i}\_{1},\textbf{i}\_{2} share the same localization for the objects present, satisfaction of Condition 3.2 requires that i1⋅i2>|e|⁣||\textbf{i}\_{1}\cdot\textbf{i}\_{2}>|\textbf{e}\_{||}|.
+Similarly, as i1,i2\textbf{i}\_{1},\textbf{i}\_{2} share the same relationship between the objects present, satisfaction of Condition 3.3 requires that i1⋅i3>|e|⁣||\textbf{i}\_{1}\cdot\textbf{i}\_{3}>|\textbf{e}\_{||}|.
+
+This could only happen if embeddings of images 1,2 and i,3 have perpendicular components that are partially parallel.
+In other words, in order to satisfy Conditions 3.2 and 3.3,
+there must exist a CC in which e⟂,1⋅e⟂,2>0\textbf{e}\_{\perp,1}\cdot\textbf{e}\_{\perp,2}>0 and e⟂,1⋅e⟂,3>0\textbf{e}\_{\perp,1}\cdot\textbf{e}\_{\perp,3}>0.
+
+For each image in Fig. [11](#A5.F11 "Figure 11 ‣ Proof. ‣ E.4 Contradiction for Condition 1 and 3 ‣ Appendix E Definitions and Proofs ‣ Is CLIP ideal? No. Can we fix it? Yes!"), the embeddings must optimize the following local similarities:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | i1=argmaxi1(i1⋅t1+i1⋅t2+i1⋅t3)i2=argmaxi2(i2⋅t1+i2⋅t2−i2⋅t3)i3=argmaxi3(−i3⋅t1−i3⋅t2+i3⋅t3)\begin{split}\textbf{i}\_{1}=\operatorname\*{argmax}\_{\textbf{i}\_{1}}(\textbf{i}\_{1}\cdot\textbf{t}\_{1}+\textbf{i}\_{1}\cdot\textbf{t}\_{2}+\textbf{i}\_{1}\cdot\textbf{t}\_{3})\\ \textbf{i}\_{2}=\operatorname\*{argmax}\_{\textbf{i}\_{2}}(\textbf{i}\_{2}\cdot\textbf{t}\_{1}+\textbf{i}\_{2}\cdot\textbf{t}\_{2}-\textbf{i}\_{2}\cdot\textbf{t}\_{3})\\ \textbf{i}\_{3}=\operatorname\*{argmax}\_{\textbf{i}\_{3}}(-\textbf{i}\_{3}\cdot\textbf{t}\_{1}-\textbf{i}\_{3}\cdot\textbf{t}\_{2}+\textbf{i}\_{3}\cdot\textbf{t}\_{3})\end{split} |  | (19) |
+
+subject to ‖ik‖=1\left\|\textbf{i}\_{k}\right\|=1. This allows us to solve for e⟂,k\textbf{e}\_{\perp,k}s. For k=1k=1:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | e⟂,1=argmaxe⟂,1((e|⁣|+e⟂,1)⋅t1+((e|⁣|+e⟂,1)⋅t2+CLOSECLOSE((e|⁣|+e⟂,1)⋅t3)\begin{split}\textbf{e}\_{\perp,1}=\operatorname\*{argmax}\_{\textbf{e}\_{\perp,1}}((\textbf{e}\_{||}+\textbf{e}\_{\perp,1})\cdot\textbf{t}\_{1}+((\textbf{e}\_{||}+\textbf{e}\_{\perp,1})\cdot\textbf{t}\_{2}+\\ ((\textbf{e}\_{||}+\textbf{e}\_{\perp,1})\cdot\textbf{t}\_{3})\end{split} |  | (20) |
+
+subject to ‖e⟂,1‖=2​δ−δ2\left\|\textbf{e}\_{\perp,1}\right\|=\sqrt{2\delta-\delta^{2}}. e|⁣|\textbf{e}\_{||} is fixed so this becomes:
+
+|  |  |  |  |  |
+| --- | --- | --- | --- | --- |
+|  | e⟂,1\displaystyle\textbf{e}\_{\perp,1} | =argmaxe⟂,1(e|⁣|⋅(t1+t2+t3)+e⟂,1⋅(t1+t2+t3))\displaystyle=\operatorname\*{argmax}\_{\textbf{e}\_{\perp,1}}(\textbf{e}\_{||}\cdot(\textbf{t}\_{1}+\textbf{t}\_{2}+\textbf{t}\_{3})+\textbf{e}\_{\perp,1}\cdot(\textbf{t}\_{1}+\textbf{t}\_{2}+\textbf{t}\_{3})) |  | (21) |
+|  |  | =(t1+t2+t3)⋅2​δ−δ2\displaystyle=(\textbf{t}\_{1}+\textbf{t}\_{2}+\textbf{t}\_{3})\cdot\sqrt{2\delta-\delta^{2}} |  |
+
+Similarly, we get:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | e⟂,2=(t1+t2−t3)⋅2​δ−δ2e⟂,3=(−t1−t2+t3)⋅2​δ−δ2\begin{split}\textbf{e}\_{\perp,2}=(\textbf{t}\_{1}+\textbf{t}\_{2}-\textbf{t}\_{3})\cdot\sqrt{2\delta-\delta^{2}}\\ \textbf{e}\_{\perp,3}=(-\textbf{t}\_{1}-\textbf{t}\_{2}+\textbf{t}\_{3})\cdot\sqrt{2\delta-\delta^{2}}\end{split} |  | (22) |
+
+Now taking the dot products, we have:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | e⟂,1⋅e⟂,2=(|t1|+|t2|−|t3|)⋅2​δ=2​δe⟂,1⋅e⟂,3=(−|t1|−|t2|+|t3|)⋅2​δ=−2​δe⟂,2⋅e⟂,3=(−|t1|−|t2|−|t3|)⋅2​δ=−6​δ\begin{split}\textbf{e}\_{\perp,1}\cdot\textbf{e}\_{\perp,2}=(|\textbf{t}\_{1}|+|\textbf{t}\_{2}|-|\textbf{t}\_{3}|)\cdot 2\delta=2\delta\\ \textbf{e}\_{\perp,1}\cdot\textbf{e}\_{\perp,3}=(-|\textbf{t}\_{1}|-|\textbf{t}\_{2}|+|\textbf{t}\_{3}|)\cdot 2\delta=-2\delta\\ \textbf{e}\_{\perp,2}\cdot\textbf{e}\_{\perp,3}=(-|\textbf{t}\_{1}|-|\textbf{t}\_{2}|-|\textbf{t}\_{3}|)\cdot 2\delta=-6\delta\end{split} |  | (23) |
+
+Practically speaking, it is possible by adding more representative samples in the training dataset to change the weights of tj\textbf{t}\_{j}s. That is, for some β1+β2+β3=3\beta\_{1}+\beta\_{2}+\beta\_{3}=3, Eqs. ([21](#A5.E21 "Equation 21 ‣ Proof. ‣ E.4 Contradiction for Condition 1 and 3 ‣ Appendix E Definitions and Proofs ‣ Is CLIP ideal? No. Can we fix it? Yes!"),[22](#A5.E22 "Equation 22 ‣ Proof. ‣ E.4 Contradiction for Condition 1 and 3 ‣ Appendix E Definitions and Proofs ‣ Is CLIP ideal? No. Can we fix it? Yes!")) could be reformulated as:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | e⟂,1=(β1​t1+β2​t2+β3​t3)⋅2​δ−δ2e⟂,2=(β1​t1+β2​t2−β3​t3)⋅2​δ−δ2e⟂,3=(−β1​t1−β2​t2+β3​t3)⋅2​δ−δ2\begin{split}\textbf{e}\_{\perp,1}=(\beta\_{1}\textbf{t}\_{1}+\beta\_{2}\textbf{t}\_{2}+\beta\_{3}\textbf{t}\_{3})\cdot\sqrt{2\delta-\delta^{2}}\\ \textbf{e}\_{\perp,2}=(\beta\_{1}\textbf{t}\_{1}+\beta\_{2}\textbf{t}\_{2}-\beta\_{3}\textbf{t}\_{3})\cdot\sqrt{2\delta-\delta^{2}}\\ \textbf{e}\_{\perp,3}=(-\beta\_{1}\textbf{t}\_{1}-\beta\_{2}\textbf{t}\_{2}+\beta\_{3}\textbf{t}\_{3})\cdot\sqrt{2\delta-\delta^{2}}\end{split} |  | (24) |
+
+The dot products then become:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | e⟂,1⋅e⟂,2=2​δ​(β12+β22−β32)e⟂,1⋅e⟂,3=2​δ​(−β12−β2+β32)e⟂,2⋅e⟂,3=−2​δ​(β12+β22+β32)\boxed{\begin{aligned} \textbf{e}\_{\perp,1}\cdot\textbf{e}\_{\perp,2}&=2\delta\,\bigl(\beta\_{1}^{2}+\beta\_{2}^{2}-\beta\_{3}^{2}\bigr)\\ \textbf{e}\_{\perp,1}\cdot\textbf{e}\_{\perp,3}&=2\delta\,\bigl(-\beta\_{1}^{2}\;-\;\beta^{2}\;+\;\beta\_{3}^{2}\bigr)\\ \textbf{e}\_{\perp,2}\cdot\textbf{e}\_{\perp,3}&=\;-2\delta\,(\beta\_{1}^{2}+\beta\_{2}^{2}+\beta\_{3}^{2})\end{aligned}} |  | (25) |
+
+Note that regardless of the reweighting, e⟂,1⋅e⟂,2=−e⟂,1⋅e⟂,3\textbf{e}\_{\perp,1}\cdot\textbf{e}\_{\perp,2}=-\textbf{e}\_{\perp,1}\cdot\textbf{e}\_{\perp,3}. This directly negates our previous observation that an ideal CC must satisfy e⟂,1⋅e⟂,2>0\textbf{e}\_{\perp,1}\cdot\textbf{e}\_{\perp,2}>0 and e⟂,1⋅e⟂,3>0\textbf{e}\_{\perp,1}\cdot\textbf{e}\_{\perp,3}>0. As such, there exists no CC which sufficiently represents both relational and objective space in the image embeddings.
+
+∎
+
+###### Lemma 4.
+
+CC cannot accurately represent compositional concepts of different hierarchy.
+
+###### Proof.
+
+Here we will show that general prepositions are erroneously closer to all unrelated prepositions.
+
+Some prepositions are more general than others.
+For example, gB<r​e​l>=gBg\_{B}^{<rel>}=g\_{B} where fG,T​(gB)="\_ beside \_"f\_{G,T}(g\_{B})=\text{"\\_ beside \\_"} semantically includes both gLg\_{L} and gRg\_{R}. The ideal placement for t​(x,gB,y)\textbf{t}(x,g\_{B},y) should locally optimize for the following similarities:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | t(x,gB,y)=argmaxt​(x,gB,y)[t(x,gL,y)⋅t(x,gB,y)+t(x,gR,y)⋅t(x,gB,y)−∑z=1|𝔾\{gL,gR,gB}|t(x,gz,y)⋅t(x,gB,y)]\begin{split}\textbf{t}(x,g\_{B},y)=\operatorname\*{argmax}\_{\textbf{t}(x,g\_{B},y)}\Big[\textbf{t}(x,g\_{L},y)\cdot\textbf{t}(x,g\_{B},y)\\ +\textbf{t}(x,g\_{R},y)\cdot\textbf{t}(x,g\_{B},y)\\ -\sum\_{z=1}^{|\mathbb{G}\backslash\{g\_{L},g\_{R},g\_{B}\}|}\textbf{t}(x,g\_{z},y)\cdot\textbf{t}(x,g\_{B},y)\Big]\end{split} |  | (26) |
+
+We know from Lemma 1 that this means t​(x,gB,y)\textbf{t}(x,g\_{B},y) should be a weighted superposition of t​(x,gL,y)\textbf{t}(x,g\_{L},y) and t​(x,gR,y)\textbf{t}(x,g\_{R},y).
+Since we know eL=−eR\textbf{e}\_{L}=-\textbf{e}\_{R}, we can write:
+
+|  |  |  |
+| --- | --- | --- |
+|  | t​(x,gL,y)=(1−δ)⋅t​(x,y)+eL\textbf{t}(x,g\_{L},y)=(1-\delta)\cdot\textbf{t}(x,y)+\textbf{e}\_{L} |  |
+
+|  |  |  |
+| --- | --- | --- |
+|  | t​(x,gR,y)=(1−δ)⋅t​(x,y)−eL\textbf{t}(x,g\_{R},y)=(1-\delta)\cdot\textbf{t}(x,y)-\textbf{e}\_{L} |  |
+
+Then the superposition of the two becomes t​(x,y)\textbf{t}(x,y). But this is a semantically erroneous placement for t​(x,gB,y)\textbf{t}(x,g\_{B},y), as it will incorrectly be closer to any other instance of xx and yy co-appearing in a scene than the average t​(x,g<r​e​l>,y)\textbf{t}(x,g^{<rel>},y).
+For example, for gA<r​e​l>=gAg\_{A}^{<rel>}=g\_{A} where fG,T​(gA)="\_ above \_"f\_{G,T}(g\_{A})=\text{"\\_ above \\_"}, t​(x,gB,y)⋅i​(x,gA,y)>t​(x,gL,y)⋅i​(x,gA,y)\textbf{t}(x,g\_{B},y)\cdot\textbf{i}(x,g\_{A},y)>\textbf{t}(x,g\_{L},y)\cdot\textbf{i}(x,g\_{A},y) even though the two captions are equally inapplicable.
+
+∎
+
+### E.5 Contradiction for Condition 1 and 4
+
+Now we show Condition 4 cannot be met if Condition 1 is met. Before we move to the proof, we first discuss in greater detail the possible arrangements of object concepts in CC.
+
+Orthogonality. One straightforward intuition is that since CC is a high dimensional space, for any two random concepts x1,x2∈𝕍x^{1},x^{2}\in\mathbb{V}, they should be approximately orthogonal [[65](#bib.bib45)]:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | t​(xj)⋅t​(xk)≈0∀j≠k\textbf{t}(x^{j})\cdot\textbf{t}(x^{k})\approx 0\quad\forall j\neq k |  | (27) |
+
+This makes it trivial to derive that t​(¬x)⋅t​(y)≈t​(x)⋅t​(y)=0\textbf{t}(\neg x)\cdot\textbf{t}(y)\approx\textbf{t}(x)\cdot\textbf{t}(y)=0, violating Condition 4.2. We clarify in Lemma 5 why that is. In order to be more rigorous, we show that negation cannot be achieved even under strong idealistic conditions, where t​(x)\textbf{t}(x) are uniformly distributed and distinguishable from one another. This requires perfect isotropy of MM concepts.
+
+Isotropy. Starting with |𝕍||\mathbb{V}| = M≤NM\leq N concepts, we determine the ideal distribution for t​(x)\textbf{t}(x) ∀x∈𝕍\forall x\in\mathbb{V}. As in Lemma 1, we denote distinct concepts as: t​(x1),t​(x2),…\textbf{t}(x^{1}),\textbf{t}(x^{2}),.... Since all x∈𝕍x\in\mathbb{V} are mutually exclusive in semantics by definition, the distance between any two arbitrary concepts x1,x2x^{1},x^{2} should be comparable to the distance between x1,xkx^{1},x^{k} for some xk∈𝕍\{x2}x^{k}\in\mathbb{V}\backslash\{x^{2}\}.
+Then CC must minimize the variance among the cosine similarities of all pairs of concepts:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | mint​(xj)⋅t​(xk)∑j=1M∑k>jM(t​(xj)⋅t​(xk)−s¯)2s. t. ​‖t​(xk)‖=1,∀xk∈𝕍\begin{split}\operatorname\*{min}\_{\textbf{t}(x^{j})\cdot\textbf{t}(x^{k})}\quad\sum\_{j=1}^{M}\sum\_{k>j}^{M}\left(\textbf{t}(x^{j})\cdot\textbf{t}(x^{k})-\bar{s}\right)^{2}\\ \text{s. t. }\|\textbf{t}(x^{k})\|=1,\quad\forall x^{k}\in\mathbb{V}\end{split} |  | (28) |
+
+where s¯\bar{s} is the mean cosine similarity:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | s¯=1(M2)​∑j=1M∑k>jMt​(xj)⋅t​(xk)\bar{s}=\frac{1}{\binom{M}{2}}\sum\_{j=1}^{M}\sum\_{k>j}^{M}\textbf{t}(x^{j})\cdot\textbf{t}(x^{k}) |  | (29) |
+
+Let t​(xj)⋅t​(xk)=sj​k\textbf{t}(x^{j})\cdot\textbf{t}(x^{k})=s\_{jk}. Then the objective simplifies to:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | minsj​k∑j=1M∑k>jM(sj​k2−s¯2)=minsj​k∑j=1M∑k>jM(sj​k)2−s¯2(M2)\operatorname\*{min}\_{s\_{jk}}\sum\_{j=1}^{M}\sum\_{k>j}^{M}\left(s\_{jk}^{2}-\bar{s}^{2}\right)=\operatorname\*{min}\_{s\_{jk}}\sum\_{j=1}^{M}\sum\_{k>j}^{M}(s\_{jk})^{2}-\bar{s}^{2}\binom{M}{2} |  | (30) |
+
+Differentiate the first and second terms with respect to sj​ks\_{jk}:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | ∂∂sj​k​∑j=1M∑k>jMsj​k2=2​sj​k,\frac{\partial}{\partial s\_{jk}}\sum\_{j=1}^{M}\sum\_{k>j}^{M}s\_{jk}^{2}=2s\_{jk}, |  | (31) |
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | ∂∂sj​k​(s¯2​(M2))=2​(M2)​s¯​∂s¯∂sj​k=1(N2)​2​(M2)​s¯=2​s¯\frac{\partial}{\partial s\_{jk}}\left(\bar{s}^{2}\binom{M}{2}\right)=2\binom{M}{2}\bar{s}\frac{\partial\bar{s}}{\partial s\_{jk}}=\frac{1}{\binom{N}{2}}2\binom{M}{2}\bar{s}=2\bar{s} |  | (32) |
+
+This means that the optimum of Eq. ([28](#A5.E28 "Equation 28 ‣ E.5 Contradiction for Condition 1 and 4 ‣ Appendix E Definitions and Proofs ‣ Is CLIP ideal? No. Can we fix it? Yes!")) is reached when
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | 2​s¯−2​sj​k=0∀j,k∈(1,M),j≠k\begin{split}2\bar{s}-2s\_{jk}=0\quad\forall j,k\in(1,M),j\neq k\end{split} |  | (33) |
+
+In other words, the cosine similarities between any two object concepts must be the same as the average. That requires for all t​(xk)\textbf{t}(x^{k}) to be isotropically distributed in ℝN\mathbb{R}^{N}. The optimal arrangement of all t​(xk)\textbf{t}(x^{k}) is then a MM-1 dimensional regular simplex, which is a structure of MM equiangular unit vectors in ℝM\mathbb{R}^{M}. Then we have that the cosine similarity of two random vectors in CC is:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | ​t​(xj)⋅t​(xk)=−1M−1∀j≠k​\boxed{\begin{gathered}$$\textbf{t}(x^{j})\cdot\textbf{t}(x^{k})=-\frac{1}{M-1}\quad\forall j\neq k$$\end{gathered}} |  | (34) |
+
+as all vector pairs in a regular simplex have angles arccos⁡(−1M−1)\arccos{(-\frac{1}{M-1})} [[47](#bib.bib46)].
+
+###### Lemma 5.
+
+Even under isotropic concept distribution, CC cannot accurately represent negation.
+
+###### Proof.
+
+We first derive what t​(x),t​(¬x)\textbf{t}(x),\textbf{t}(\neg x) must be to respect Conditions 4.1 and 4.2. Then we see that this derivation contradicts Condition 4.3.
+
+For CC to ideally represent negation, the following must be true:
+
+|  |  |  |  |  |
+| --- | --- | --- | --- | --- |
+|  | t​("¬ x")⋅i​(x)\displaystyle\textbf{t}(\text{"$\neg$ $x$"})\cdot\textbf{i}(x) | <t("¬ x")⋅i(v)(1)\displaystyle<\textbf{t}(\text{"$\neg$ $x$"})\cdot\textbf{i}(v)\quad(1) |  | (35) |
+|  | t​("¬ x")⋅i​(v)\displaystyle\textbf{t}(\text{"$\neg$ $x$"})\cdot\textbf{i}(v) | >t("x")⋅i(v)(2)\displaystyle>\textbf{t}(\text{"$x$"})\cdot\textbf{i}(v)\quad(2) |  |
+|  | t​("x")⋅t​("y")\displaystyle\textbf{t}(\text{"$x$"})\cdot\textbf{t}(\text{"$y$"}) | <t("¬x")⋅t("¬y")(3)\displaystyle<\textbf{t}(\text{"$\neg$$x$"})\cdot\textbf{t}(\text{"$\neg$$y$"})\quad(3) |  |
+|  | for all ​v∈𝕍\{x}\displaystyle\text{ for all }v\in\mathbb{V}\backslash\{x\} |  | |
+
+To achieve Eq. ([35](#A5.E35 "Equation 35 ‣ Proof. ‣ E.5 Contradiction for Condition 1 and 4 ‣ Appendix E Definitions and Proofs ‣ Is CLIP ideal? No. Can we fix it? Yes!").1), we solve for:
+
+|  |  |  |  |  |
+| --- | --- | --- | --- | --- |
+|  | t​(¬x)\displaystyle\textbf{t}(\neg x) | =argmaxt​(¬x)[∑v=1|𝕍\{x}|t​(¬x)⋅i​(v)−t​(¬x)⋅i​(x)]\displaystyle=\operatorname\*{argmax}\_{\textbf{t}(\neg x)}\Big[\sum\_{v=1}^{|\mathbb{V}\backslash\{x\}|}\textbf{t}(\neg x)\cdot\textbf{i}(v)-\textbf{t}(\neg x)\cdot\textbf{i}(x)\Big] |  | (36) |
+|  |  | =argmaxt​(¬x)[t​(¬x)⋅(∑v=1|𝕍|i​(v)−i​(x)−i​(x))]\displaystyle=\operatorname\*{argmax}\_{\textbf{t}(\neg x)}\Big[\textbf{t}(\neg x)\cdot\Big(\sum\_{v=1}^{|\mathbb{V}|}\textbf{i}(v)-\textbf{i}(x)-\textbf{i}(x)\Big)\Big] |  |
+
+Here, ∑v=1|𝕍|i​(v)\sum\_{v=1}^{|\mathbb{V}|}\textbf{i}(v) is the sum of all vectors in a regular simplex, which is 0. As such, we find that:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | t​(¬x)∗=−i​(x)\textbf{t}(\neg x)^{\*}=-\textbf{i}(x) |  | (37) |
+
+Given this, we can see how if t​(y),t​(x)\textbf{t}(y),\textbf{t}(x) were orthogonal, then t​(x)⋅t​(y)=t​(¬x)⋅t​(y)\textbf{t}(x)\cdot\textbf{t}(y)=\textbf{t}(\neg x)\cdot\textbf{t}(y) is trivial to show. In high dimensions, this orthogonality is always approximately true, violating Condition 4.2.
+
+But let’s consider the more rigorous case where t​(x),t​(y)\textbf{t}(x),\textbf{t}(y) are not orthogonal but rather isotropically distributed in N dimensional space.
+Recall that for two vectors in an M−1M-1 dimensional simplex, t(xj)⋅t(xk)=−1M−1∀j≠k\textbf{t}(x^{j})\cdot\textbf{t}(x^{k})=-\frac{1}{M-1}\ \forall j\neq k. With the above solution, we now have that:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | t​(¬xj)⋅t​(xk)=1M−1>t​(xj)⋅t​(xk)\textbf{t}(\neg x^{j})\cdot\textbf{t}(x^{k})=\frac{1}{M-1}>\textbf{t}(x^{j})\cdot\textbf{t}(x^{k}) |  | (38) |
+
+which satisfies condition 4.2. But 4.3 fails due to the following:
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+|  | t​(¬xj)⋅t​(¬xk)=t​(xj)⋅t​(xk)=−1M−1t​(¬xj)⋅t​(xk)>t​(¬xj)⋅t​(¬xk)\boxed{\begin{aligned} \textbf{t}(\neg x^{j})\cdot\textbf{t}(\neg x^{k})&=\textbf{t}(x^{j})\cdot\textbf{t}(x^{k})=-\frac{1}{M-1}\\ \textbf{t}(\neg x^{j})\cdot\textbf{t}(x^{k})&>\textbf{t}(\neg x^{j})\cdot\textbf{t}(\neg x^{k})\end{aligned}} |  | (39) |
+
+Let’s say xj=x^{j}= “chair" and xk=x^{k}= “penguin". The first erroneous semantic relationship that emerges is that the distance between “chair" and “penguin", which are fully contradictory statements, will be equivalent to the distance between “Not chair" and “Not penguin". For the latter two prompts there exist a lot of images that would be a true match for both, whereas for the first prompt there exists only one.
+
+The second erroneous conclusion is that the cosine similarity between “Not chair" and “penguin" is greater than the cosine similarity between “Not chair" and “Not penguin". This is semantically incorrect for the same reason as above.
+
+∎
+
+## Appendix F Open Vocabulary Experimental Details
+
+We train two model types, one on 5k COCO images from the training split for 12 epochs, and another on 10k COCO images for 6 epochs. The images each have a hard positive and negative, where the latter is the same as the former save for two nouns being swapped.
+We choose this particular type of intervention as CLIP-like VLM performance across the board was lowest for this category of hard negatives in Sugarcrepe [[16](#bib.bib12)]. We evaluate this paradigm on the swap-object split of Sugarcrepe and the VG-spatial split of VL-Checklist [[75](#bib.bib29)] against naive and finetuned CLIP. We choose this particular split of VL-Checklist because we find that all other splits (Objects, Attributes, or Relation-Action) do not introduce new functional words and are thus not applicable for testing dynamic FR updates.
+
+All LLM queries were made to OpenAI’s gpt4o-mini model, with a temperature of 0.7. At the time of evaluation, this was the most affordable model on the API at: $ 0.150 / 1M input tokens and $0.600 / 1M output tokens.
+
+### F.1 LLM System Prompts
+
+![[LOGO]][IMAGE]
+
+## Instructions for reporting errors
+
+We are continuing to improve HTML versions of papers, and your feedback helps enhance accessibility and mobile
+support. To report errors in the HTML that will help us improve conversion and rendering, choose any of the
+methods listed below:
+
+**Tip:** You can select the relevant text first, to include it in your report.
+
+Our team has already identified [the following issues](https://github.com/arXiv/html_feedback/issues). We appreciate your time reviewing and reporting rendering errors we
+may not have found yet. Your efforts will help us improve the HTML versions for all readers, because disability
+should not be a barrier to accessing research. Thank you for your continued support in championing open access for
+all.
+
+Have a free development cycle? Help support accessibility at arXiv! Our collaborators at LaTeXML maintain a [list of packages that need conversion](https://github.com/brucemiller/LaTeXML/wiki/Porting-LaTeX-packages-for-LaTeXML), and welcome [developer contributions](https://github.com/brucemiller/LaTeXML/issues).
+
+![Simons Foundation](/static/base/1.0.1/images/funders/simons-foundation.png)
+![Simons Foundation International](/static/base/1.0.1/images/funders/simons-foundation-international.png)
+![Schmidt Sciences](/static/base/1.0.1/images/funders/schmidt-sciences.png)
