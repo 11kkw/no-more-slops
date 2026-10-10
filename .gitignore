@@ -1,0 +1,6 @@
+# Python runtime caches
+__pycache__/
+*.py[cod]
+
+# Local manuscript-review process locks
+/week1_clip_dcsm_surgery/paper/shortpaper/reviews/*.lock
