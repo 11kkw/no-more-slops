@@ -40,6 +40,13 @@ candidates by IoU≥0.5), CLIP crop / context-crop embeddings, the pretrained DC
 checkpoints, context crops, repo-faithful special-word insertion + standardisation), and the six full-image
 readout heatmaps (3 last-block readouts × {EOS, DCSM token-max}) mean-pooled inside the candidate box.
 
+## Retraining the DCSM scorer on surgery readouts
+
+`scripts/train_dcsm_scorer.py` ports the original image-level recipe (Objaverse spatial / colour / small-big
+composites + negated COCO-train pairs, 16x16 symmetric CE, learned special-word columns, Adam 1e-3, 27 epochs) and
+trains one scorer per last-block readout from a single shared CLIP forward. Checkpoints record `readout` and
+`special_slicing` so `compositional_eval.py` applies the matching rule.
+
 ## Run
 
 ```bash
@@ -56,15 +63,22 @@ uv run scripts/build_comp_queries.py --coco_root data/coco --out data/comp_queri
 uv run scripts/compositional_eval.py --out results/comp_full                                     # all scorers, all subsets (~10 min)
 uv run scripts/heuristic_baselines.py                                                           # largest/smallest/central-box baselines
 uv run scripts/balanced_view.py results/comp_full                                               # size-balanced accuracy table
+
+# DCSM training data: download the two Drive zips (link in ../baseline/README.md) into data/dcsm_train/dcsm_training/, unzip into data/dcsm_train/;
+# the negation json references COCO train2017 originals -> fetch them into data/dcsm_train/train2017/train2017/ (see plan §3c.3)
+uv run scripts/train_dcsm_scorer.py --data_root data/dcsm_train --spatial_dir objaverse_train_cutmix_newrelations_withbg --out results/retrain  # ~77 min
+uv run scripts/compositional_eval.py --dcsm_ckpts data/dcsm_ckpt/*.pt results/retrain/*.pt --out results/comp_retrain
+uv run scripts/balanced_view.py results/comp_retrain && uv run scripts/paired_bootstrap.py results/comp_retrain spatial dcsm_maskclip_retrain_ctx dcsm_naive_retrain_ctx
 ```
 
 ## Layout
 
 ```
 scripts/   dcsm_detection_eval.py  probe_localization.py  probe_qualitative.py  chance_level.py  setup_data.py
-           build_comp_queries.py  compositional_eval.py  heuristic_baselines.py  balanced_view.py
+           build_comp_queries.py  compositional_eval.py  heuristic_baselines.py  balanced_view.py  paired_bootstrap.py
+           train_dcsm_scorer.py (image-level DCSM scorer retraining, original recipe, readout swapped)
 results/   probe_500/ (localization probe)   smoke_50/   full_val2017/ (COCO zero-shot AP)
-           comp_smoke/   comp_full/ (compositional top-1)
-data/      (git-ignored) coco/val2017, coco/annotations, dcsm_ckpt/
+           comp_smoke/   comp_full/ (compositional top-1)   retrain/ (retrained scorers + log)   comp_retrain/ (compositional, released + retrained)
+data/      (git-ignored) coco/val2017, coco/annotations, dcsm_ckpt/, dcsm_train/ (Drive zips unzipped + train2017/ images for the negation json)
            comp_queries/ (comp_queries.json, stats.md, spotcheck_*.png — regenerate with build_comp_queries.py)
 ```

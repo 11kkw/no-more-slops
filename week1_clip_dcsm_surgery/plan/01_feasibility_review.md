@@ -218,6 +218,88 @@ spatial 관계별 (raw top-1): dcsm_obja_ctx left 61.2 / right 61.3 / above 40.3
 - **readout surgery는 조합 추론을 만들지 않는다.** MaskCLIP·ClearCLIP 히트맵은 색에서는 naive 대비 +30~40점이지만 spatial·negation·affirm에서는 우연 근방이다. 3b.4의 예상대로 surgery는 "어디에 무엇이 있는가"를 복원할 뿐이며, 관계·부정에는 학습된 scorer가 필요하다.
 - **OWL 계열은 조합 쿼리에 약하다.** 색을 제외하면 모든 subset에서 우연 이하다. grounding 데이터로 학습했음에도 문장의 관계·부정 구조를 쓰지 않는다는 뜻이며, 비교 대상으로서 "open-vocabulary 검출기도 조합 추론은 못 한다"는 배경을 제공한다.
 
+## 3c. 스펙 확장 2 — readout surgery 위에서 DCSM scorer 재학습 (2026-10-10 추가)
+
+### 3c.1 동기와 결정 사항
+
+3b에서 사전학습 DCSM scorer는 공간 관계를 읽지만 naive readout(반전된 패치 표현) 위에서 학습되었고, surgery readout 히트맵은 위치는 잘 잡지만 관계를 읽지 못했다. 둘을 합쳐 **surgery readout(MaskCLIP/ClearCLIP) 행렬 위에 scorer를 다시 학습**하면 관계 추론과 localization이 동시에 개선되는지 본다. 사용자 결정(2026-10-10):
+
+| 결정 | 선택 | 이유 |
+|---|---|---|
+| 학습 데이터 | 원 논문 Drive 데이터, 레시피 그대로 | readout 변수만 격리. COCO val2017 평가 벤치마크와 데이터가 겹치지 않음 |
+| 학습 단위 | 이미지 단위(원 논문과 동일) | 영역 단위로 바꾸려면 COCO train2017 기반 데이터가 필요해 원 데이터를 쓸 수 없음(합성 데이터에 박스 라벨 없음). 한때 영역 단위로 변경했다가 이미지 단위로 복귀 |
+| 검증 | naive readout 재학습을 공개 체크포인트와 조합 벤치마크에서 비교 | 같은 레시피의 naive 재학습이 공개 체크포인트와 비슷하면 파이프라인이 맞다고 봄 |
+
+### 3c.2 재학습 레시피 (`experiment/scripts/train_dcsm_scorer.py`, 저장소 `train.py` 포팅)
+
+- 데이터: Objaverse 공간 관계 합성(`A_rel_B.png` + `CUTMIX_` hard negative), Objaverse 색상·small/big 합성(`c1_A_c2_B.png` + `MIRROR_`), COCO train 부정 쌍(json). 각 데이터셋을 settype 0/1(캡션 순서 교체)로 짝지어 쓰고, 매 epoch 가장 작은 데이터셋 크기로 무작위 절단.
+- 배치: 데이터셋별·버전별로 이미지 8 + 반대 이미지 8 × 캡션 8 + 반대 캡션 8 → 16×16 점수 행렬, 행·열 셔플 후 항등 라벨에 양방향 cross-entropy. 3개 데이터셋 × 2 버전의 기울기를 누적하고 3으로 나눠 한 번 step.
+- 행렬: 197×30 코사인 맵, special word 열을 학습 가능한 197차원 임베딩으로 **교체**(train.py 규칙), 배치 전체 표준화. 증강: RandomPerspective(0.05, p=0.2), RandomRotation(±4°), salt&pepper 2% (train.py의 RandomResizedCrop은 만들어지지만 적용되지 않음을 코드에서 확인).
+- 최적화: Adam lr 1e-3, 27 epoch, seed 15, dropout 0, CLIP 고정.
+- 차이점: CLIP forward 한 번으로 naive·MaskCLIP·ClearCLIP 세 readout을 모두 뽑아 scorer 3개를 **같은 배치·같은 증강**으로 동시에 학습한다. 체크포인트에 `readout`과 `special_slicing="replace"`를 기록해 평가 시 학습과 같은 열 규칙을 쓴다(공개 체크포인트는 저장소 eval 규칙인 "삽입 후 마지막 열 삭제"를 유지).
+- 평가: 3b 조합 벤치마크에 `dcsm_{naive,maskclip,clearclip}_retrain_ctx` scorer로 추가. 검증 기준: naive 재학습 ≈ 공개 체크포인트(spatial 균형 57~58).
+
+### 3c.3 현재 상태 (2026-10-10)
+
+- 학습 스크립트 작성 완료. 원 데이터 파일 규약을 흉내 낸 더미 데이터로 코드 경로(데이터 로딩·special word 교체·손실·체크포인트 저장·평가 로딩)를 검증했다.
+- Drive 학습 데이터는 익명 다운로드 할당량 제한에 걸려 사용자가 브라우저로 두 zip(17.5GB + 5.0GB)을 받아 넣었다(2026-10-10). 압축 해제 결과와 코드 기대 폴더의 대응:
+  - 공간 관계: `objaverse_train_cutmix_newrelations_withbg/` (CUTMIX_ hard negative 포함, 24,648장). 저장소 코드가 기대하는 이름(`objaverse_train_composite_newrelations_withbg`)과 달라 `--spatial_dir`로 지정. 파일명의 관계 토큰은 above·leftof·on·behind 각 3,081장인데, 저장소 필터는 above/below/leftof/rightof만 통과시키므로 실제 학습에는 above·leftof 6,162장만 쓰이고 settype 1이 below·rightof 캡션을 만든다.
+  - 색상·크기: `objaverse_attributes_overlay_withbg/` 5,402장 + `objaverse_smallbig_withbg/` 6,162장 (MIRROR_ 포함).
+  - 부정: `negated_pairs_cocotrain_v1.json` 10,000쌍. **이미지는 COCO train2017 원본 14,056장을 가리키며 Drive 데이터에 없다.** COCO 서버에서 해당 파일만 병렬로 받아 `train2017/train2017/`에 두었다.
+  - 사용하지 않는 폴더: `coco_cutmix_train`, `coco_ATTRSWAP`, `objaverse_composite_newrelations_withbg`(CUTMIX 없음), `objaverse_singleimg_crop`, `negated_pairs_objaverse_v1.json`.
+- 실행: `uv run scripts/train_dcsm_scorer.py --data_root data/dcsm_train --spatial_dir objaverse_train_cutmix_newrelations_withbg --out results/retrain` → `compositional_eval.py --dcsm_ckpts data/dcsm_ckpt/*.pt results/retrain/*.pt --out results/comp_retrain` → `balanced_view.py results/comp_retrain`.
+
+### 3c.4 결과 (2026-10-10, `experiment/results/retrain`, `experiment/results/comp_retrain`)
+
+**학습**: 27 epoch × 722 step, epoch당 약 170초(총 약 77분). 16-way 정합 학습 정확도(우연 0.06): naive 0.685, MaskCLIP 0.706, ClearCLIP 0.684. 세 scorer는 같은 배치·같은 증강으로 학습되었고 readout만 다르다.
+
+**조합 벤치마크, 크기 균형 top-1** (괄호: 타깃이 가장 큰 후보 / 아닌 후보; size는 big / small):
+
+| scorer | size | color | spatial | negation | affirm |
+|---|---|---|---|---|---|
+| chance (balanced) | 37.6 | 43.5 | 45.7 | 48.1 | 33.0 |
+| OWLv2 | 41.7 (72/11) | **73.5** (78/69) | 43.2 (49/37) | 39.5 (45/34) | 45.3 |
+| CLIP 문맥 crop | 36.8 | 69.2 (71/67) | 39.0 (37/41) | 34.6 (36/33) | 46.2 |
+| DCSM 공개 ckpt (obja / coco) | 38.2 / 38.8 | 65.7 / 61.7 | 58.1 / 57.3 | 38.7 / 37.5 | 47.8 / 46.0 |
+| DCSM 재학습 · naive readout | 35.8 (38/34) | 64.2 (61/67) | 56.2 (58/54) | 41.6 (46/37) | 51.6 |
+| DCSM 재학습 · **MaskCLIP readout** | 38.6 (35/42) | 59.1 (57/62) | **71.7** (75/69) | 37.5 (42/33) | 48.0 |
+| DCSM 재학습 · **ClearCLIP readout** | 40.7 (50/31) | 68.4 (66/71) | **66.6** (70/64) | 36.2 (34/39) | 50.7 |
+
+**공간 관계 세부** (raw top-1, n = 62 / 52 / 227 / 186):
+
+| scorer | above | below | left of | right of |
+|---|---|---|---|---|
+| OWLv2 | 46.8 | 50.0 | 37.9 | 44.6 |
+| DCSM 공개 obja | 40.3 | 51.9 | 61.2 | 61.3 |
+| 재학습 naive | 41.9 | 48.1 | 59.9 | 58.1 |
+| 재학습 MaskCLIP | **54.8** | **67.3** | **73.6** | **75.3** |
+| 재학습 ClearCLIP | 46.8 | 65.4 | 68.7 | 69.9 |
+
+**paired bootstrap 95% CI** (10,000 resample, raw top-1, spatial n=527):
+
+| 비교 | 차이 | 95% CI |
+|---|---|---|
+| MaskCLIP 재학습 − naive 재학습 (spatial) | +15.4 | [+10.6, +20.3] |
+| ClearCLIP 재학습 − naive 재학습 (spatial) | +10.2 | [+5.1, +15.4] |
+| naive 재학습 − 공개 obja ckpt (spatial) | −1.9 | [−5.9, +2.1] |
+| MaskCLIP 재학습 − OWLv2 (spatial) | +28.8 | [+23.3, +34.5] |
+| MaskCLIP 재학습 − naive 재학습 (color) | −4.9 | [−14.1, +4.2] |
+| MaskCLIP 재학습 − naive 재학습 (negation) | −4.1 | [−11.1, +2.9] |
+
+**해석**
+
+1. **검증 통과**: 같은 레시피로 naive readout을 재학습한 scorer는 공개 체크포인트와 통계적으로 구분되지 않는다(spatial 56.2 vs 57.3~58.1, CI가 0을 포함). 포팅한 학습 파이프라인이 원 논문과 동등하다고 볼 수 있다.
+2. **핵심 결과**: readout을 MaskCLIP으로 바꾸고 scorer를 다시 학습하면 공간 관계 정확도가 56 → 72로 오른다(+15.4, CI 하한 +10.6). ClearCLIP도 +10.2로 유의하다. 특히 학습 데이터에 직접 없던 above/below(settype 1로만 생성)에서 공개 ckpt 40~52 → MaskCLIP 55~67로 가장 크게 개선되어, 반전되지 않은 패치 표현이 수직 관계의 일반화를 돕는다. OWLv2와의 격차는 +28.8이다.
+3. **1주차 주장이 완성된다**: (실측 1) naive readout은 anti-localized → (3b) 그 위에 학습된 공개 scorer는 관계를 읽지만 localization이 반전된 표현에 의존 → (3c) readout surgery 위에서 재학습하면 scorer가 위치가 올바른 표현을 쓰게 되어 관계 추론이 크게 좋아진다. 변경점은 마지막 블록 readout 하나뿐이고 CLIP은 동결 상태다.
+4. **한계**: color와 negation은 readout 교체로 유의하게 변하지 않는다(CI가 0 포함). negation은 모든 방법이 우연 이하이고 affirm에서는 높아, "without"을 읽지 못하는 문제는 표현이 아니라 학습 신호(합성 부정 쌍) 쪽 문제로 보인다. size는 누구도 못 읽는다. MaskCLIP > ClearCLIP 순서는 학습 정확도와 일치하지만 seed 1개 결과이므로, 논문에는 seed 3개 평균을 넣어야 한다(epoch당 170초라 비용은 작다).
+
+## 3d. 1주차 결론
+
+- 아이디어(DCSM 패치 표현 → 제로샷 탐지)는 **readout surgery를 전제로** 재현 가능하다. 원 코드 경로 그대로는 localization이 우연 이하다.
+- COCO 80클래스 제로샷 탐지에서는 동결 CLIP + DCSM 분류 신호가 OWLv2 박스 위에서 AP 20~27을 내며, OWLv2 자체 헤드(46.8)에는 못 미친다. 이 설정에서는 DCSM 행렬이 EOS 임베딩보다 나을 이유가 없다.
+- DCSM의 가치는 조합 쿼리에서 나온다. 공개 scorer만으로도 공간 관계에서 OWLv2·CLIP을 앞서고(58 vs 43), MaskCLIP readout 위에서 재학습하면 72까지 오른다. 이것이 논문의 헤드라인 결과다.
+- 다음 주 후보: seed 3개 반복, 영역 단위 학습(COCO train2017 기반 쿼리 생성) 또는 negation 학습 신호 개선, OWLv2 proposal + 재학습 scorer를 결합한 end-to-end 조합 쿼리 탐지(박스까지 출력) 평가.
+
 ## 4. 베이스라인 코드·환경 재현성 이슈
 
 - **환경**: `baseline/requirements.txt`는 UTF-16 인코딩에 torch 2.5.1+cu121 고정. 이 서버 GPU는 Blackwell(sm_120)이라 cu121 빌드는 동작하지 않는다. uv로 torch 2.11.0+cu128, transformers 5.19 환경을 구성해 동작 확인(`experiment/pyproject.toml`). lavis, open_clip, objaverse는 검출 실험에 불필요.

@@ -79,21 +79,29 @@ def tolerant_torch_load(path):
 
 
 class DCSMScorer:
+    """Released checkpoints: naive readout + the repo's eval-time special-word slicing (insert, drop last column).
+    Retrained checkpoints (train_dcsm_scorer.py) carry 'readout' and 'special_slicing' = 'replace'."""
+
     def __init__(self, ckpt_path, clip, tok, img_proc, device):
         st = tolerant_torch_load(ckpt_path)
         self.net = CrossModalConvNetwork(IMG_SEQ, TEXT_SEQ).to(device).eval()
         self.net.load_state_dict(st["model_state_dict"])
         self.emb = st["external_logic_token_embeddings"].to(device)
         self.words = st.get("learned_lookup") or SPECIAL_WORDS
+        self.readout = st.get("readout", "naive")
+        self.slicing = st.get("special_slicing", "eval_shift")
         self.clip, self.tok, self.img_proc, self.device = clip, tok, img_proc, device
 
     @torch.no_grad()
     def score(self, crops, text):
         """crops: list of PIL -> (len(crops),) scores for one text (batch = the candidates of one query)."""
         pv = self.img_proc(images=crops, return_tensors="pt")["pixel_values"].to(self.device)
-        vo = self.clip.vision_model(pixel_values=pv)
-        img = self.clip.visual_projection(self.clip.vision_model.post_layernorm(vo.last_hidden_state))
-        img = img / img.norm(dim=-1, keepdim=True)  # (B,197,512)
+        if self.readout == "naive":
+            vo = self.clip.vision_model(pixel_values=pv)
+            img = self.clip.visual_projection(self.clip.vision_model.post_layernorm(vo.last_hidden_state))
+            img = img / img.norm(dim=-1, keepdim=True)  # (B,197,512)
+        else:
+            img = dense_features(self.clip, pv, 224)[0][self.readout]
         tt = self.tok(text=[text], padding="max_length", max_length=TEXT_SEQ, truncation=True, return_tensors="pt").to(self.device)
         txt = self.clip.text_projection(self.clip.text_model(**tt).last_hidden_state)
         txt = txt / txt.norm(dim=-1, keepdim=True)  # (1,30,512)
@@ -103,7 +111,8 @@ class DCSMScorer:
             if w in sent:
                 loc = sent.index(w)
                 mid = self.emb(torch.tensor([self.words.index(w)], device=self.device)).unsqueeze(2).repeat(len(crops), 1, 1)
-                cos = torch.cat([cos[:, :, :loc], mid, cos[:, :, loc:-1]], dim=-1)
+                tail = cos[:, :, loc + 1:] if self.slicing == "replace" else cos[:, :, loc:-1]
+                cos = torch.cat([cos[:, :, :loc], mid, tail], dim=-1)
         cos = cos.unsqueeze(1)  # (B,1,197,30)
         cos = (cos - cos.mean()) / cos.std()  # repo's standardize() over the whole batch tensor
         return self.net(cos).squeeze(-1).squeeze(-1).float().cpu().numpy()
@@ -196,7 +205,7 @@ def main():
     patch = clip.config.vision_config.patch_size
     owl2_proc, owl2 = AutoProcessor.from_pretrained(args.owlv2), Owlv2ForObjectDetection.from_pretrained(args.owlv2).to(device).eval()
     owl1_proc, owl1 = AutoProcessor.from_pretrained(args.owlv1), OwlViTForObjectDetection.from_pretrained(args.owlv1).to(device).eval()
-    dcsm = {os.path.basename(p).replace("_ckpt.pt", ""): DCSMScorer(p, clip, tok, img_proc, device) for p in args.dcsm_ckpts}
+    dcsm = {os.path.splitext(os.path.basename(p))[0].replace("_ckpt", ""): DCSMScorer(p, clip, tok, img_proc, device) for p in args.dcsm_ckpts}
 
     scorers = ["owlv2", "owlvit_v1", "clip_crop", "clip_ctx"] + [f"{k}_ctx" for k in dcsm] + \
               [f"readout/{m}/{t}" for m in MODES for t in ["pooled", "dcsm_tok"]]
