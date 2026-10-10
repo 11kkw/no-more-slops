@@ -20,6 +20,26 @@ Protocols (all training-free):
   class map inside the box; score = objectness × p(class). Same boxes as `owlv2_native`, so the gap isolates the
   classification signal.
 
+## Compositional queries (attribute binding / spatial relation / negation)
+
+`scripts/build_comp_queries.py` derives a referring-detection benchmark from COCO val2017 annotations only.
+Every item = one image, one query, N same-class candidate boxes (2–6), exactly one target. The class name alone
+cannot solve an item; the attribute, relation or negation must be read. Metric = top-1 accuracy among candidates
+(chance = mean 1/N).
+
+| subset | query template | target definition |
+|---|---|---|
+| size | `a picture of a big/small {A}` | area ≥ 3× (≤ ⅓×) every other A |
+| color | `a picture of a {color} {A}` | dominant HSV colour of the eroded instance mask (≥55% of pixels); colour absent (<12%) from all distractors |
+| spatial | `a picture of a {A} to the left of / right of / above / below a {B}` | B unique in image; exactly one A on that side of B, all others on the other side |
+| negation | `a picture of a {A} without a {B}` | exactly one A with no attached B (box overlap ≥30% of smaller box or centre containment); A∈hosts, B∈portables |
+| affirm | `a picture of a {A} with a {B}` | control: exactly one A with an attached B |
+
+`scripts/compositional_eval.py` scores every candidate with: OWLv2 / OWL-ViT v1 (query-text detections matched to
+candidates by IoU≥0.5), CLIP crop / context-crop embeddings, the pretrained DCSM scoring CNN (both released
+checkpoints, context crops, repo-faithful special-word insertion + standardisation), and the six full-image
+readout heatmaps (3 last-block readouts × {EOS, DCSM token-max}) mean-pooled inside the candidate box.
+
 ## Run
 
 ```bash
@@ -31,12 +51,20 @@ uv run scripts/dcsm_detection_eval.py --coco_root data/coco --out results/full_v
 uv run scripts/probe_localization.py   --coco_root data/coco --n_images 500 --out results/probe   # localization probe
 uv run scripts/probe_qualitative.py    --image ../baseline/data/test_image2.jpg --queries car "school bus" --out results/qual.png
 uv run scripts/chance_level.py data/coco 500                                                     # chance baselines
+
+uv run scripts/build_comp_queries.py --coco_root data/coco --out data/comp_queries                # compositional benchmark (+ spot-check grids)
+uv run scripts/compositional_eval.py --out results/comp_full                                     # all scorers, all subsets (~10 min)
+uv run scripts/heuristic_baselines.py                                                           # largest/smallest/central-box baselines
+uv run scripts/balanced_view.py results/comp_full                                               # size-balanced accuracy table
 ```
 
 ## Layout
 
 ```
 scripts/   dcsm_detection_eval.py  probe_localization.py  probe_qualitative.py  chance_level.py  setup_data.py
-results/   probe_500/ (localization probe, 2026-10-09)   smoke_50/   full_val2017/
+           build_comp_queries.py  compositional_eval.py  heuristic_baselines.py  balanced_view.py
+results/   probe_500/ (localization probe)   smoke_50/   full_val2017/ (COCO zero-shot AP)
+           comp_smoke/   comp_full/ (compositional top-1)
 data/      (git-ignored) coco/val2017, coco/annotations, dcsm_ckpt/
+           comp_queries/ (comp_queries.json, stats.md, spotcheck_*.png — regenerate with build_comp_queries.py)
 ```

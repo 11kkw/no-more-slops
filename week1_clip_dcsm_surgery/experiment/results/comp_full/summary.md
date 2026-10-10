@@ -1,0 +1,64 @@
+| scorer | size | color | spatial | negation | affirm |
+|---|---|---|---|---|---|
+| chance (mean 1/N) | 43.1 | 44.1 | 45.6 | 47.4 | 33.4 |
+| #items | 655 | 142 | 527 | 315 | 194 |
+| owlv2 | 64.7 | 74.6 | 42.5 | 36.8 | 46.9 |
+| owlvit_v1 | 69.5 | 67.6 | 42.3 | 34.6 | 47.4 |
+| clip_crop | 45.8 | 69.7 | 43.8 | 52.4 | 39.2 |
+| clip_ctx | 45.8 | 69.7 | 39.3 | 33.7 | 45.9 |
+| dcsm_obja_ctx | 43.5 | 64.8 | 57.9 | 38.4 | 47.4 |
+| dcsm_coco_ctx | 49.3 | 61.3 | 56.9 | 38.1 | 46.4 |
+| readout/naive/pooled | 42.1 | 23.9 | 49.3 | 44.1 | 27.3 |
+| readout/naive/dcsm_tok | 47.8 | 38.7 | 49.5 | 53.7 | 37.1 |
+| readout/maskclip/pooled | 46.9 | 61.3 | 39.3 | 52.4 | 37.1 |
+| readout/maskclip/dcsm_tok | 51.6 | 64.1 | 43.3 | 49.2 | 37.6 |
+| readout/clearclip/pooled | 42.4 | 57.0 | 39.7 | 54.0 | 41.8 |
+| readout/clearclip/dcsm_tok | 44.1 | 62.7 | 42.5 | 51.4 | 35.1 |
+
+**spatial breakdown** (top-1 %, n per column)
+| scorer | above (n=62) | below (n=52) | to the left of (n=227) | to the right of (n=186) |
+|---|---|---|---|---|
+| owlv2 | 46.8 | 50.0 | 37.9 | 44.6 |
+| owlvit_v1 | 32.3 | 50.0 | 39.2 | 47.3 |
+| clip_crop | 32.3 | 42.3 | 46.3 | 45.2 |
+| clip_ctx | 32.3 | 48.1 | 38.8 | 39.8 |
+| dcsm_obja_ctx | 40.3 | 51.9 | 61.2 | 61.3 |
+| dcsm_coco_ctx | 41.9 | 59.6 | 62.1 | 54.8 |
+| readout/naive/pooled | 48.4 | 48.1 | 46.7 | 53.2 |
+| readout/naive/dcsm_tok | 54.8 | 57.7 | 48.9 | 46.2 |
+| readout/maskclip/pooled | 45.2 | 42.3 | 41.0 | 34.4 |
+| readout/maskclip/dcsm_tok | 43.5 | 42.3 | 45.4 | 40.9 |
+| readout/clearclip/pooled | 45.2 | 50.0 | 37.0 | 38.2 |
+| readout/clearclip/dcsm_tok | 43.5 | 48.1 | 41.9 | 41.4 |
+
+**size breakdown** (top-1 %, n per column)
+| scorer | big (n=575) | small (n=80) |
+|---|---|---|
+| owlv2 | 72.2 | 11.2 |
+| owlvit_v1 | 77.6 | 11.2 |
+| clip_crop | 48.7 | 25.0 |
+| clip_ctx | 48.7 | 25.0 |
+| dcsm_obja_ctx | 45.2 | 31.2 |
+| dcsm_coco_ctx | 52.7 | 25.0 |
+| readout/naive/pooled | 43.3 | 33.8 |
+| readout/naive/dcsm_tok | 50.8 | 26.2 |
+| readout/maskclip/pooled | 48.9 | 32.5 |
+| readout/maskclip/dcsm_tok | 53.9 | 35.0 |
+| readout/clearclip/pooled | 43.3 | 36.2 |
+| readout/clearclip/dcsm_tok | 44.3 | 42.5 |
+
+**color breakdown** (top-1 %, n per column)
+| scorer | black (n=29) | blue (n=15) | brown (n=19) | gray (n=20) | green (n=7) | orange (n=6) | pink (n=4) | red (n=6) | white (n=30) | yellow (n=6) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| owlv2 | 82.8 | 80.0 | 84.2 | 65.0 | 100.0 | 83.3 | 75.0 | 66.7 | 56.7 | 83.3 |
+| owlvit_v1 | 62.1 | 86.7 | 89.5 | 60.0 | 57.1 | 66.7 | 50.0 | 83.3 | 56.7 | 66.7 |
+| clip_crop | 69.0 | 66.7 | 73.7 | 70.0 | 100.0 | 50.0 | 75.0 | 83.3 | 66.7 | 50.0 |
+| clip_ctx | 69.0 | 66.7 | 73.7 | 70.0 | 100.0 | 50.0 | 75.0 | 83.3 | 66.7 | 50.0 |
+| dcsm_obja_ctx | 65.5 | 53.3 | 84.2 | 60.0 | 71.4 | 33.3 | 50.0 | 83.3 | 63.3 | 66.7 |
+| dcsm_coco_ctx | 62.1 | 73.3 | 57.9 | 55.0 | 85.7 | 50.0 | 75.0 | 66.7 | 56.7 | 50.0 |
+| readout/naive/pooled | 37.9 | 20.0 | 42.1 | 20.0 | 14.3 | 0.0 | 0.0 | 0.0 | 20.0 | 16.7 |
+| readout/naive/dcsm_tok | 41.4 | 40.0 | 36.8 | 45.0 | 28.6 | 33.3 | 50.0 | 33.3 | 36.7 | 33.3 |
+| readout/maskclip/pooled | 58.6 | 66.7 | 47.4 | 70.0 | 57.1 | 50.0 | 50.0 | 83.3 | 60.0 | 83.3 |
+| readout/maskclip/dcsm_tok | 72.4 | 73.3 | 47.4 | 60.0 | 71.4 | 50.0 | 100.0 | 66.7 | 56.7 | 83.3 |
+| readout/clearclip/pooled | 58.6 | 66.7 | 47.4 | 45.0 | 71.4 | 66.7 | 50.0 | 66.7 | 53.3 | 83.3 |
+| readout/clearclip/dcsm_tok | 62.1 | 66.7 | 47.4 | 65.0 | 71.4 | 66.7 | 100.0 | 50.0 | 60.0 | 83.3 |

@@ -1,0 +1,304 @@
+{
+ "args": {
+  "queries": "data/comp_queries/comp_queries.json",
+  "coco_root": "data/coco",
+  "clip": "openai/clip-vit-base-patch16",
+  "owlv2": "google/owlv2-base-patch16-ensemble",
+  "owlv1": "google/owlvit-base-patch32",
+  "dcsm_ckpts": [
+   "data/dcsm_ckpt/dcsm_obja_ckpt.pt",
+   "data/dcsm_ckpt/dcsm_coco_ckpt.pt"
+  ],
+  "size": 224,
+  "limit": 6,
+  "out": "results/comp_smoke"
+ },
+ "chance": {
+  "size": 0.4166666666666667,
+  "color": 0.4222222222222223,
+  "spatial": 0.5,
+  "negation": 0.4583333333333333,
+  "affirm": 0.3611111111111111
+ },
+ "counts": {
+  "size": 6,
+  "color": 6,
+  "spatial": 6,
+  "negation": 6,
+  "affirm": 6
+ },
+ "top1": {
+  "owlv2": {
+   "size": 0.8333333333333334,
+   "color": 0.5,
+   "spatial": 0.6666666666666666,
+   "negation": 0.3333333333333333,
+   "affirm": 0.6666666666666666
+  },
+  "owlvit_v1": {
+   "size": 0.8333333333333334,
+   "color": 0.6666666666666666,
+   "spatial": 0.6666666666666666,
+   "negation": 0.16666666666666666,
+   "affirm": 0.6666666666666666
+  },
+  "clip_crop": {
+   "size": 0.3333333333333333,
+   "color": 0.5,
+   "spatial": 0.3333333333333333,
+   "negation": 0.16666666666666666,
+   "affirm": 0.5
+  },
+  "clip_ctx": {
+   "size": 0.3333333333333333,
+   "color": 0.5,
+   "spatial": 0.5,
+   "negation": 0.3333333333333333,
+   "affirm": 0.5
+  },
+  "dcsm_obja_ctx": {
+   "size": 0.5,
+   "color": 0.6666666666666666,
+   "spatial": 0.8333333333333334,
+   "negation": 0.5,
+   "affirm": 0.3333333333333333
+  },
+  "dcsm_coco_ctx": {
+   "size": 0.3333333333333333,
+   "color": 0.3333333333333333,
+   "spatial": 0.6666666666666666,
+   "negation": 0.5,
+   "affirm": 0.6666666666666666
+  },
+  "readout/naive/pooled": {
+   "size": 0.6666666666666666,
+   "color": 0.16666666666666666,
+   "spatial": 0.5,
+   "negation": 0.5,
+   "affirm": 0.5
+  },
+  "readout/naive/dcsm_tok": {
+   "size": 0.3333333333333333,
+   "color": 0.3333333333333333,
+   "spatial": 0.3333333333333333,
+   "negation": 0.8333333333333334,
+   "affirm": 0.8333333333333334
+  },
+  "readout/maskclip/pooled": {
+   "size": 0.16666666666666666,
+   "color": 0.6666666666666666,
+   "spatial": 0.5,
+   "negation": 0.5,
+   "affirm": 0.3333333333333333
+  },
+  "readout/maskclip/dcsm_tok": {
+   "size": 0.3333333333333333,
+   "color": 0.5,
+   "spatial": 0.5,
+   "negation": 0.3333333333333333,
+   "affirm": 0.3333333333333333
+  },
+  "readout/clearclip/pooled": {
+   "size": 0.5,
+   "color": 0.3333333333333333,
+   "spatial": 0.5,
+   "negation": 0.5,
+   "affirm": 0.5
+  },
+  "readout/clearclip/dcsm_tok": {
+   "size": 0.16666666666666666,
+   "color": 0.5,
+   "spatial": 0.5,
+   "negation": 0.5,
+   "affirm": 0.5
+  }
+ },
+ "breakdown": {
+  "spatial": {
+   "owlv2": {
+    "above": 0.0,
+    "to the left of": 1.0,
+    "to the right of": 0.75
+   },
+   "owlvit_v1": {
+    "above": 0.0,
+    "to the left of": 1.0,
+    "to the right of": 0.75
+   },
+   "clip_crop": {
+    "above": 0.0,
+    "to the left of": 0.0,
+    "to the right of": 0.5
+   },
+   "clip_ctx": {
+    "above": 0.0,
+    "to the left of": 0.0,
+    "to the right of": 0.75
+   },
+   "dcsm_obja_ctx": {
+    "above": 1.0,
+    "to the left of": 0.0,
+    "to the right of": 1.0
+   },
+   "dcsm_coco_ctx": {
+    "above": 0.0,
+    "to the left of": 0.0,
+    "to the right of": 1.0
+   },
+   "readout/naive/pooled": {
+    "above": 1.0,
+    "to the left of": 1.0,
+    "to the right of": 0.25
+   },
+   "readout/naive/dcsm_tok": {
+    "above": 1.0,
+    "to the left of": 1.0,
+    "to the right of": 0.0
+   },
+   "readout/maskclip/pooled": {
+    "above": 0.0,
+    "to the left of": 1.0,
+    "to the right of": 0.5
+   },
+   "readout/maskclip/dcsm_tok": {
+    "above": 0.0,
+    "to the left of": 1.0,
+    "to the right of": 0.5
+   },
+   "readout/clearclip/pooled": {
+    "above": 0.0,
+    "to the left of": 1.0,
+    "to the right of": 0.5
+   },
+   "readout/clearclip/dcsm_tok": {
+    "above": 0.0,
+    "to the left of": 1.0,
+    "to the right of": 0.5
+   }
+  },
+  "size": {
+   "owlv2": {
+    "big": 1.0,
+    "small": 0.0
+   },
+   "owlvit_v1": {
+    "big": 1.0,
+    "small": 0.0
+   },
+   "clip_crop": {
+    "big": 0.4,
+    "small": 0.0
+   },
+   "clip_ctx": {
+    "big": 0.4,
+    "small": 0.0
+   },
+   "dcsm_obja_ctx": {
+    "big": 0.6,
+    "small": 0.0
+   },
+   "dcsm_coco_ctx": {
+    "big": 0.4,
+    "small": 0.0
+   },
+   "readout/naive/pooled": {
+    "big": 0.6,
+    "small": 1.0
+   },
+   "readout/naive/dcsm_tok": {
+    "big": 0.4,
+    "small": 0.0
+   },
+   "readout/maskclip/pooled": {
+    "big": 0.2,
+    "small": 0.0
+   },
+   "readout/maskclip/dcsm_tok": {
+    "big": 0.4,
+    "small": 0.0
+   },
+   "readout/clearclip/pooled": {
+    "big": 0.4,
+    "small": 1.0
+   },
+   "readout/clearclip/dcsm_tok": {
+    "big": 0.0,
+    "small": 1.0
+   }
+  },
+  "color": {
+   "owlv2": {
+    "black": 1.0,
+    "brown": 0.0,
+    "gray": 0.0,
+    "white": 0.5
+   },
+   "owlvit_v1": {
+    "black": 1.0,
+    "brown": 0.0,
+    "gray": 1.0,
+    "white": 0.5
+   },
+   "clip_crop": {
+    "black": 0.5,
+    "brown": 1.0,
+    "gray": 1.0,
+    "white": 0.0
+   },
+   "clip_ctx": {
+    "black": 0.5,
+    "brown": 1.0,
+    "gray": 1.0,
+    "white": 0.0
+   },
+   "dcsm_obja_ctx": {
+    "black": 1.0,
+    "brown": 1.0,
+    "gray": 1.0,
+    "white": 0.0
+   },
+   "dcsm_coco_ctx": {
+    "black": 0.5,
+    "brown": 0.0,
+    "gray": 1.0,
+    "white": 0.0
+   },
+   "readout/naive/pooled": {
+    "black": 0.5,
+    "brown": 0.0,
+    "gray": 0.0,
+    "white": 0.0
+   },
+   "readout/naive/dcsm_tok": {
+    "black": 0.5,
+    "brown": 0.0,
+    "gray": 0.0,
+    "white": 0.5
+   },
+   "readout/maskclip/pooled": {
+    "black": 0.5,
+    "brown": 1.0,
+    "gray": 1.0,
+    "white": 0.5
+   },
+   "readout/maskclip/dcsm_tok": {
+    "black": 0.5,
+    "brown": 1.0,
+    "gray": 0.0,
+    "white": 0.5
+   },
+   "readout/clearclip/pooled": {
+    "black": 0.5,
+    "brown": 0.0,
+    "gray": 0.0,
+    "white": 0.5
+   },
+   "readout/clearclip/dcsm_tok": {
+    "black": 0.5,
+    "brown": 1.0,
+    "gray": 0.0,
+    "white": 0.5
+   }
+  }
+ }
+}
