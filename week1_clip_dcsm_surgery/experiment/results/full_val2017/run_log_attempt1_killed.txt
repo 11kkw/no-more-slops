@@ -1,0 +1,13 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+loading annotations into memory...
+Done (t=0.16s)
+creating index...
+index created!
+images 4952  classes 80
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 83395.76it/s]
+Loading weights:   0%|          | 0/418 [00:00<?, ?it/s]Loading weights: 100%|██████████| 418/418 [00:00<00:00, 19267.84it/s]
+Loading weights:   0%|          | 0/412 [00:00<?, ?it/s]Loading weights: 100%|██████████| 412/412 [00:00<00:00, 20065.41it/s]
+owlv2 box conversion max abs diff vs processor (unclamped): 0.0
+owlvit v1 box conversion max abs diff vs processor (unclamped): 0.0
+250/4952  194s
+500/4952  393s

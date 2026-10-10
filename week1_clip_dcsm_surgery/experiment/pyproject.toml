@@ -1,0 +1,29 @@
+[project]
+name = "dcsm-surgery-experiment"
+version = "0.1.0"
+description = "Frozen CLIP + DCSM matrix as a zero-shot detection classification signal under three last-block readouts, vs OWL-ViT"
+requires-python = ">=3.12"
+dependencies = [
+    "torch",
+    "torchvision",
+    "transformers",
+    "pillow",
+    "numpy",
+    "matplotlib",
+    "scipy",
+    "pycocotools",
+    "gdown",
+]
+
+[tool.uv]
+package = false
+
+# Blackwell (sm_120) GPUs need the cu128 torch build.
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
