@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "snapshot_utc": "2026-10-10T08:01:17.166766+00:00",
+  "repository": "/home/happy5700x/work/paper-lab/repos/no-more-slops",
+  "snapshot_revision": "c4c560a8a8d4fb0ceb78d5e8363e087ff113a292",
+  "execution_revision": null,
+  "scope": "Saved artifact consistency; no inference, label validation, significance or novelty proof",
+  "inputs": {
+    "week1_clip_dcsm_surgery/experiment/results/full_val2017/summary.json": {
+      "sha256": "1e1a2a2e45a46752ed5d97c324da379d6d665059fdbd2cfad09c422f4545f7eb",
+      "bytes": 6816
+    },
+    "week1_clip_dcsm_surgery/experiment/results/comp_full/summary.json": {
+      "sha256": "ae196478df929fc8249b58942ad3aee0d480bf1de8790f5709473b77e0e088f8",
+      "bytes": 9859
+    },
+    "week1_clip_dcsm_surgery/experiment/results/comp_full/per_item.json": {
+      "sha256": "efed7a8e4e7c2daff5aa65f3ac239a53ccaa3b0661db4b7313305a06010ab97d",
+      "bytes": 764999
+    },
+    "week1_clip_dcsm_surgery/experiment/results/comp_full/benchmark/comp_queries.json": {
+      "sha256": "01d0b78d684530338750d24d6fb7732de3d3e62d509d38dfc36b2b0af50d114e",
+      "bytes": 673102
+    },
+    "week1_clip_dcsm_surgery/experiment/results/probe_500/localization_probe.json": {
+      "sha256": "c6c802af90653e2b9e3902b559745b6fd94a3395c212455b4faee85b64419bb4",
+      "bytes": 4477
+    },
+    "week1_clip_dcsm_surgery/experiment/results/comp_full/summary_balanced.md": {
+      "sha256": "007b63e8373db3e3e908010e2b2a94eb603859fa40a392b1221cecaca72413d0",
+      "bytes": 1597
+    },
+    "week1_clip_dcsm_surgery/experiment/results/comp_full/heuristics.md": {
+      "sha256": "3294ae6b92a926ca8b2b8ebeee559dd2fae5a20ffb1ad8fd3587034d0bf4c759",
+      "bytes": 278
+    },
+    "week1_clip_dcsm_surgery/experiment/scripts/balanced_view.py": {
+      "sha256": "6d5c1221161602f3fc23d5f5187861878099aa4b5c816bbdd5bc6c68142209ea",
+      "bytes": 2688
+    },
+    "week1_clip_dcsm_surgery/experiment/scripts/build_comp_queries.py": {
+      "sha256": "db34e18460c47dccfe75fbe314a7de25666ad297030e5b6c19190179036c0c02",
+      "bytes": 16484
+    },
+    "week1_clip_dcsm_surgery/experiment/scripts/chance_level.py": {
+      "sha256": "aaaf1ac63b6ab49b854b8eed8c424f7693162c576ca8f33bf4ee7ad0c822eb8f",
+      "bytes": 941
+    },
+    "week1_clip_dcsm_surgery/experiment/scripts/compositional_eval.py": {
+      "sha256": "1eee50ac3e78faf8823e1d7668d6507dbd93e7290d9ec7c06fc04b6d179c1b6f",
+      "bytes": 14834
+    },
+    "week1_clip_dcsm_surgery/experiment/scripts/dcsm_detection_eval.py": {
+      "sha256": "9ac82f29d7f0a4e7cd009817556d86e5e6cf2a65f1fa5a93445d6566a349c96b",
+      "bytes": 11092
+    },
+    "week1_clip_dcsm_surgery/experiment/scripts/heuristic_baselines.py": {
+      "sha256": "c600e1f0580e2d81064eccde4e12197b82cd901cad2c87a20b421752bea4e67e",
+      "bytes": 1139
+    },
+    "week1_clip_dcsm_surgery/experiment/scripts/probe_localization.py": {
+      "sha256": "5e51bd3f15edf5d5b9ae233d12e29a1f85f8643035ca91d4eda690e19066b7cd",
+      "bytes": 12183
+    },
+    "week1_clip_dcsm_surgery/experiment/scripts/probe_qualitative.py": {
+      "sha256": "e9c82549cca7ba3e5c425f0ae19e035a1c6d5f01c3f66f1f078f49136d67e0f1",
+      "bytes": 2950
+    },
+    "week1_clip_dcsm_surgery/experiment/scripts/setup_data.py": {
+      "sha256": "c8ccbaf483829a2cec9624933a3c61982ea3a5ad447d2cb6c52ad93ca77dae27",
+      "bytes": 2166
+    },
+    "week1_clip_dcsm_surgery/experiment/pyproject.toml": {
+      "sha256": "8bbcb46b046a06d2103dfaa3d143d5fa286a2eced255d3705a2fc675a1825fe8",
+      "bytes": 665
+    },
+    "week1_clip_dcsm_surgery/experiment/README.md": {
+      "sha256": "255b6894842e0f62b8edf7fdc84fcc08d0cf7b14fe0c2d483fa977ae7f77e13d",
+      "bytes": 4733
+    },
+    "week1_clip_dcsm_surgery/experiment/results/full_val2017/run_log.txt": {
+      "sha256": "514492ca433f57cc5f8a12219ed85ce398bb505fa03a4bca002f96c4f4290ce5",
+      "bytes": 3408
+    },
+    "week1_clip_dcsm_surgery/experiment/results/comp_full/run_log.txt": {
+      "sha256": "e5470333e6e2cc9b83f3fa93e55354f3a7ab2160b6574b5ccb4678ab23989f77",
+      "bytes": 4237
+    },
+    "week1_clip_dcsm_surgery/experiment/results/probe_500/run_log.txt": {
+      "sha256": "fa4be93e85a57efad88c2a45ff0cb9303f6f9c17d270a2b72fbd858aeee469be",
+      "bytes": 8589
+    }
+  }
+}

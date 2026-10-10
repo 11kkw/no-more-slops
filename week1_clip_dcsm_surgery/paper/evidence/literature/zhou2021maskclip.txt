@@ -1,0 +1,1 @@
+with minimal modification, we show that MaskCLIP yields compelling segmentation results on open concepts across

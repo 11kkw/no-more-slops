@@ -1,0 +1,163 @@
+[
+  {
+    "key": "radford2021clip",
+    "url": "https://proceedings.mlr.press/v139/radford21a.html",
+    "title": "Learning Transferable Visual Models From Natural Language Supervision",
+    "authors": [
+      "Alec Radford",
+      "Jong Wook Kim",
+      "Chris Hallacy",
+      "Aditya Ramesh",
+      "Gabriel Goh",
+      "Sandhini Agarwal",
+      "Girish Sastry",
+      "Amanda Askell",
+      "Pamela Mishkin",
+      "Jack Clark",
+      "Gretchen Krueger",
+      "Ilya Sutskever"
+    ],
+    "date": "2021/07/01",
+    "evidence": "After pre-training, natural language is used to reference learned visual concepts (or describe new ones)",
+    "retrieved_utc": "2026-10-10T08:15:08.964944+00:00",
+    "fetched_sha256": "31fb10dda3a4589a5120bf1d01036207961d1e3bd5999fcfd7d3d1a766579b46",
+    "record_type": "primary bibliographic page",
+    "citation_id": 1
+  },
+  {
+    "key": "kang2025dcsm",
+    "url": "https://arxiv.org/abs/2503.08723",
+    "title": "Is CLIP ideal? No. Can we fix it? Yes!",
+    "authors": [
+      "Kang, Raphi",
+      "Song, Yue",
+      "Gkioxari, Georgia",
+      "Perona, Pietro"
+    ],
+    "date": "2025/03/10",
+    "evidence": "Dense Cosine Similarity Maps (DCSMs) as a principled and interpretable scoring method for CLIP-like models,",
+    "retrieved_utc": "2026-10-10T08:15:09.046904+00:00",
+    "fetched_sha256": "373bd6436aaca013f20bd1142658fda2adf83e1df6ac89383b0880677b87b30a",
+    "record_type": "primary bibliographic page",
+    "citation_id": 2
+  },
+  {
+    "key": "zhou2021maskclip",
+    "url": "https://arxiv.org/abs/2112.01071",
+    "title": "Extract Free Dense Labels from CLIP",
+    "authors": [
+      "Zhou, Chong",
+      "Loy, Chen Change",
+      "Dai, Bo"
+    ],
+    "date": "2021/12/02",
+    "evidence": "with minimal modification, we show that MaskCLIP yields compelling segmentation results on open concepts across",
+    "retrieved_utc": "2026-10-10T08:15:09.039760+00:00",
+    "fetched_sha256": "6fbff0f9f8845b7ac5e1edf575aa463e6502cf3ddc22c2bead9065915cdd1aa7",
+    "record_type": "primary bibliographic page",
+    "citation_id": 3
+  },
+  {
+    "key": "lan2024clearclip",
+    "url": "https://arxiv.org/abs/2407.12442",
+    "title": "ClearCLIP: Decomposing CLIP Representations for Dense Vision-Language Inference",
+    "authors": [
+      "Lan, Mengcheng",
+      "Chen, Chaofeng",
+      "Ke, Yiping",
+      "Wang, Xinjiang",
+      "Feng, Litong",
+      "Zhang, Wayne"
+    ],
+    "date": "2024/07/17",
+    "evidence": "removing the residual connection, implementing the self-self attention, and discarding the feed-forward network. ClearCLIP consistently",
+    "retrieved_utc": "2026-10-10T08:15:09.022795+00:00",
+    "fetched_sha256": "c006014552ebcab35a4dcf2140d3b278e464d333d5e8d0fa5a55f819af8e0311",
+    "record_type": "primary bibliographic page",
+    "citation_id": 4
+  },
+  {
+    "key": "minderer2022owlvit",
+    "url": "https://arxiv.org/abs/2205.06230",
+    "title": "Simple Open-Vocabulary Object Detection with Vision Transformers",
+    "authors": [
+      "Minderer, Matthias",
+      "Gritsenko, Alexey",
+      "Stone, Austin",
+      "Neumann, Maxim",
+      "Weissenborn, Dirk",
+      "Dosovitskiy, Alexey",
+      "Mahendran, Aravindh",
+      "Arnab, Anurag",
+      "Dehghani, Mostafa",
+      "Shen, Zhuoran",
+      "Wang, Xiao",
+      "Zhai, Xiaohua",
+      "Kipf, Thomas",
+      "Houlsby, Neil"
+    ],
+    "date": "2022/05/12",
+    "evidence": "end-to-end detection fine-tuning. Our analysis of the scaling properties of this setup shows that increasing",
+    "retrieved_utc": "2026-10-10T08:15:09.031915+00:00",
+    "fetched_sha256": "8c8386ade214feeb9add94331fc35c049987066bc87a6d2ec231feea7ab26a81",
+    "record_type": "primary bibliographic page",
+    "citation_id": 5
+  },
+  {
+    "key": "minderer2023owlv2",
+    "url": "https://arxiv.org/abs/2306.09683",
+    "title": "Scaling Open-Vocabulary Object Detection",
+    "authors": [
+      "Minderer, Matthias",
+      "Gritsenko, Alexey",
+      "Houlsby, Neil"
+    ],
+    "date": "2023/06/16",
+    "evidence": "self-training, which uses an existing detector to generate pseudo-box annotations on image-text pairs. Major challenges",
+    "retrieved_utc": "2026-10-10T08:15:09.067783+00:00",
+    "fetched_sha256": "a76ddd1c29aad80f3a993a3a0570c3ae61b8c7cd56c93ab5ec4a011ceb4c4d0e",
+    "record_type": "primary bibliographic page",
+    "citation_id": 6
+  },
+  {
+    "key": "lin2014coco",
+    "url": "https://arxiv.org/abs/1405.0312",
+    "title": "Microsoft COCO: Common Objects in Context",
+    "authors": [
+      "Lin, Tsung-Yi",
+      "Maire, Michael",
+      "Belongie, Serge",
+      "Bourdev, Lubomir",
+      "Girshick, Ross",
+      "Hays, James",
+      "Perona, Pietro",
+      "Ramanan, Deva",
+      "Zitnick, C. Lawrence",
+      "Dollár, Piotr"
+    ],
+    "date": "2014/05/01",
+    "evidence": "object recognition by placing the question of object recognition in the context of the broader",
+    "retrieved_utc": "2026-10-10T08:15:09.062147+00:00",
+    "fetched_sha256": "342b1d08c5294e4be7d1fcb6740581aca5c8bb6061b9dd7798df1ca79f626f74",
+    "record_type": "primary bibliographic page",
+    "citation_id": 7
+  },
+  {
+    "key": "bianchi2023fgovd",
+    "url": "https://arxiv.org/abs/2311.17518",
+    "title": "The devil is in the fine-grained details: Evaluating open-vocabulary object detectors for fine-grained understanding",
+    "authors": [
+      "Bianchi, Lorenzo",
+      "Carrara, Fabio",
+      "Messina, Nicola",
+      "Gennaro, Claudio",
+      "Falchi, Fabrizio"
+    ],
+    "date": "2023/11/29",
+    "evidence": "fine-grained properties of objects and their parts. To this end, we introduce an evaluation protocol",
+    "retrieved_utc": "2026-10-10T08:15:09.079297+00:00",
+    "fetched_sha256": "1d24a6a54183567721ec09689484f24c37d2f90e239948dded013dd3549e1841",
+    "record_type": "primary bibliographic page",
+    "citation_id": 8
+  }
+]

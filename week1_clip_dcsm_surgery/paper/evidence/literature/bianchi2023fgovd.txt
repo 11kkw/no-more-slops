@@ -1,0 +1,1 @@
+fine-grained properties of objects and their parts. To this end, we introduce an evaluation protocol

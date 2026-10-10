@@ -1,0 +1,1 @@
+removing the residual connection, implementing the self-self attention, and discarding the feed-forward network. ClearCLIP consistently

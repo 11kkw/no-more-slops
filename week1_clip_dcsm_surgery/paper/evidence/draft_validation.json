@@ -1,0 +1,26 @@
+{
+  "checked_utc": "2026-10-10T08:26:44.651497+00:00",
+  "status": "passed",
+  "checks": [
+    "21 original input hashes unchanged",
+    "Table 1 counts, classes, chance, strata and overall distinct images",
+    "Table 2 localization values against saved probe JSON",
+    "Table 3 AP values and native reference values against saved detection JSON",
+    "Table 4 raw/balanced pairs against original summaries and recomputed strata",
+    "Table 5 intervals and all bootstrap point estimates; all resamples retained both strata",
+    "Appendix A matches generated complete-result tables",
+    "42 local document/figure links resolve",
+    "8 primary bibliographic records match ledger and BibTeX; short source excerpts",
+    "grounded-citations verify --evidence passed"
+  ],
+  "citation_verifier_output": "info: stats: 261 prose sentence(s), 8 with declared provenance (3%) \u2014 8 cited, 0 marked [unverified] (a sentence may be both); 8 distinct source(s) cited, 8 in ledger (8 with evidence quotes)\ncitations OK",
+  "scope": "Saved-artifact transcription, local links, metadata and citation evidence formatting",
+  "limitations": [
+    "No new model inference",
+    "No independent label validation",
+    "No novelty certification",
+    "No independent peer review",
+    "No original environment/checkpoint split audit",
+    "No manuscript PDF compilation or Discord dispatch"
+  ]
+}

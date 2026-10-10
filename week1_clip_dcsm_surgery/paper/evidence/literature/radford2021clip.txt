@@ -1,0 +1,1 @@
+After pre-training, natural language is used to reference learned visual concepts (or describe new ones)

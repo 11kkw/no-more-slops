@@ -1,0 +1,1 @@
+Dense Cosine Similarity Maps (DCSMs) as a principled and interpretable scoring method for CLIP-like models,

@@ -1,0 +1,30 @@
+Evaluated images: 4952. AP scale: 0–100.
+
+| config | AP | AP50 | AP75 | APs | APm | APl | #dets |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| owlvit_v1_native | 28.8 | 45.4 | 30.5 | 11.9 | 30.6 | 48.1 | 1485600 |
+| owlv2_native | 46.8 | 66.7 | 51.2 | 32.9 | 49.8 | 62.7 | 1485600 |
+| P1_dense/naive/dcsm_tok/224 | 0.0 | 0.1 | 0.0 | 0.0 | 0.0 | 0.1 | 24734 |
+| P2_owlv2boxes/naive/dcsm_tok/224 | 1.2 | 1.6 | 1.2 | 0.2 | 0.5 | 7.7 | 1485600 |
+| P1_dense/naive/pooled/224 | 0.7 | 1.8 | 0.5 | 0.0 | 0.0 | 1.3 | 135974 |
+| P2_owlv2boxes/naive/pooled/224 | 2.6 | 3.4 | 2.8 | 0.3 | 0.9 | 8.3 | 1485600 |
+| P1_dense/maskclip/dcsm_tok/224 | 2.6 | 7.4 | 1.6 | 0.1 | 0.9 | 6.7 | 122439 |
+| P2_owlv2boxes/maskclip/dcsm_tok/224 | 20.3 | 28.0 | 22.6 | 7.6 | 23.8 | 40.2 | 1485600 |
+| P1_dense/maskclip/pooled/224 | 3.4 | 9.0 | 2.2 | 0.1 | 1.4 | 7.9 | 284758 |
+| P2_owlv2boxes/maskclip/pooled/224 | 26.0 | 35.6 | 28.8 | 10.1 | 28.5 | 45.8 | 1485600 |
+| P1_dense/clearclip/dcsm_tok/224 | 3.5 | 9.0 | 2.3 | 0.1 | 1.1 | 8.7 | 58234 |
+| P2_owlv2boxes/clearclip/dcsm_tok/224 | 22.8 | 31.0 | 25.2 | 8.4 | 24.7 | 41.6 | 1485600 |
+| P1_dense/clearclip/pooled/224 | 3.0 | 8.2 | 1.8 | 0.1 | 1.3 | 7.4 | 116885 |
+| P2_owlv2boxes/clearclip/pooled/224 | 27.3 | 37.3 | 30.2 | 11.2 | 29.2 | 46.5 | 1485600 |
+| P1_dense/naive/dcsm_tok/448 | 0.0 | 0.1 | 0.0 | 0.0 | 0.0 | 0.1 | 83099 |
+| P2_owlv2boxes/naive/dcsm_tok/448 | 1.5 | 2.0 | 1.6 | 0.1 | 0.8 | 8.3 | 1485600 |
+| P1_dense/naive/pooled/448 | 0.7 | 1.7 | 0.5 | 0.0 | 0.0 | 1.3 | 407418 |
+| P2_owlv2boxes/naive/pooled/448 | 2.7 | 3.5 | 2.9 | 0.1 | 1.0 | 8.4 | 1485600 |
+| P1_dense/maskclip/dcsm_tok/448 | 3.2 | 8.2 | 2.1 | 0.1 | 1.9 | 8.8 | 367981 |
+| P2_owlv2boxes/maskclip/dcsm_tok/448 | 20.9 | 29.3 | 23.0 | 10.9 | 25.3 | 38.5 | 1485600 |
+| P1_dense/maskclip/pooled/448 | 4.6 | 11.1 | 3.2 | 0.2 | 2.7 | 10.6 | 891016 |
+| P2_owlv2boxes/maskclip/pooled/448 | 26.7 | 37.2 | 29.4 | 13.6 | 29.7 | 43.7 | 1485600 |
+| P1_dense/clearclip/dcsm_tok/448 | 4.6 | 10.5 | 3.7 | 0.1 | 2.1 | 11.7 | 110839 |
+| P2_owlv2boxes/clearclip/dcsm_tok/448 | 21.2 | 29.0 | 23.3 | 9.6 | 22.5 | 38.8 | 1485600 |
+| P1_dense/clearclip/pooled/448 | 4.3 | 10.2 | 3.3 | 0.2 | 2.6 | 10.9 | 240348 |
+| P2_owlv2boxes/clearclip/pooled/448 | 26.4 | 36.3 | 29.0 | 12.8 | 27.0 | 44.2 | 1485600 |

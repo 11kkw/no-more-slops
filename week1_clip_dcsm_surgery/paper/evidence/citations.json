@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://proceedings.mlr.press/v139/radford21a.html",
+      "title": "Learning Transferable Visual Models From Natural Language Supervision",
+      "accessed": "2026-10-10",
+      "quotes": [
+        {
+          "text": "After pre-training, natural language is used to reference learned visual concepts (or describe new ones)",
+          "added": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "url": "https://arxiv.org/abs/2503.08723",
+      "title": "Is CLIP ideal? No. Can we fix it? Yes!",
+      "accessed": "2026-10-10",
+      "quotes": [
+        {
+          "text": "Dense Cosine Similarity Maps (DCSMs) as a principled and interpretable scoring method for CLIP-like models,",
+          "added": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "url": "https://arxiv.org/abs/2112.01071",
+      "title": "Extract Free Dense Labels from CLIP",
+      "accessed": "2026-10-10",
+      "quotes": [
+        {
+          "text": "with minimal modification, we show that MaskCLIP yields compelling segmentation results on open concepts across",
+          "added": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "url": "https://arxiv.org/abs/2407.12442",
+      "title": "ClearCLIP: Decomposing CLIP Representations for Dense Vision-Language Inference",
+      "accessed": "2026-10-10",
+      "quotes": [
+        {
+          "text": "removing the residual connection, implementing the self-self attention, and discarding the feed-forward network. ClearCLIP consistently",
+          "added": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "url": "https://arxiv.org/abs/2205.06230",
+      "title": "Simple Open-Vocabulary Object Detection with Vision Transformers",
+      "accessed": "2026-10-10",
+      "quotes": [
+        {
+          "text": "end-to-end detection fine-tuning. Our analysis of the scaling properties of this setup shows that increasing",
+          "added": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "url": "https://arxiv.org/abs/2306.09683",
+      "title": "Scaling Open-Vocabulary Object Detection",
+      "accessed": "2026-10-10",
+      "quotes": [
+        {
+          "text": "self-training, which uses an existing detector to generate pseudo-box annotations on image-text pairs. Major challenges",
+          "added": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "url": "https://arxiv.org/abs/1405.0312",
+      "title": "Microsoft COCO: Common Objects in Context",
+      "accessed": "2026-10-10",
+      "quotes": [
+        {
+          "text": "object recognition by placing the question of object recognition in the context of the broader",
+          "added": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "url": "https://arxiv.org/abs/2311.17518",
+      "title": "The devil is in the fine-grained details: Evaluating open-vocabulary object detectors for fine-grained understanding",
+      "accessed": "2026-10-10",
+      "quotes": [
+        {
+          "text": "fine-grained properties of objects and their parts. To this end, we introduce an evaluation protocol",
+          "added": "2026-10-10"
+        }
+      ]
+    }
+  ]
+}

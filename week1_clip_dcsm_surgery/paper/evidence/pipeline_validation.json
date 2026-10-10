@@ -1,0 +1,30 @@
+{
+  "checked_at_utc": "2026-10-10T08:04:36.763423+00:00",
+  "profile": "paper",
+  "skill": "experiment-to-paper",
+  "skill_readiness": "available",
+  "source_install_equal": true,
+  "references_readable": 3,
+  "artifact_counts": {
+    "detection_images": 4952,
+    "compositional_items": 1833,
+    "scorers": 12
+  },
+  "passed_checks": [
+    "installed exporter matches saved generated measurements and four tables",
+    "existing generated files rejected without refresh",
+    "refresh preserves authored manuscript",
+    "wrong raw accuracy rejected before output writes",
+    "mismatched candidate target rejected before output writes",
+    "wrong recorded balanced accuracy rejected before output writes"
+  ],
+  "not_executed": [
+    "Discord request",
+    "LLM manuscript generation",
+    "GPU inference",
+    "statistical significance",
+    "novelty determination"
+  ],
+  "skill_source": "skills/research/experiment-to-paper",
+  "installed_path": "/home/happy5700x/.hermes/profiles/paper/skills/research/experiment-to-paper"
+}
