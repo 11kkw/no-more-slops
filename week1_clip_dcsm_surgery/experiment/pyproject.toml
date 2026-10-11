@@ -1,7 +1,7 @@
 [project]
-name = "dcsm-surgery-experiment"
-version = "0.1.0"
-description = "Frozen CLIP + DCSM matrix as a zero-shot detection classification signal under three last-block readouts, vs OWL-ViT"
+name = "dcsm-surgery"
+version = "0.2.0"
+description = "Frozen CLIP + last-block readout surgery + DCSM scoring network for failure-mode (attribute / spatial-relationship / negation) referring detection, compared with OWL-ViT, OWLv2 and Grounding DINO"
 requires-python = ">=3.12"
 dependencies = [
     "torch",
@@ -15,8 +15,19 @@ dependencies = [
     "gdown",
 ]
 
-[tool.uv]
-package = false
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dcsm_surgery"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
 
 # Blackwell (sm_120) GPUs need the cu128 torch build.
 [[tool.uv.index]]

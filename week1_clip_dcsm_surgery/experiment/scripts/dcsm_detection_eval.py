@@ -1,6 +1,6 @@
 """
-Zero-shot COCO detection with a FROZEN CLIP ViT and the DCSM (patches x text tokens) matrix as the
-classification signal, under three last-block readouts, compared against open-vocabulary detectors.
+Zero-shot COCO detection (single-class-name queries) with a FROZEN CLIP ViT and the DCSM (patches x text tokens)
+matrix as the classification signal, under three last-block readouts, compared against open-vocabulary detectors.
 
 Classification signal (per readout r in {naive, maskclip, clearclip}):
   class map  M_r[c, p] = max over content tokens t of cos(patch_p, token_t of prompt c)   ("dcsm_tok")
@@ -14,74 +14,25 @@ Baselines (native, zero-shot):
   OWL-ViT  (google/owlvit-base-patch32)          text-queried detections
   OWLv2    (google/owlv2-base-patch16-ensemble)  text-queried detections  (same boxes as P2 -> controlled comparison)
 
-Outputs results/<out>/summary.json and a markdown table.
+Outputs <out>/summary.json and a markdown table.
 """
 import argparse
-import contextlib
-import io
 import json
 import os
-import sys
 import time
 
-import numpy as np
 import torch
-import torch.nn.functional as F
 from PIL import Image
 from pycocotools.coco import COCO
-from pycocotools.cocoeval import COCOeval
 from transformers import AutoProcessor, CLIPModel, CLIPTokenizer, Owlv2ForObjectDetection, OwlViTForObjectDetection
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from probe_localization import MODES, crude_detections, dense_features, heatmaps, preprocess, text_features  # noqa: E402
+from dcsm_surgery.boxes import cxcywh_to_xyxy, xyxy_to_coco
+from dcsm_surgery.clip_readouts import dense_features, heatmaps, preprocess, text_features
+from dcsm_surgery.constants import MODES
+from dcsm_surgery.detectors import owl_native_dets, processor_boxes
+from dcsm_surgery.metrics import coco_eval, crude_detections
 
-TEXT_READOUTS = ["dcsm_tok", "pooled"]
-
-
-def coco_eval(coco, dets, img_ids):
-    if not dets:
-        return {"AP": 0.0, "AP50": 0.0, "AP75": 0.0, "APs": 0.0, "APm": 0.0, "APl": 0.0, "n_dets": 0}
-    with contextlib.redirect_stdout(io.StringIO()):
-        dt = coco.loadRes(dets)
-        ev = COCOeval(coco, dt, "bbox")
-        ev.params.imgIds = img_ids
-        ev.evaluate(); ev.accumulate(); ev.summarize()
-    s = ev.stats
-    return {"AP": float(s[0]), "AP50": float(s[1]), "AP75": float(s[2]), "APs": float(s[3]), "APm": float(s[4]), "APl": float(s[5]), "n_dets": len(dets)}
-
-
-def cxcywh_to_xyxy(b, sx, sy, W, H, clamp=True):
-    cx, cy, w, h = b.unbind(-1)
-    out = torch.stack([(cx - w / 2) * sx, (cy - h / 2) * sy, (cx + w / 2) * sx, (cy + h / 2) * sy], -1)
-    if clamp:  # the HF processor does not clamp; low-score boxes can extend far outside the image
-        out[:, 0::2] = out[:, 0::2].clamp(0, W)
-        out[:, 1::2] = out[:, 1::2].clamp(0, H)
-    return out
-
-
-def xyxy_to_coco(b):
-    return [float(b[0]), float(b[1]), float(b[2] - b[0]), float(b[3] - b[1])]
-
-
-def processor_boxes(proc, out, H, W, queries):
-    """Reference boxes from the HF processor's own post-processing (API name differs across versions)."""
-    ts = torch.tensor([[H, W]]).to(out.pred_boxes.device)
-    if hasattr(proc, "post_process_grounded_object_detection"):
-        return proc.post_process_grounded_object_detection(out, threshold=0.0, target_sizes=ts, text_labels=queries)[0]["boxes"]
-    return proc.post_process_object_detection(out, threshold=0.0, target_sizes=ts)[0]["boxes"]
-
-
-@torch.no_grad()
-def owl_native_dets(logits, boxes_xyxy, img_id, cat_ids, max_dets=300):
-    """logits: (N, C) raw; boxes (N,4) xyxy image coords."""
-    scores = torch.sigmoid(logits)
-    N, C = scores.shape
-    top = scores.flatten().topk(min(max_dets, N * C))
-    dets = []
-    for s, idx in zip(top.values.tolist(), top.indices.tolist()):
-        n, c = divmod(idx, C)
-        dets.append({"image_id": img_id, "category_id": cat_ids[c], "bbox": xyxy_to_coco(boxes_xyxy[n]), "score": s})
-    return dets
+TEXT_READOUTS = ["dcsm_tok", "pooled"]  # row order of the result table
 
 
 def main():

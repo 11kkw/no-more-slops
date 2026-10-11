@@ -1,24 +1,22 @@
 """
-Qualitative heatmaps: for a few images and text queries, render the per-patch cosine map
-for each last-block readout (naive = DCSM code path, maskclip, clearclip) at given sizes.
+Qualitative heatmaps: for one image and a few text queries, render the per-patch cosine map
+for each last-block readout (naive = DCSM code path, maskclip, clearclip) at the given sizes.
 Usage:
-  python probe_qualitative.py --image path.jpg --queries "car" "school bus" --out out/qual_bus.png
+  uv run scripts/probe_qualitative.py --image path.jpg --queries "car" "school bus" --out out/qual_bus.png
 """
 import argparse
 import os
-import sys
 
 import matplotlib
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import numpy as np
-import torch
-import torch.nn.functional as F
-from PIL import Image
-from transformers import CLIPModel, CLIPTokenizer
+import matplotlib.pyplot as plt  # noqa: E402
+import torch  # noqa: E402
+import torch.nn.functional as F  # noqa: E402
+from PIL import Image  # noqa: E402
+from transformers import CLIPModel, CLIPTokenizer  # noqa: E402
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from probe_localization import MODES, dense_features, preprocess, text_features, heatmaps  # noqa: E402
+from dcsm_surgery.clip_readouts import dense_features, heatmaps, preprocess, text_features  # noqa: E402
+from dcsm_surgery.constants import MODES  # noqa: E402
 
 
 def main():
@@ -60,7 +58,7 @@ def main():
                 ax.axis("off")
             r += 1
     plt.tight_layout()
-    os.makedirs(os.path.dirname(args.out), exist_ok=True)
+    os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
     plt.savefig(args.out, dpi=110)
     print("saved", args.out)
 

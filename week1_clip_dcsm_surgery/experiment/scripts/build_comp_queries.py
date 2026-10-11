@@ -1,5 +1,5 @@
 """
-Build a compositional referring-detection benchmark from COCO val2017 annotations (no extra labels).
+Build a failure-mode query benchmark (attribute binding / spatial relationship / negation; candidate selection and referring detection) from COCO val2017 annotations (no extra labels).
 
 Every item = one image, one query, N candidate boxes of the SAME class A (2 <= N <= max_cands), exactly one
 of which satisfies the query. Scorers must rank the target above same-class distractors, so the class name

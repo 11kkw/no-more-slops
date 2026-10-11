@@ -1,4 +1,4 @@
-"""Model-free baselines for the compositional benchmark: largest box, smallest box, leftmost/rightmost, most central."""
+"""Model-free baselines for the failure-mode query benchmark (candidate selection): largest box, smallest box, leftmost/rightmost, most central."""
 import json, sys
 from collections import defaultdict
 import numpy as np

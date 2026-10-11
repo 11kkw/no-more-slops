@@ -18,3 +18,6 @@ __pycache__/
 *.partial.json
 runner.lock
 *.pt
+
+# per-detection dumps of the referring-detection evaluation (tens of MB; regenerate with referring_detection_eval.py)
+week1_clip_dcsm_surgery/experiment/results/**/detections.json

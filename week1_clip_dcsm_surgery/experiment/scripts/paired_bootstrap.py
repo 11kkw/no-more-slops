@@ -1,9 +1,17 @@
-"""Paired bootstrap CI (10k resamples) for the top-1 accuracy difference between two scorers on one subset."""
-import json, sys
+"""Paired bootstrap CI (10k resamples) for the top-1 accuracy difference between two scorers on one subset.
+
+Usage: uv run scripts/paired_bootstrap.py <results_dir> <subset> <scorerA> <scorerB>
+Works on per_item.json from compositional_eval.py ('pred' vs 'target') and referring_detection_eval.py ('hit')."""
+import json
+import sys
+
 import numpy as np
+
+from dcsm_surgery.metrics import paired_bootstrap
+
 res_dir, subset, a, b = sys.argv[1:5]
 per = [r for r in json.load(open(f"{res_dir}/per_item.json")) if r["subset"] == subset]
-ha = np.array([r["pred"][a] == r["target"] for r in per], float); hb = np.array([r["pred"][b] == r["target"] for r in per], float)
-rng = np.random.default_rng(0); n = len(per)
-d = [(ha[i] - hb[i]).mean() for i in (rng.integers(0, n, n) for _ in range(10000))]
-print(f"{subset} n={n}: {a} {100*ha.mean():.1f} vs {b} {100*hb.mean():.1f}  diff {100*(ha.mean()-hb.mean()):+.1f}  95% CI [{100*np.percentile(d,2.5):+.1f}, {100*np.percentile(d,97.5):+.1f}]")
+hit = (lambda r, k: r["hit"][k]) if "hit" in per[0] else (lambda r, k: r["pred"][k] == r["target"])
+ha = [hit(r, a) for r in per]; hb = [hit(r, b) for r in per]
+diff, lo, hi = paired_bootstrap(ha, hb)
+print(f"{subset} n={len(per)}: {a} {100*np.mean(ha):.1f} vs {b} {100*np.mean(hb):.1f}  diff {100*diff:+.1f}  95% CI [{100*lo:+.1f}, {100*hi:+.1f}]")

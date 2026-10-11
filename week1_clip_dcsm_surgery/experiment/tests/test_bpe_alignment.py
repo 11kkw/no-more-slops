@@ -5,9 +5,9 @@ import numpy as np
 import torch
 from PIL import Image
 from transformers import CLIPTokenizer, CLIPModel, CLIPImageProcessor
-from train_dcsm_scorer import insert_special
-from compositional_eval import IMG_SEQ, TEXT_SEQ, SPECIAL_WORDS, CrossModalConvNetwork, DCSMScorer
-from bpe_alignment import replace_special_bpe, ALIGNMENT_VERSION
+from dcsm_surgery.bpe_alignment import replace_special_bpe, ALIGNMENT_VERSION
+from dcsm_surgery.constants import IMG_SEQ, TEXT_SEQ, SPECIAL_WORDS
+from dcsm_surgery.scorer import CrossModalConvNetwork, DCSMScorer, insert_special
 
 class AlignmentTests(unittest.TestCase):
  @classmethod

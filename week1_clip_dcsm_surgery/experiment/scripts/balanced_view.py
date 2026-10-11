@@ -1,4 +1,4 @@
-"""Size-balanced accuracy for the compositional benchmark.
+"""Size-balanced accuracy for the failure-mode query benchmark (candidate-selection protocol).
 
 Most items have N=2 candidates, so a scorer that always prefers the largest (or smallest) box can score far from
 chance on subsets where the target correlates with size (negation: targets tend to be small background instances;

@@ -6,9 +6,11 @@ import numpy as np
 import torch
 from PIL import Image
 from transformers import CLIPModel, CLIPTokenizer, CLIPImageProcessor
-from compositional_eval import DCSMScorer, crop, pad_box, union_box, IMG_SEQ, TEXT_SEQ, SPECIAL_WORDS
-from probe_localization import dense_features
-from train_dcsm_scorer import insert_special, ObjaverseSpatial
+from dcsm_surgery.boxes import crop, pad_box, union_box
+from dcsm_surgery.clip_readouts import dense_features
+from dcsm_surgery.constants import TEXT_SEQ
+from dcsm_surgery.data import ObjaverseSpatial
+from dcsm_surgery.scorer import DCSMScorer, insert_special
 
 torch.set_num_threads(4)
 OUT=Path('results/validation_audit'); OUT.mkdir(exist_ok=True,parents=True)

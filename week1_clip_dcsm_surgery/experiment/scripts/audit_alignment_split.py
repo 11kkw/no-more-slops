@@ -5,8 +5,9 @@ from collections import Counter
 import numpy as np
 import torch
 from transformers import CLIPTokenizer
-from compositional_eval import SPECIAL_WORDS, IMG_SEQ, TEXT_SEQ, CrossModalConvNetwork, tolerant_torch_load
-from train_dcsm_scorer import insert_special, init_special_embedding, ObjaverseSpatial, ObjaverseColor
+from dcsm_surgery.constants import SPECIAL_WORDS, IMG_SEQ, TEXT_SEQ
+from dcsm_surgery.data import ObjaverseSpatial, ObjaverseColor, REL_TEXT, REL_OPP, NEG_WORDS
+from dcsm_surgery.scorer import CrossModalConvNetwork, tolerant_torch_load, insert_special, init_special_embedding
 
 OUT=Path('results/validation_audit'); OUT.mkdir(parents=True,exist_ok=True)
 tok=CLIPTokenizer.from_pretrained('openai/clip-vit-base-patch16',local_files_only=True)
@@ -15,7 +16,6 @@ ck=tolerant_torch_load('results/retrain/dcsm_naive_retrain.pt'); args=ck['args']
 sp=ObjaverseSpatial(str(root/args['spatial_dir']),0); co=ObjaverseColor(str(root/args['color_dir']),0)
 neg=json.loads((root/args['neg_json']).read_text())
 train_text=[]
-from train_dcsm_scorer import REL_TEXT, REL_OPP, NEG_WORDS
 for f in sp.files:
  a,r,b=Path(f).stem.split('_')
  train_text.extend([f'A picture of a {a} {REL_TEXT[r]} a {b}',f'A picture of a {b} {REL_TEXT[r]} a {a}',f'A picture of a {b} {REL_TEXT[REL_OPP[r]]} a {a}',f'A picture of a {a} {REL_TEXT[REL_OPP[r]]} a {b}'])

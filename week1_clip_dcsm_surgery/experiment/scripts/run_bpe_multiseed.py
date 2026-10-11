@@ -11,7 +11,7 @@ import traceback
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'results/bpe_multiseed'
-PYTHON=Path('/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/.venv/bin/python')
+PYTHON=ROOT/'.venv/bin/python'
 SEEDS=[15,16,17]
 OUT.mkdir(parents=True,exist_ok=True)
 lock=(OUT/'runner.lock').open('w'); fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
@@ -21,8 +21,8 @@ state={'status':'running','pid':os.getpid(),'started_unix':time.time(),'seeds':S
 def save():
  p=OUT/'state.tmp'; p.write_text(json.dumps(state,indent=2)); p.replace(OUT/'state.json')
 
-env=dict(os.environ,HF_HOME='/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/hf_cache',HF_HUB_OFFLINE='1',OMP_NUM_THREADS='4',MKL_NUM_THREADS='4',PYTHONUNBUFFERED='1')
-sources={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/'scripts').glob('*.py')}
+env=dict(os.environ,HF_HOME=str(ROOT/'hf_cache'),HF_HUB_OFFLINE='1',OMP_NUM_THREADS='4',MKL_NUM_THREADS='4',PYTHONUNBUFFERED='1')
+sources={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [*(ROOT/'scripts').glob('*.py'),*(ROOT/'src/dcsm_surgery').glob('*.py')]}
 (OUT/'source_snapshot.json').write_text(json.dumps(sources,indent=2))
 
 def run(seed,stage,args,log):
