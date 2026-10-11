@@ -1,0 +1,33 @@
+{
+  "evaluation_queries_checked": 1833,
+  "retained_function_token_occurrences_checked": 1497,
+  "mismatches": 0,
+  "checkpoints": [
+    {
+      "file": "results/bpe_alignment/smoke_train/dcsm_clearclip_retrain.pt",
+      "alignment": "bpe_replace_v1",
+      "epochs": 1,
+      "max_steps": 1
+    },
+    {
+      "file": "results/bpe_alignment/smoke_train/dcsm_maskclip_retrain.pt",
+      "alignment": "bpe_replace_v1",
+      "epochs": 1,
+      "max_steps": 1
+    },
+    {
+      "file": "results/bpe_alignment/smoke_train/dcsm_naive_retrain.pt",
+      "alignment": "bpe_replace_v1",
+      "epochs": 1,
+      "max_steps": 1
+    }
+  ],
+  "smoke_eval_counts": {
+    "size": 1,
+    "color": 1,
+    "spatial": 1,
+    "negation": 1,
+    "affirm": 1
+  },
+  "scientific_retraining_complete": false
+}

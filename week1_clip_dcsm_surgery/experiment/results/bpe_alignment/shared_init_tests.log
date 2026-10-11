@@ -1,0 +1,18 @@
+test_actual_eval_score_matches_training_replacement (test_bpe_alignment.AlignmentTests.test_actual_eval_score_matches_training_replacement) ... Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 79273.10it/s]
+ok
+test_actual_training_function_bos_multibpe_prefix_repeated_words (test_bpe_alignment.AlignmentTests.test_actual_training_function_bos_multibpe_prefix_repeated_words) ... ok
+test_case_punctuation_word_boundaries (test_bpe_alignment.AlignmentTests.test_case_punctuation_word_boundaries) ... ok
+test_fully_truncated_lookup_skipped (test_bpe_alignment.AlignmentTests.test_fully_truncated_lookup_skipped) ... ok
+test_gradient_reaches_each_occurrence_embedding_not_replaced_cosine (test_bpe_alignment.AlignmentTests.test_gradient_reaches_each_occurrence_embedding_not_replaced_cosine) ... ok
+test_lookup_just_before_eos_replaced_without_touching_eos_padding_bos (test_bpe_alignment.AlignmentTests.test_lookup_just_before_eos_replaced_without_touching_eos_padding_bos) ... ok
+test_mismatched_input_ids_fail_loudly (test_bpe_alignment.AlignmentTests.test_mismatched_input_ids_fail_loudly) ... ok
+test_multibpe_lookup_replaces_every_column (test_bpe_alignment.AlignmentTests.test_multibpe_lookup_replaces_every_column) ... ok
+test_overlapping_lookup_rejected (test_bpe_alignment.AlignmentTests.test_overlapping_lookup_rejected) ... ok
+test_partial_truncation_skips_whole_occurrence (test_bpe_alignment.AlignmentTests.test_partial_truncation_skips_whole_occurrence) ... ok
+test_repeated_multibpe_lookup (test_bpe_alignment.AlignmentTests.test_repeated_multibpe_lookup) ... ok
+test_actual_initialization_same_for_all_readouts (test_shared_initialization.SharedInitializationTests.test_actual_initialization_same_for_all_readouts) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.919s
+
+OK

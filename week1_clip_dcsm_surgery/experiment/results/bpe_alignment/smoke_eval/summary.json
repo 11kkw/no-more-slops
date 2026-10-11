@@ -1,0 +1,249 @@
+{
+ "args": {
+  "queries": "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/data/comp_queries/comp_queries.json",
+  "coco_root": "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/data/coco",
+  "clip": "openai/clip-vit-base-patch16",
+  "owlv2": "google/owlv2-base-patch16-ensemble",
+  "owlv1": "google/owlvit-base-patch32",
+  "dcsm_ckpts": [
+   "results/bpe_alignment/smoke_train/dcsm_naive_retrain.pt",
+   "results/bpe_alignment/smoke_train/dcsm_maskclip_retrain.pt",
+   "results/bpe_alignment/smoke_train/dcsm_clearclip_retrain.pt"
+  ],
+  "size": 224,
+  "limit": 1,
+  "out": "results/bpe_alignment/smoke_eval"
+ },
+ "chance": {
+  "size": 0.3333333333333333,
+  "color": 0.5,
+  "spatial": 0.5,
+  "negation": 0.5,
+  "affirm": 0.3333333333333333
+ },
+ "counts": {
+  "size": 1,
+  "color": 1,
+  "spatial": 1,
+  "negation": 1,
+  "affirm": 1
+ },
+ "top1": {
+  "owlv2": {
+   "size": 1.0,
+   "color": 1.0,
+   "spatial": 1.0,
+   "negation": 0.0,
+   "affirm": 1.0
+  },
+  "owlvit_v1": {
+   "size": 1.0,
+   "color": 1.0,
+   "spatial": 1.0,
+   "negation": 0.0,
+   "affirm": 1.0
+  },
+  "clip_crop": {
+   "size": 0.0,
+   "color": 0.0,
+   "spatial": 0.0,
+   "negation": 1.0,
+   "affirm": 0.0
+  },
+  "clip_ctx": {
+   "size": 0.0,
+   "color": 0.0,
+   "spatial": 0.0,
+   "negation": 1.0,
+   "affirm": 0.0
+  },
+  "dcsm_naive_retrain_ctx": {
+   "size": 0.0,
+   "color": 0.0,
+   "spatial": 0.0,
+   "negation": 1.0,
+   "affirm": 0.0
+  },
+  "dcsm_maskclip_retrain_ctx": {
+   "size": 0.0,
+   "color": 0.0,
+   "spatial": 0.0,
+   "negation": 0.0,
+   "affirm": 1.0
+  },
+  "dcsm_clearclip_retrain_ctx": {
+   "size": 0.0,
+   "color": 1.0,
+   "spatial": 0.0,
+   "negation": 1.0,
+   "affirm": 0.0
+  },
+  "readout/naive/pooled": {
+   "size": 1.0,
+   "color": 1.0,
+   "spatial": 1.0,
+   "negation": 1.0,
+   "affirm": 1.0
+  },
+  "readout/naive/dcsm_tok": {
+   "size": 1.0,
+   "color": 0.0,
+   "spatial": 1.0,
+   "negation": 1.0,
+   "affirm": 1.0
+  },
+  "readout/maskclip/pooled": {
+   "size": 0.0,
+   "color": 0.0,
+   "spatial": 1.0,
+   "negation": 1.0,
+   "affirm": 0.0
+  },
+  "readout/maskclip/dcsm_tok": {
+   "size": 0.0,
+   "color": 0.0,
+   "spatial": 1.0,
+   "negation": 1.0,
+   "affirm": 0.0
+  },
+  "readout/clearclip/pooled": {
+   "size": 0.0,
+   "color": 0.0,
+   "spatial": 1.0,
+   "negation": 1.0,
+   "affirm": 0.0
+  },
+  "readout/clearclip/dcsm_tok": {
+   "size": 0.0,
+   "color": 0.0,
+   "spatial": 1.0,
+   "negation": 1.0,
+   "affirm": 0.0
+  }
+ },
+ "breakdown": {
+  "spatial": {
+   "owlv2": {
+    "to the left of": 1.0
+   },
+   "owlvit_v1": {
+    "to the left of": 1.0
+   },
+   "clip_crop": {
+    "to the left of": 0.0
+   },
+   "clip_ctx": {
+    "to the left of": 0.0
+   },
+   "dcsm_naive_retrain_ctx": {
+    "to the left of": 0.0
+   },
+   "dcsm_maskclip_retrain_ctx": {
+    "to the left of": 0.0
+   },
+   "dcsm_clearclip_retrain_ctx": {
+    "to the left of": 0.0
+   },
+   "readout/naive/pooled": {
+    "to the left of": 1.0
+   },
+   "readout/naive/dcsm_tok": {
+    "to the left of": 1.0
+   },
+   "readout/maskclip/pooled": {
+    "to the left of": 1.0
+   },
+   "readout/maskclip/dcsm_tok": {
+    "to the left of": 1.0
+   },
+   "readout/clearclip/pooled": {
+    "to the left of": 1.0
+   },
+   "readout/clearclip/dcsm_tok": {
+    "to the left of": 1.0
+   }
+  },
+  "size": {
+   "owlv2": {
+    "big": 1.0
+   },
+   "owlvit_v1": {
+    "big": 1.0
+   },
+   "clip_crop": {
+    "big": 0.0
+   },
+   "clip_ctx": {
+    "big": 0.0
+   },
+   "dcsm_naive_retrain_ctx": {
+    "big": 0.0
+   },
+   "dcsm_maskclip_retrain_ctx": {
+    "big": 0.0
+   },
+   "dcsm_clearclip_retrain_ctx": {
+    "big": 0.0
+   },
+   "readout/naive/pooled": {
+    "big": 1.0
+   },
+   "readout/naive/dcsm_tok": {
+    "big": 1.0
+   },
+   "readout/maskclip/pooled": {
+    "big": 0.0
+   },
+   "readout/maskclip/dcsm_tok": {
+    "big": 0.0
+   },
+   "readout/clearclip/pooled": {
+    "big": 0.0
+   },
+   "readout/clearclip/dcsm_tok": {
+    "big": 0.0
+   }
+  },
+  "color": {
+   "owlv2": {
+    "black": 1.0
+   },
+   "owlvit_v1": {
+    "black": 1.0
+   },
+   "clip_crop": {
+    "black": 0.0
+   },
+   "clip_ctx": {
+    "black": 0.0
+   },
+   "dcsm_naive_retrain_ctx": {
+    "black": 0.0
+   },
+   "dcsm_maskclip_retrain_ctx": {
+    "black": 0.0
+   },
+   "dcsm_clearclip_retrain_ctx": {
+    "black": 1.0
+   },
+   "readout/naive/pooled": {
+    "black": 1.0
+   },
+   "readout/naive/dcsm_tok": {
+    "black": 0.0
+   },
+   "readout/maskclip/pooled": {
+    "black": 0.0
+   },
+   "readout/maskclip/dcsm_tok": {
+    "black": 0.0
+   },
+   "readout/clearclip/pooled": {
+    "black": 0.0
+   },
+   "readout/clearclip/dcsm_tok": {
+    "black": 0.0
+   }
+  }
+ }
+}

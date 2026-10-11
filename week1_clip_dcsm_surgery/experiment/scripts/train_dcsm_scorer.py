@@ -8,7 +8,7 @@ Faithful to baseline/src/training/{train.py,training_util.py,toydataset_dense.py
             settype 0 / 1 (caption vs. swapped caption); datasets truncated to the smallest one each epoch
   batch     per dataset, per version: 8 images + 8 opposite images  x  8 captions + 8 opposite captions
             -> 16x16 score matrix, rows/cols shuffled, symmetric cross-entropy against the identity
-  matrix    197x30 cosine map, special-word column REPLACED by a learned 197-d embedding (train.py slicing),
+  matrix    197x30 cosine map, complete special-word BPE spans REPLACED by learned 197-d vectors (BOS-aware),
             standardised over the whole batch tensor
   augment   RandomPerspective(0.05, p=.2), RandomRotation(+-4 deg), salt&pepper 2% (the RandomResizedCrop in
             train.py is built but never applied)
@@ -18,14 +18,17 @@ Difference: ONE CLIP forward per batch feeds all requested readouts, each with i
 embedding + optimizer, so the three scorers see identical images, captions and augmentations.
 
 Checkpoint format mirrors the released ones (model_state_dict, external_logic_token_embeddings, epoch, train_loss)
-plus 'readout' and 'special_slicing' = 'replace' so compositional_eval.py applies the matching rule.
+plus 'readout' and 'special_slicing' = 'bpe_replace_v1' so compositional_eval.py applies the matching rule.
 """
 import argparse
+import copy
+import hashlib
 import json
 import os
 import random
 import sys
 import time
+from functools import lru_cache
 
 import numpy as np
 import torch
@@ -39,6 +42,7 @@ from transformers import CLIPImageProcessor, CLIPModel, CLIPTokenizer
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from compositional_eval import IMG_SEQ, SPECIAL_WORDS, TEXT_SEQ, CrossModalConvNetwork  # noqa: E402
 from probe_localization import dense_features  # noqa: E402
+from bpe_alignment import ALIGNMENT_VERSION, replace_special_bpe  # noqa: E402
 
 REL_TEXT = {"above": "above", "below": "below", "rightof": "to the right of", "leftof": "to the left of"}
 REL_OPP = {"above": "below", "below": "above", "rightof": "leftof", "leftof": "rightof"}
@@ -189,19 +193,31 @@ def init_special_embedding(device):
     return emb
 
 
-def insert_special(cos, texts, emb, device):
-    """cos (Bi, Bt, 197, 30); train.py rule: REPLACE the word-index column."""
-    out = []
-    for k, t in enumerate(texts):
-        sent = t.split(" ")
-        c = cos[:, k]
-        for w in SPECIAL_WORDS:
-            if w in sent:
-                loc = sent.index(w)
-                mid = emb(torch.tensor([SPECIAL_WORDS.index(w)], device=device)).unsqueeze(2).repeat(c.shape[0], 1, 1)
-                c = torch.cat([c[:, :, :loc], mid, c[:, :, loc + 1:]], dim=-1)
-        out.append(c)
-    return torch.stack(out, dim=1)
+def initialize_shared(readouts, device):
+    """Identical initial values with independent trainable storage per readout."""
+    base_net = CrossModalConvNetwork(IMG_SEQ, TEXT_SEQ).to(device)
+    base_emb = init_special_embedding(device)
+    return ({r: copy.deepcopy(base_net) for r in readouts},
+            {r: copy.deepcopy(base_emb) for r in readouts})
+
+
+def state_fingerprint(module):
+    h = hashlib.sha256()
+    for key, value in sorted(module.state_dict().items()):
+        h.update(key.encode()); h.update(value.detach().cpu().contiguous().numpy().tobytes())
+    return h.hexdigest()
+
+
+def insert_special(cos, texts, emb, device, tokenizer=None, input_ids=None):
+    """BPE-aligned replacement; use the tokenizer/IDs from the CLIP forward."""
+    if tokenizer is None:
+        tokenizer = _alignment_tokenizer(_CLIP_NAME)
+    return replace_special_bpe(cos, texts, emb, tokenizer, SPECIAL_WORDS, input_ids)
+
+
+@lru_cache(maxsize=4)
+def _alignment_tokenizer(name):
+    return CLIPTokenizer.from_pretrained(name)
 
 
 def main():
@@ -238,8 +254,13 @@ def main():
                 Paired(NegationPairs(ng, R, 0), NegationPairs(ng, R, 1))]
     print("dataset sizes (spatial, color+smallbig, negation):", [len(d) for d in datasets])
 
-    nets = {r: CrossModalConvNetwork(IMG_SEQ, TEXT_SEQ).to(device) for r in args.readouts}
-    embs = {r: init_special_embedding(device) for r in args.readouts}
+    nets, embs = initialize_shared(args.readouts, device)
+    init_hashes = {r: {"scorer": state_fingerprint(nets[r]), "embedding": state_fingerprint(embs[r])} for r in args.readouts}
+    assert len({x["scorer"] for x in init_hashes.values()}) == 1
+    assert len({x["embedding"] for x in init_hashes.values()}) == 1
+    json.dump({"seed": args.seed, "alignment": ALIGNMENT_VERSION, "args": vars(args), "initial_hashes": init_hashes},
+              open(os.path.join(args.out, "initialization.json"), "w"), indent=2)
+    print("shared initialization verified:", init_hashes, flush=True)
     opts = {r: torch.optim.Adam(list(nets[r].parameters()) + list(embs[r].parameters()), lr=args.lr) for r in args.readouts}
     crit = nn.CrossEntropyLoss()
     hist = {r: [] for r in args.readouts}
@@ -247,6 +268,9 @@ def main():
     for epoch in range(args.epochs):
         loader = DataLoader(Multiple(datasets), batch_size=args.batch_size, shuffle=True, collate_fn=collate,
                             num_workers=args.workers, drop_last=True, persistent_workers=False, pin_memory=True)
+        json.dump({"epoch": epoch, "seed": args.seed, "dataset_order": ["spatial", "color_smallbig", "negation"],
+                   "subset_indices": [d.indices for d in loader.dataset.ds]},
+                  open(os.path.join(args.out, f"epoch_{epoch:02d}_sampling.json"), "w"))
         for r in args.readouts:
             nets[r].train()
         run = {r: 0.0 for r in args.readouts}; acc = {r: 0.0 for r in args.readouts}; nstep = 0
@@ -269,7 +293,7 @@ def main():
                     s1, s2 = torch.randperm(n), torch.randperm(n)
                     for r in args.readouts:
                         cos = torch.einsum("bie,lte->blit", feats[r], txt)  # (Bi,Bt,197,30)
-                        cos = insert_special(cos, texts, embs[r], device)
+                        cos = insert_special(cos, texts, embs[r], device, tokenizer=tok, input_ids=tt["input_ids"])
                         cos = (cos - cos.mean()) / cos.std()
                         cos = cos[s1][:, s2]
                         lab = labels[s1][:, s2]
@@ -293,7 +317,7 @@ def main():
         if (epoch + 1) % 3 == 0 or epoch + 1 == args.epochs:
             for r in args.readouts:
                 torch.save({"epoch": epoch, "model_state_dict": nets[r].state_dict(), "external_logic_token_embeddings": embs[r],
-                            "readout": r, "special_slicing": "replace", "train_hist": hist[r], "args": vars(args)},
+                            "readout": r, "special_slicing": ALIGNMENT_VERSION, "initial_hashes": init_hashes[r], "train_hist": hist[r], "args": vars(args)},
                            os.path.join(args.out, f"dcsm_{r}_retrain.pt"))
     json.dump(hist, open(os.path.join(args.out, "train_hist.json"), "w"), indent=1)
     print("saved ->", args.out)

@@ -1,0 +1,37 @@
+{
+  "seed": 17,
+  "alignment": "bpe_replace_v1",
+  "args": {
+    "data_root": "data/dcsm_train",
+    "spatial_dir": "objaverse_train_cutmix_newrelations_withbg",
+    "color_dir": "objaverse_attributes_overlay_withbg",
+    "neg_json": "negated_pairs_cocotrain_v1.json",
+    "readouts": [
+      "naive",
+      "maskclip",
+      "clearclip"
+    ],
+    "epochs": 27,
+    "lr": 0.001,
+    "batch_size": 8,
+    "seed": 17,
+    "max_steps": 0,
+    "clip": "openai/clip-vit-base-patch16",
+    "workers": 24,
+    "out": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_17/train"
+  },
+  "initial_hashes": {
+    "naive": {
+      "scorer": "3838c906fadbb64e9b5a93013e5b0d5e7ca1875919ebf6e6e4cc1c4fc6775cc2",
+      "embedding": "b0814ef3b085f27aaac4819d31265d43e1cf7f9fe4399f007d2ea476874d62f3"
+    },
+    "maskclip": {
+      "scorer": "3838c906fadbb64e9b5a93013e5b0d5e7ca1875919ebf6e6e4cc1c4fc6775cc2",
+      "embedding": "b0814ef3b085f27aaac4819d31265d43e1cf7f9fe4399f007d2ea476874d62f3"
+    },
+    "clearclip": {
+      "scorer": "3838c906fadbb64e9b5a93013e5b0d5e7ca1875919ebf6e6e4cc1c4fc6775cc2",
+      "embedding": "b0814ef3b085f27aaac4819d31265d43e1cf7f9fe4399f007d2ea476874d62f3"
+    }
+  }
+}

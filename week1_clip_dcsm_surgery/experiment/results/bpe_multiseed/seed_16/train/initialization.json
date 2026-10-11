@@ -1,0 +1,37 @@
+{
+  "seed": 16,
+  "alignment": "bpe_replace_v1",
+  "args": {
+    "data_root": "data/dcsm_train",
+    "spatial_dir": "objaverse_train_cutmix_newrelations_withbg",
+    "color_dir": "objaverse_attributes_overlay_withbg",
+    "neg_json": "negated_pairs_cocotrain_v1.json",
+    "readouts": [
+      "naive",
+      "maskclip",
+      "clearclip"
+    ],
+    "epochs": 27,
+    "lr": 0.001,
+    "batch_size": 8,
+    "seed": 16,
+    "max_steps": 0,
+    "clip": "openai/clip-vit-base-patch16",
+    "workers": 24,
+    "out": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_16/train"
+  },
+  "initial_hashes": {
+    "naive": {
+      "scorer": "16bea67a37649458c29e24168d6a527f35d9f90519344df2d99668151371c042",
+      "embedding": "65cd6a15fe5b2ef1da819f62bff7dd6066d0f780ddf6d42416cc522f59765092"
+    },
+    "maskclip": {
+      "scorer": "16bea67a37649458c29e24168d6a527f35d9f90519344df2d99668151371c042",
+      "embedding": "65cd6a15fe5b2ef1da819f62bff7dd6066d0f780ddf6d42416cc522f59765092"
+    },
+    "clearclip": {
+      "scorer": "16bea67a37649458c29e24168d6a527f35d9f90519344df2d99668151371c042",
+      "embedding": "65cd6a15fe5b2ef1da819f62bff7dd6066d0f780ddf6d42416cc522f59765092"
+    }
+  }
+}

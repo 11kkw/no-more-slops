@@ -1,0 +1,4 @@
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 50003.98it/s]
+dataset sizes (spatial, color+smallbig, negation): [6162, 5782, 10000]
+== epoch 0 done (1s): naive loss 2.762 acc 0.417  maskclip loss 2.776 acc 0.188  clearclip loss 2.771 acc 0.292
+saved -> results/bpe_alignment/smoke_train

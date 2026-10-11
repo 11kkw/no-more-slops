@@ -1,0 +1,5 @@
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 81141.93it/s]
+dataset sizes (spatial, color+smallbig, negation): [6162, 5782, 10000]
+shared initialization verified: {'naive': {'scorer': 'f3f456606a5970a045fa762e66e72543eec4ed473c6de920f771c3c62573f923', 'embedding': 'a4d274b83b834df50b655a7a53e342de91a0d0738352c7857f479694f9c01905'}, 'maskclip': {'scorer': 'f3f456606a5970a045fa762e66e72543eec4ed473c6de920f771c3c62573f923', 'embedding': 'a4d274b83b834df50b655a7a53e342de91a0d0738352c7857f479694f9c01905'}, 'clearclip': {'scorer': 'f3f456606a5970a045fa762e66e72543eec4ed473c6de920f771c3c62573f923', 'embedding': 'a4d274b83b834df50b655a7a53e342de91a0d0738352c7857f479694f9c01905'}}
+== epoch 0 done (1s): naive loss 2.770 acc 0.333  maskclip loss 2.766 acc 0.312  clearclip loss 2.761 acc 0.438
+saved -> results/bpe_alignment/shared_init_smoke

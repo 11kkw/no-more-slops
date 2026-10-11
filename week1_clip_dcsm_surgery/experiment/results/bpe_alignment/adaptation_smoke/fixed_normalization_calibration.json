@@ -1,0 +1,17 @@
+{
+  "source": "16 deterministic evenly spaced Objaverse training samples; 16x16 matrix, no eval calibration",
+  "stats": {
+    "naive": [
+      0.21437762677669525,
+      0.04214518889784813
+    ],
+    "maskclip": [
+      0.18513277173042297,
+      0.048006024211645126
+    ],
+    "clearclip": [
+      0.19771136343479156,
+      0.04492812231183052
+    ]
+  }
+}
