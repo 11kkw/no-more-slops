@@ -1,0 +1,90 @@
+test_replacement_targets_actual_bpe_columns_and_all_occurrences (__main__.AlignmentTests.test_replacement_targets_actual_bpe_columns_and_all_occurrences) ... 
+  test_replacement_targets_actual_bpe_columns_and_all_occurrences (__main__.AlignmentTests.test_replacement_targets_actual_bpe_columns_and_all_occurrences) (text='A picture of a cat above a dog') ... FAIL
+  test_replacement_targets_actual_bpe_columns_and_all_occurrences (__main__.AlignmentTests.test_replacement_targets_actual_bpe_columns_and_all_occurrences) (text='A picture of a cat to the left of a dog') ... FAIL
+  test_replacement_targets_actual_bpe_columns_and_all_occurrences (__main__.AlignmentTests.test_replacement_targets_actual_bpe_columns_and_all_occurrences) (text='a picture of a traffic light below a fire hydrant') ... FAIL
+  test_replacement_targets_actual_bpe_columns_and_all_occurrences (__main__.AlignmentTests.test_replacement_targets_actual_bpe_columns_and_all_occurrences) (text='a picture of a hippopotamus below a dog') ... FAIL
+  test_replacement_targets_actual_bpe_columns_and_all_occurrences (__main__.AlignmentTests.test_replacement_targets_actual_bpe_columns_and_all_occurrences) (text='a picture of a cat above a dog above a bird') ... FAIL
+
+======================================================================
+FAIL: test_replacement_targets_actual_bpe_columns_and_all_occurrences (__main__.AlignmentTests.test_replacement_targets_actual_bpe_columns_and_all_occurrences) (text='A picture of a cat above a dog')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/scripts/test_alignment_regression.py", line 24, in test_replacement_targets_actual_bpe_columns_and_all_occurrences
+    self.assertEqual(changed,expected)
+AssertionError: Lists differ: [5] != [6]
+
+First differing element 0:
+5
+6
+
+- [5]
++ [6]
+
+======================================================================
+FAIL: test_replacement_targets_actual_bpe_columns_and_all_occurrences (__main__.AlignmentTests.test_replacement_targets_actual_bpe_columns_and_all_occurrences) (text='A picture of a cat to the left of a dog')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/scripts/test_alignment_regression.py", line 24, in test_replacement_targets_actual_bpe_columns_and_all_occurrences
+    self.assertEqual(changed,expected)
+AssertionError: Lists differ: [7] != [8]
+
+First differing element 0:
+7
+8
+
+- [7]
++ [8]
+
+======================================================================
+FAIL: test_replacement_targets_actual_bpe_columns_and_all_occurrences (__main__.AlignmentTests.test_replacement_targets_actual_bpe_columns_and_all_occurrences) (text='a picture of a traffic light below a fire hydrant')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/scripts/test_alignment_regression.py", line 24, in test_replacement_targets_actual_bpe_columns_and_all_occurrences
+    self.assertEqual(changed,expected)
+AssertionError: Lists differ: [6] != [7]
+
+First differing element 0:
+6
+7
+
+- [6]
++ [7]
+
+======================================================================
+FAIL: test_replacement_targets_actual_bpe_columns_and_all_occurrences (__main__.AlignmentTests.test_replacement_targets_actual_bpe_columns_and_all_occurrences) (text='a picture of a hippopotamus below a dog')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/scripts/test_alignment_regression.py", line 24, in test_replacement_targets_actual_bpe_columns_and_all_occurrences
+    self.assertEqual(changed,expected)
+AssertionError: Lists differ: [5] != [8]
+
+First differing element 0:
+5
+8
+
+- [5]
++ [8]
+
+======================================================================
+FAIL: test_replacement_targets_actual_bpe_columns_and_all_occurrences (__main__.AlignmentTests.test_replacement_targets_actual_bpe_columns_and_all_occurrences) (text='a picture of a cat above a dog above a bird')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/scripts/test_alignment_regression.py", line 24, in test_replacement_targets_actual_bpe_columns_and_all_occurrences
+    self.assertEqual(changed,expected)
+AssertionError: Lists differ: [5] != [6, 9]
+
+First differing element 0:
+5
+6
+
+Second list contains 1 additional elements.
+First extra element 1:
+9
+
+- [5]
++ [6, 9]
+
+----------------------------------------------------------------------
+Ran 1 test in 0.186s
+
+FAILED (failures=5)

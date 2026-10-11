@@ -1,0 +1,7 @@
+{
+  "scripts/train_dcsm_scorer.py": "f4c78d39097f26061eaf4d63038d0b0833e1dad41d3037283a2832c1ab6cefdd",
+  "scripts/compositional_eval.py": "e146fe5533e9174f2afed3fa7cd0e13b02c9bd424edf3701da563dd65fadfb5c",
+  "scripts/audit_alignment_split.py": "6140f7b8c263235cc66bf7709642947729b765bf6c26f1911204b7b72118e906",
+  "scripts/audit_transfer_controls.py": "cef0e182c0b3045b40f1b23784733ada0a43d3c61241a69e20be96f6204a9de4",
+  "scripts/test_alignment_regression.py": "7e066b265137ab5a533214e610e87d9e908263c992c44dc00d268fe4087f66fc"
+}

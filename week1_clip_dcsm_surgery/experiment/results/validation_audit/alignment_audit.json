@@ -1,0 +1,681 @@
+{
+  "training_caption_alignment": {
+    "counts": {
+      "special_word_occurrences": 71240,
+      "unique_text_word_cases": 71240,
+      "misaligned": 71240
+    },
+    "examples": [
+      {
+        "text": "A picture of a amplifier above a artichoke",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "amplifier</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "amplifier</w>",
+          "above</w>",
+          "a</w>",
+          "artichoke</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "A picture of a amplifier above a axe",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "amplifier</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "amplifier</w>",
+          "above</w>",
+          "a</w>",
+          "axe</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "A picture of a amplifier above a baboon",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "amplifier</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "amplifier</w>",
+          "above</w>",
+          "a</w>",
+          "bab",
+          "oon</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "A picture of a amplifier above a backpack",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "amplifier</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "amplifier</w>",
+          "above</w>",
+          "a</w>",
+          "backpack</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "A picture of a amplifier above a barrel",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "amplifier</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "amplifier</w>",
+          "above</w>",
+          "a</w>",
+          "barrel</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "A picture of a amplifier above a baseball",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "amplifier</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "amplifier</w>",
+          "above</w>",
+          "a</w>",
+          "baseball</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "A picture of a amplifier above a baseball glove",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "amplifier</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "amplifier</w>",
+          "above</w>",
+          "a</w>",
+          "baseball</w>",
+          "glove</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "A picture of a amplifier above a bell",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "amplifier</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "amplifier</w>",
+          "above</w>",
+          "a</w>",
+          "bell</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "A picture of a amplifier above a bicycle",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "amplifier</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "amplifier</w>",
+          "above</w>",
+          "a</w>",
+          "bicycle</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "A picture of a amplifier above a bird",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "amplifier</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "amplifier</w>",
+          "above</w>",
+          "a</w>",
+          "bird</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "A picture of a amplifier above a book",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "amplifier</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "amplifier</w>",
+          "above</w>",
+          "a</w>",
+          "book</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "A picture of a amplifier above a bottle",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "amplifier</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "amplifier</w>",
+          "above</w>",
+          "a</w>",
+          "bottle</w>",
+          "<|endoftext|>"
+        ]
+      }
+    ]
+  },
+  "evaluation_caption_alignment": {
+    "counts": {
+      "special_word_occurrences": 651,
+      "unique_text_word_cases": 651,
+      "misaligned": 651
+    },
+    "examples": [
+      {
+        "text": "a picture of a apple above a bowl",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "apple</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "apple</w>",
+          "above</w>",
+          "a</w>",
+          "bowl</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "a picture of a apple below a cup",
+        "word": "below",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "apple</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "apple</w>",
+          "below</w>",
+          "a</w>",
+          "cup</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "a picture of a apple to the left of a carrot",
+        "word": "left",
+        "implemented_column": 7,
+        "actual_token_columns": [
+          8
+        ],
+        "replaced_token": "the</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "apple</w>",
+          "to</w>",
+          "the</w>",
+          "left</w>",
+          "of</w>",
+          "a</w>",
+          "carrot</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "a picture of a apple to the right of a cup",
+        "word": "right",
+        "implemented_column": 7,
+        "actual_token_columns": [
+          8
+        ],
+        "replaced_token": "the</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "apple</w>",
+          "to</w>",
+          "the</w>",
+          "right</w>",
+          "of</w>",
+          "a</w>",
+          "cup</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "a picture of a backpack above a handbag",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "backpack</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "backpack</w>",
+          "above</w>",
+          "a</w>",
+          "handbag</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "a picture of a backpack to the left of a chair",
+        "word": "left",
+        "implemented_column": 7,
+        "actual_token_columns": [
+          8
+        ],
+        "replaced_token": "the</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "backpack</w>",
+          "to</w>",
+          "the</w>",
+          "left</w>",
+          "of</w>",
+          "a</w>",
+          "chair</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "a picture of a backpack to the right of a handbag",
+        "word": "right",
+        "implemented_column": 7,
+        "actual_token_columns": [
+          8
+        ],
+        "replaced_token": "the</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "backpack</w>",
+          "to</w>",
+          "the</w>",
+          "right</w>",
+          "of</w>",
+          "a</w>",
+          "handbag</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "a picture of a banana above a toaster",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "banana</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "banana</w>",
+          "above</w>",
+          "a</w>",
+          "toaster</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "a picture of a banana below a backpack",
+        "word": "below",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "banana</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "banana</w>",
+          "below</w>",
+          "a</w>",
+          "backpack</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "a picture of a banana below a toaster",
+        "word": "below",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "banana</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "banana</w>",
+          "below</w>",
+          "a</w>",
+          "toaster</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "a picture of a banana to the left of a orange",
+        "word": "left",
+        "implemented_column": 7,
+        "actual_token_columns": [
+          8
+        ],
+        "replaced_token": "the</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "banana</w>",
+          "to</w>",
+          "the</w>",
+          "left</w>",
+          "of</w>",
+          "a</w>",
+          "orange</w>",
+          "<|endoftext|>"
+        ]
+      },
+      {
+        "text": "a picture of a bed above a person",
+        "word": "above",
+        "implemented_column": 5,
+        "actual_token_columns": [
+          6
+        ],
+        "replaced_token": "bed</w>",
+        "tokens": [
+          "<|startoftext|>",
+          "a</w>",
+          "picture</w>",
+          "of</w>",
+          "a</w>",
+          "bed</w>",
+          "above</w>",
+          "a</w>",
+          "person</w>",
+          "<|endoftext|>"
+        ]
+      }
+    ]
+  },
+  "actual_insert_special_tests": [
+    {
+      "text": "A picture of a cat above a dog",
+      "changed_columns": [
+        5
+      ],
+      "expected_columns": [
+        6
+      ],
+      "pass": false,
+      "tokens": [
+        "<|startoftext|>",
+        "a</w>",
+        "picture</w>",
+        "of</w>",
+        "a</w>",
+        "cat</w>",
+        "above</w>",
+        "a</w>",
+        "dog</w>",
+        "<|endoftext|>"
+      ]
+    },
+    {
+      "text": "A picture of a cat to the left of a dog",
+      "changed_columns": [
+        7
+      ],
+      "expected_columns": [
+        8
+      ],
+      "pass": false,
+      "tokens": [
+        "<|startoftext|>",
+        "a</w>",
+        "picture</w>",
+        "of</w>",
+        "a</w>",
+        "cat</w>",
+        "to</w>",
+        "the</w>",
+        "left</w>",
+        "of</w>",
+        "a</w>",
+        "dog</w>",
+        "<|endoftext|>"
+      ]
+    },
+    {
+      "text": "a picture of a traffic light below a fire hydrant",
+      "changed_columns": [
+        6
+      ],
+      "expected_columns": [
+        7
+      ],
+      "pass": false,
+      "tokens": [
+        "<|startoftext|>",
+        "a</w>",
+        "picture</w>",
+        "of</w>",
+        "a</w>",
+        "traffic</w>",
+        "light</w>",
+        "below</w>",
+        "a</w>",
+        "fire</w>",
+        "hydr",
+        "ant</w>",
+        "<|endoftext|>"
+      ]
+    },
+    {
+      "text": "a picture of a hippopotamus below a dog",
+      "changed_columns": [
+        5
+      ],
+      "expected_columns": [
+        8
+      ],
+      "pass": false,
+      "tokens": [
+        "<|startoftext|>",
+        "a</w>",
+        "picture</w>",
+        "of</w>",
+        "a</w>",
+        "hippo",
+        "potam",
+        "us</w>",
+        "below</w>",
+        "a</w>",
+        "dog</w>",
+        "<|endoftext|>"
+      ]
+    },
+    {
+      "text": "a picture of a cat above a dog above a bird",
+      "changed_columns": [
+        5
+      ],
+      "expected_columns": [
+        6,
+        9
+      ],
+      "pass": false,
+      "tokens": [
+        "<|startoftext|>",
+        "a</w>",
+        "picture</w>",
+        "of</w>",
+        "a</w>",
+        "cat</w>",
+        "above</w>",
+        "a</w>",
+        "dog</w>",
+        "above</w>",
+        "a</w>",
+        "bird</w>",
+        "<|endoftext|>"
+      ]
+    }
+  ],
+  "initialization": {
+    "naive": {
+      "scorer_matches_naive": true,
+      "embedding_matches_naive": true
+    },
+    "maskclip": {
+      "scorer_matches_naive": false,
+      "embedding_matches_naive": false
+    },
+    "clearclip": {
+      "scorer_matches_naive": false,
+      "embedding_matches_naive": false
+    }
+  },
+  "checkpoint_seed": 15,
+  "human_verified_independent_test": "No such dataset identified in the current training/evaluation configuration; do not claim human validation."
+}

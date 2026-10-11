@@ -1,0 +1,172 @@
+{
+  "alignment": {
+    "training_caption_alignment": {
+      "special_word_occurrences": 71240,
+      "unique_text_word_cases": 71240,
+      "misaligned": 71240
+    },
+    "evaluation_caption_alignment": {
+      "special_word_occurrences": 651,
+      "unique_text_word_cases": 651,
+      "misaligned": 651
+    }
+  },
+  "tests": [
+    {
+      "text": "A picture of a cat above a dog",
+      "changed_columns": [
+        5
+      ],
+      "expected_columns": [
+        6
+      ],
+      "pass": false,
+      "tokens": [
+        "<|startoftext|>",
+        "a</w>",
+        "picture</w>",
+        "of</w>",
+        "a</w>",
+        "cat</w>",
+        "above</w>",
+        "a</w>",
+        "dog</w>",
+        "<|endoftext|>"
+      ]
+    },
+    {
+      "text": "A picture of a cat to the left of a dog",
+      "changed_columns": [
+        7
+      ],
+      "expected_columns": [
+        8
+      ],
+      "pass": false,
+      "tokens": [
+        "<|startoftext|>",
+        "a</w>",
+        "picture</w>",
+        "of</w>",
+        "a</w>",
+        "cat</w>",
+        "to</w>",
+        "the</w>",
+        "left</w>",
+        "of</w>",
+        "a</w>",
+        "dog</w>",
+        "<|endoftext|>"
+      ]
+    },
+    {
+      "text": "a picture of a traffic light below a fire hydrant",
+      "changed_columns": [
+        6
+      ],
+      "expected_columns": [
+        7
+      ],
+      "pass": false,
+      "tokens": [
+        "<|startoftext|>",
+        "a</w>",
+        "picture</w>",
+        "of</w>",
+        "a</w>",
+        "traffic</w>",
+        "light</w>",
+        "below</w>",
+        "a</w>",
+        "fire</w>",
+        "hydr",
+        "ant</w>",
+        "<|endoftext|>"
+      ]
+    },
+    {
+      "text": "a picture of a hippopotamus below a dog",
+      "changed_columns": [
+        5
+      ],
+      "expected_columns": [
+        8
+      ],
+      "pass": false,
+      "tokens": [
+        "<|startoftext|>",
+        "a</w>",
+        "picture</w>",
+        "of</w>",
+        "a</w>",
+        "hippo",
+        "potam",
+        "us</w>",
+        "below</w>",
+        "a</w>",
+        "dog</w>",
+        "<|endoftext|>"
+      ]
+    },
+    {
+      "text": "a picture of a cat above a dog above a bird",
+      "changed_columns": [
+        5
+      ],
+      "expected_columns": [
+        6,
+        9
+      ],
+      "pass": false,
+      "tokens": [
+        "<|startoftext|>",
+        "a</w>",
+        "picture</w>",
+        "of</w>",
+        "a</w>",
+        "cat</w>",
+        "above</w>",
+        "a</w>",
+        "dog</w>",
+        "above</w>",
+        "a</w>",
+        "bird</w>",
+        "<|endoftext|>"
+      ]
+    }
+  ],
+  "initialization": {
+    "naive": {
+      "scorer_matches_naive": true,
+      "embedding_matches_naive": true
+    },
+    "maskclip": {
+      "scorer_matches_naive": false,
+      "embedding_matches_naive": false
+    },
+    "clearclip": {
+      "scorer_matches_naive": false,
+      "embedding_matches_naive": false
+    }
+  },
+  "dataset_sizes": {
+    "spatial": 6162,
+    "color_smallbig": 5782,
+    "negation": 10000
+  },
+  "training_files": 37944,
+  "missing": 0,
+  "evaluation_files": 1025,
+  "coco_id_overlap": [],
+  "subset_counts": {
+    "size": 655,
+    "color": 142,
+    "spatial": 527,
+    "negation": 315,
+    "affirm": 194
+  }
+}
+hashed 10000
+hashed 20000
+hashed 30000
+HASH_RESULT {"hashed_training_files": 37944, "hashed_evaluation_files": 1025, "missing_training_files": [], "byte_identical_overlap": [], "limitation": "SHA256 detects identical files, not resized/reencoded/derived copies. Current pool does not prove historical epoch-level membership."}

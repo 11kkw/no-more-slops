@@ -1,0 +1,145 @@
+{
+  "status": "complete",
+  "interpretation": "Historical diagnostics on misaligned checkpoints. Does NOT establish correct relation-token adaptation or a corrected multi-seed result.",
+  "n_spatial": 527,
+  "n_control": 527,
+  "control_relation_counts": {
+    "to the left of": 227,
+    "to the right of": 186,
+    "above": 62,
+    "below": 52
+  },
+  "adaptation": {
+    "retrained_naive": {
+      "correct": 295,
+      "n": 527,
+      "top1": 0.5597722960151803
+    },
+    "retrained_maskclip": {
+      "correct": 376,
+      "n": 527,
+      "top1": 0.713472485768501
+    },
+    "ordinary_scorer_on_maskclip": {
+      "correct": 169,
+      "n": 527,
+      "top1": 0.3206831119544592
+    },
+    "retrained_clearclip": {
+      "correct": 349,
+      "n": 527,
+      "top1": 0.6622390891840607
+    },
+    "ordinary_scorer_on_clearclip": {
+      "correct": 135,
+      "n": 527,
+      "top1": 0.25616698292220114
+    }
+  },
+  "controls": {
+    "naive_per_candidate_norm": {
+      "n": 527,
+      "same_original_target_accuracy": 0.5749525616698292,
+      "prediction_change_rate": 0.0777988614800759,
+      "score_tie_rate": 0.0
+    },
+    "naive_fixed_train_norm": {
+      "n": 527,
+      "same_original_target_accuracy": 0.5635673624288425,
+      "prediction_change_rate": 0.11005692599620494,
+      "score_tie_rate": 0.0
+    },
+    "maskclip_per_candidate_norm": {
+      "n": 527,
+      "same_original_target_accuracy": 0.6963946869070209,
+      "prediction_change_rate": 0.04554079696394687,
+      "score_tie_rate": 0.0
+    },
+    "maskclip_fixed_train_norm": {
+      "n": 527,
+      "same_original_target_accuracy": 0.6888045540796964,
+      "prediction_change_rate": 0.08159392789373814,
+      "score_tie_rate": 0.0
+    },
+    "clearclip_per_candidate_norm": {
+      "n": 527,
+      "same_original_target_accuracy": 0.6925996204933587,
+      "prediction_change_rate": 0.09867172675521822,
+      "score_tie_rate": 0.0
+    },
+    "clearclip_fixed_train_norm": {
+      "n": 527,
+      "same_original_target_accuracy": 0.6679316888045541,
+      "prediction_change_rate": 0.16129032258064516,
+      "score_tie_rate": 0.0
+    },
+    "naive_relation_removed": {
+      "n": 527,
+      "same_original_target_accuracy": 0.3738140417457306,
+      "prediction_change_rate": 0.4648956356736243,
+      "score_tie_rate": 0.0
+    },
+    "maskclip_relation_removed": {
+      "n": 527,
+      "same_original_target_accuracy": 0.4307400379506641,
+      "prediction_change_rate": 0.4629981024667932,
+      "score_tie_rate": 0.0
+    },
+    "clearclip_relation_removed": {
+      "n": 527,
+      "same_original_target_accuracy": 0.4155597722960152,
+      "prediction_change_rate": 0.40037950664136623,
+      "score_tie_rate": 0.0
+    },
+    "naive_relation_reversed": {
+      "n": 527,
+      "same_original_target_accuracy": 0.2808349146110057,
+      "prediction_change_rate": 0.603415559772296,
+      "score_tie_rate": 0.0
+    },
+    "maskclip_relation_reversed": {
+      "n": 527,
+      "same_original_target_accuracy": 0.18785578747628084,
+      "prediction_change_rate": 0.6698292220113852,
+      "score_tie_rate": 0.0
+    },
+    "clearclip_relation_reversed": {
+      "n": 527,
+      "same_original_target_accuracy": 0.2637571157495256,
+      "prediction_change_rate": 0.5673624288425048,
+      "score_tie_rate": 0.0
+    },
+    "naive_common_crop": {
+      "n": 527,
+      "same_original_target_accuracy": 0.49146110056925996,
+      "prediction_change_rate": 0.5445920303605313,
+      "score_tie_rate": 1.0
+    },
+    "maskclip_common_crop": {
+      "n": 527,
+      "same_original_target_accuracy": 0.49146110056925996,
+      "prediction_change_rate": 0.49335863377609107,
+      "score_tie_rate": 1.0
+    },
+    "clearclip_common_crop": {
+      "n": 527,
+      "same_original_target_accuracy": 0.49146110056925996,
+      "prediction_change_rate": 0.5142314990512334,
+      "score_tie_rate": 1.0
+    },
+    "naive_original_on_control": {
+      "top1": 0.5597722960151803,
+      "n": 527
+    },
+    "maskclip_original_on_control": {
+      "top1": 0.713472485768501,
+      "n": 527
+    },
+    "clearclip_original_on_control": {
+      "top1": 0.6622390891840607,
+      "n": 527
+    }
+  },
+  "elapsed_seconds": 13.882268905639648,
+  "controls_note": "Reversed relation is measured as prediction sensitivity, NOT correct reversed-label accuracy: opposite direction can have multiple correct candidates. Common crop with no candidate-specific representation makes the inputs identical and ties structurally inevitable."
+}

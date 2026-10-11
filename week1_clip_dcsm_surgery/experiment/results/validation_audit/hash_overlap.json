@@ -1,0 +1,7 @@
+{
+  "hashed_training_files": 37944,
+  "hashed_evaluation_files": 1025,
+  "missing_training_files": [],
+  "byte_identical_overlap": [],
+  "limitation": "SHA256 detects identical files, not resized/reencoded/derived copies. Current pool does not prove historical epoch-level membership."
+}
