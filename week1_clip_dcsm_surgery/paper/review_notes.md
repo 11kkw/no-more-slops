@@ -1,6 +1,15 @@
 # Internal manuscript review and revisions
 
-This is a sequential author-side review of this manuscript, result files, and evaluation code. It is not independent peer review, a venue decision, or a prediction of acceptance. No additional model experiments were run for this review.
+This is a sequential author-side review of this manuscript, result files, and evaluation code. It is not independent peer review, a venue decision, or a prediction of acceptance.
+
+## Revision of 2026-10-11 — method framing, new experiments, terminology
+
+- The manuscript was rewritten as a method paper with the decided title *Readout Surgery Turns DCSM into a Spatial Relationship Detection Head for CLIP*. The earlier "localization gains do not transfer" framing (kept in `shortpaper/`, marked superseded) rested on applying training-free heatmaps and released scorers only; the new experiments E6 (scorer retraining on surgery features, three seeds) and E7 (referring detection on OWLv2 proposals vs OWLv2 / OWL-ViT / Grounding DINO) replace that gap, and claim C16 of the previous map ("no readout-by-trained-scorer experiment") is resolved.
+- Terminology now follows Kang et al.: *failure modes* (attribute binding, spatial relationship, negation), *failure-mode query benchmark*, *candidate selection* (GT boxes given) vs *referring detection* (image + query only), *single-class-name detection*, *Functional Rows*. "Compositional" and "relational selection" are no longer used; subset names in code (`negation`, `affirm`, `dcsm_tok`) are unchanged.
+- Explicit disclaimers were added (§6): no benefit on single-class-name detection, attribute binding or negation; Grounding DINO-B (COCO + RefCOCO pre-training) is stronger and not a zero-shot peer; the head is bounded by OWLv2 candidate recall; the benchmark is auto-generated.
+- Items below from the 10 October review remain valid where they concern the benchmark construction (size/area definitions, negation/affirm asymmetry, label validation) and are carried into §4.3 and §6. The unresolved check "controlled readout-by-learned-scorer experiment" is now done (E6); "native/proposal protocol matching" is addressed for referring detection by sharing the candidate set across the `cands/*` rows and by the p(A)-only baseline; "comparison with established referring benchmarks" (RefCOCO splits) and human label validation remain open.
+
+## Review of 10 October 2026 (previous framing)
 
 ## Summary
 

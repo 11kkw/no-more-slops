@@ -1,6 +1,6 @@
 # Paper draft package
 
-Start with [manuscript.md](manuscript.md) or the [Korean explanation](summary.ko.md). This is a complete working draft from existing DCSM/CLIP experiment artifacts. It includes five main tables, two figures, complete candidate-selection tables, eight verified bibliographic records, and an internal review.
+Start with [manuscript.md](manuscript.md) or the [Korean explanation](summary.ko.md). Current draft (11 October 2026): *Readout Surgery Turns DCSM into a Spatial Relationship Detection Head for CLIP*, a method paper built on the retraining (E6) and referring-detection (E7) experiments; terminology follows `../experiment/overview.md` §0. The 10 October analysis draft survives as `shortpaper/` (marked superseded) and in `tables/`, `figures/`, `evidence/`, which still describe that earlier draft's artifacts. `scripts/refresh_manuscript_tables.py` and `scripts/verify_draft.py` were written for the earlier draft's generated-table markers and have not been adapted to the new manuscript.
 
 ## Files
 
@@ -54,6 +54,6 @@ Citation verification checks the ledger and literal excerpts. It does not mechan
 
 Original inference was not rerun for this draft. The new work consists of code/protocol inspection, arithmetic checks, a CPU image-cluster bootstrap, plots and manuscript writing. Discord dispatch, training, publication and submission were not part of this drafting pass. Original experiment files and prior planning notes are retained.
 
-Read the manuscript's protocol corrections when consulting `../experiment/README.md`: evaluated detection images are 4,952; native OWLv2 and P2 differ in proposal selection/scoring; the compositional task supplies candidates; with/without items are not matched controls. Full inference reproduction requires data, checkpoints, and a compatible environment.
+Read the manuscript's protocol notes when consulting `../experiment/README.md`: evaluated detection images are 4,952; native OWLv2 and P2 differ in proposal selection/scoring; candidate selection supplies ground-truth candidates whereas referring detection does not; negation/affirm items are not matched controls. The scope paragraph above describes the 10 October drafting pass; the 11 October revision added new GPU experiments (see `experiment_log.md` E6–E7).
 
 This work was created as part of the No-More-Slops group activities at Pseudo Lab.

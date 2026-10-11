@@ -1,5 +1,7 @@
 # Dense CLIP Localization Gains Do Not Consistently Transfer to Relational Object Selection
 
+> **Superseded (2026-10-11).** This short paper predates the scorer retraining and the referring-detection evaluation. The current draft, with the decided title *Readout Surgery Turns DCSM into a Spatial Relationship Detection Head for CLIP*, is [`../manuscript.md`](../manuscript.md) (Korean explanation: [`../summary.ko.md`](../summary.ko.md)). The text below is kept unchanged for the review history; its "relational selection" / "compositional" wording has been replaced by the terminology in `experiment/overview.md` §0.
+
 *Venue-neutral working short paper. Authors and affiliations: to be determined.*
 
 ## Abstract

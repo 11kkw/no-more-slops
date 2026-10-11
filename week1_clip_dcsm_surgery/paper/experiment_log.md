@@ -26,7 +26,7 @@ Recorded on 10 October 2026. Original execution timestamps/revisions are not rec
 
 **Evidence boundary.** Saved summary inspected and table units checked; no detections regenerated. Native/P2 AP gap is not a classification-only experiment. No detection confidence intervals were computed from aggregates.
 
-## E3. Conditional compositional candidate selection — existing experiment
+## E3. Candidate selection on the failure-mode query benchmark (ground-truth candidates) — existing experiment
 
 **Question.** Can a scorer select one annotated same-category object from a templated description of size, color, image-plane relation or attachment?
 
@@ -63,6 +63,34 @@ Recorded on 10 October 2026. Original execution timestamps/revisions are not rec
 **Result.** Spatial ObjA58.1%[53.7,62.4], COCO57.3%[53.2,61.2]. ObjA−chance+12.4pp[8.0,16.7]; ObjA−CLIPcontext+19.1pp[14.3,23.9]. All point estimates match E4.
 
 **Evidence boundary.** Intervals condition on this query collection and released models. They do not cover dataset labeling uncertainty, unseen categories, unseen task populations, or training overlap. Figure 1has no error bars because detection trial outputs were unavailable. Plots were visually inspected for legibility.
+
+## E6. DCSM scorer retraining on surgery readouts — new experiment (2026-10-10/11)
+
+**Question.** Does retraining the DCSM scoring network with the original recipe on MaskCLIP / ClearCLIP features improve failure-mode candidate selection over the same recipe on the ordinary readout?
+
+**Setup.** Original image-level recipe and Drive data (Objaverse spatial / colour / small-big composites, negated COCO-train pairs); one shared CLIP forward per batch feeds three scorers with identical initial weights; BPE-aligned Functional-Row replacement; seeds 15, 16, 17; 27 epochs each (~77 min on one RTX PRO 6000).
+
+**Code and outputs.** [train_dcsm_scorer.py](../experiment/scripts/train_dcsm_scorer.py), [run_bpe_multiseed.py](../experiment/scripts/run_bpe_multiseed.py), package modules `dcsm_surgery.data`, `dcsm_surgery.scorer`, `dcsm_surgery.bpe_alignment`; results `../experiment/results/bpe_multiseed/seed_*/{train,evaluation,adaptation}`, aggregate `aggregate.json`; audit `../experiment/results/validation_audit/`.
+
+**Result.** Size-balanced spatial top-1: naive 59.0 ± 3.9, MaskCLIP 69.8 ± 2.2, ClearCLIP 69.3 ± 3.4. Colour / negation / size unchanged within noise. Naive-readout scorer on surgery features: 33.7 ± 1.3 / 28.5 ± 1.0 raw.
+
+**Evidence boundary.** Three seeds; the released COCO-model recipe is not reproducible from the public code; the released checkpoints are evaluated with the repository's misaligned column rule.
+
+## E7. Referring detection on OWLv2 proposals — new experiment (2026-10-11)
+
+**Question.** Without ground-truth candidates, does the retrained scorer over OWLv2 class-name proposals detect the referred object better than OWLv2, OWL-ViT and Grounding DINO given the same sentence?
+
+**Setup.** 1,833 items; one OWLv2 forward with [query, "a photo of a {A}", "a photo of a {B}"]; candidates p(A) ≥ 0.1, NMS 0.5, ≤ 10; reference B̂ = top p(B) (spatial) or nearest B (negation/affirm); final score p(A) × softmax(scorer). Baselines: OWLv2 / OWL-ViT native, Grounding DINO-T and -B native (NMS 0.5, ≤ 100 dets), p(A)-only and CLIP-context re-rankers on the same candidates. Metrics: Acc@0.5 (raw, balanced), COCO-style AP / AP50 per subset, candidate recall, paired bootstrap on spatial Acc@0.5.
+
+**Code and outputs.** [referring_detection_eval.py](../experiment/scripts/referring_detection_eval.py), `dcsm_surgery.detectors`, `dcsm_surgery.metrics.referring_ap`; results `../experiment/results/refdet_full/{summary.md,summary.json,per_item.json,run_log.txt}` (per-detection dump `detections.json` is git-ignored, ~41 MB).
+
+**Result.** Spatial Acc@0.5 / AP: MaskCLIP head 49.7 ± 0.6 / 34.4 ± 1.0; ClearCLIP 48.3 ± 1.3 / 34.4 ± 1.2; naive 40.7 ± 1.3 / 28.1 ± 0.6; p(A) only 37.8 / 27.5; OWLv2 7.8 / 6.7; OWL-ViT 12.0 / 5.5; GDINO-T 17.1 / 14.0; GDINO-B 63.0 / 52.0. Candidate recall 89.2. No benefit on size / color / negation / affirm.
+
+**Evidence boundary.** Grounding DINO-B is pre-trained with COCO and RefCOCO labels (not zero-shot). Reference-box errors and candidate misses are not decomposed. ~9 min on one GPU; the pre- and post-refactor smoke runs give identical numbers.
+
+## Code organisation (2026-10-11)
+
+Shared code was moved into the package `experiment/src/dcsm_surgery` (installed by `uv sync`); the scripts are thin entry points and `uv run pytest` runs 29 unit tests (boxes, metrics, readouts and scorer with the cached CLIP, BPE alignment, shared initialisation). Script names referenced above are unchanged; the function `owl_native_dets` referenced by earlier claim maps now lives in `dcsm_surgery.detectors`.
 
 ## Draft preparation and verification
 

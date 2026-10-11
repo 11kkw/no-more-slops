@@ -1,6 +1,6 @@
 # Week 1 — 중간 실측과 핵심 발견
 
-[overview.md](overview.md)의 목표·벤치마크·최종 결과를 뒷받침하는 중간 단계 실측, 수치 해석, 재학습 레시피, 검증 감사, 베이스라인 재현성 이슈를 모았다. 절 번호는 overview에서 "findings §n"으로 참조한다.
+[overview.md](overview.md)의 목표·용어·벤치마크·최종 결과를 뒷받침하는 중간 단계 실측, 수치 해석, 재학습 레시피, 검증 감사, 베이스라인 재현성 이슈를 모았다. 절 번호는 overview에서 "findings §n"으로 참조한다.
 
 ## 1. 실측 1 — DCSM 패치 표현의 localization 품질 (`results/probe_500`)
 
@@ -39,12 +39,12 @@ COCO val2017 앞 500장, frozen CLIP ViT-B/16, 정답 클래스를 알려준 상
 ### 2.2 전체 5,000장 해석 (`results/full_val2017/summary.md`, 전체 표는 overview §3.1)
 
 - 같은 OWLv2 박스 위에서 naive readout은 AP 1.2~2.7로 사실상 분류를 못 한다. 실측 1의 반전 현상이 탐지 AP로 그대로 이어진다.
-- DCSM 토큰별 max 읽기는 EOS보다 약 5 AP 낮다(clearclip 224: 22.8 vs 27.3). "a photo of a {}." 프롬프트의 여러 토큰 중 최대값을 취하는 방식이 EOS 하나보다 잡음이 많다. 이것이 조합 쿼리 실험(§3)의 동기다.
+- DCSM 토큰별 max 읽기는 EOS보다 약 5 AP 낮다(clearclip 224: 22.8 vs 27.3). "a photo of a {}." 프롬프트의 여러 토큰 중 최대값을 취하는 방식이 EOS 하나보다 잡음이 많다. 이것이 실패 유형 쿼리 실험(§3)의 동기다.
 - 448px는 APs를 2~3점 올리지만 APl을 깎아 전체 AP는 거의 같다. interpolated positional embedding이 분포를 벗어나는 비용과 소형 객체 이득이 상쇄된다.
 - ClearCLIP과 MaskCLIP의 차이는 1~2 AP로 작다. 하나를 고른다면 구현이 단순한 MaskCLIP(value만)으로 충분하다.
 - OWL-ViT v1 B/32의 28.8 AP는 OWL-ViT 논문 Table A4의 B/16 31.7 AP와 같은 범위다. 평가 파이프라인이 문헌과 어긋나지 않음을 확인하는 용도.
 
-## 3. 조합 쿼리 벤치마크 — 설계 근거, 크기 편향, 공개 scorer 결과 (`results/comp_full`)
+## 3. 실패 유형 쿼리 벤치마크(후보 선택) — 설계 근거, 크기 편향, 공개 scorer 결과 (`results/comp_full`)
 
 ### 3.1 설계 세부와 예상했던 문제
 
@@ -95,8 +95,8 @@ spatial 관계별 raw top-1: dcsm_obja left 61.2 / right 61.3 / above 40.3 / bel
 - **부정은 아무도 확실히 읽지 못한다.** OWL(40~42), DCSM scorer(38), clip_ctx(35)는 우연(48.1) 이하이며 같은 모델들이 affirm에서는 우연(33)보다 12~15점 높다. "without"을 무시하고 B의 존재에 끌린다. 다만 naive/dcsm_tok(55.7)과 clip_crop(53.0)은 우연을 조금 넘으므로 "전혀 못 읽는다"고 쓰지는 않는다. negation과 affirm은 같은 장면의 단어 교체 대조군이 아니라는 점(생성기가 without을 우선 선택, 두 후보 항목 273/315 vs 44/194)도 해석을 제한한다.
 - **속성 결합(색)은 전역 임베딩으로도 충분하다.** 후보 crop만 보면 되는 과제라 CLIP 전역 임베딩이 가장 강하다(OWLv2 73.5, clip_crop 69.2). naive readout(21~38)은 우연 아래이며, 실측 1·2의 반전 현상이 여기서도 나타난다.
 - **크기는 아무도 읽지 않는다.** OWL은 big 72~78 / small 11로 순수 큰-박스 선호다. clearclip/dcsm_tok만 44/42로 big·small에 대칭적이다.
-- **readout surgery는 조합 추론을 만들지 않는다.** MaskCLIP·ClearCLIP 히트맵은 색에서 naive 대비 +30~40점이지만 spatial·negation·affirm에서는 우연 근방이다. surgery는 "어디에 무엇이 있는가"를 복원할 뿐이며, 관계·부정에는 학습된 scorer가 필요하다. 이것이 §4 재학습의 동기다.
-- **OWL 계열은 조합 쿼리에 약하다.** 색을 제외하면 모든 subset에서 우연 이하다. grounding 데이터로 학습했음에도 문장의 관계·부정 구조를 쓰지 않는다.
+- **readout surgery는 관계·부정 추론을 만들지 않는다.** MaskCLIP·ClearCLIP 히트맵은 색에서 naive 대비 +30~40점이지만 spatial·negation·affirm에서는 우연 근방이다. surgery는 "어디에 무엇이 있는가"를 복원할 뿐이며, 관계·부정에는 학습된 scorer가 필요하다. 이것이 §4 재학습의 동기다.
+- **OWL 계열은 실패 유형 쿼리에 약하다.** 색을 제외하면 모든 subset에서 우연 이하다. grounding 데이터로 학습했음에도 문장의 관계·부정 구조를 쓰지 않는다.
 
 ## 4. readout surgery 위에서 DCSM scorer 재학습 (`results/retrain`, `results/comp_retrain`)
 
@@ -123,7 +123,7 @@ spatial 관계별 raw top-1: dcsm_obja left 61.2 / right 61.3 / above 40.3 / bel
 - 원 논문 §5.1: "We train one model on synthetic data created from Objaverse renders and another on a subset of COCO2017." 부록 B.2: 합성 세트는 Objaverse 3D 자산을 무작위 배경 위에 above/below/left/right로 지터를 주어 배치(관계), 서로 다른 색·크기 부여(속성), 겹치지 않는 다른 물체 쌍을 "but not / and no / without"으로 묶음(부정). 모든 positive에 속성 교환·관계 반전 hard negative를 짝지은다. 공개 체크포인트 `dcsm_obja_ckpt.pt` / `dcsm_coco_ckpt.pt`가 이 두 모델에 대응한다.
 - 공개 코드의 유일한 데이터 조립 함수 `make_and_return_train_data`는 Objaverse 관계 + Objaverse 색·크기 + COCO-train 부정 json을 쓴다. 논문이 말한 Objaverse 부정 데이터는 Drive에 json만 있고 이미지 폴더가 없으며, COCO 모델용 조립 함수는 코드에 없다. 따라서 우리 재학습은 **공개 코드가 재현 가능한 유일한 레시피 = obja 모델 변형**이다.
 - 수량 대조: 속성 5,402장은 논문과 일치. 관계는 논문 11,324장 vs 데이터 12,324장으로 1,000장 차이. 코드는 논문이 따로 세지 않은 small/big 6,162장도 추가로 쓴다. 부정 10,000쌍은 일치.
-- 원 논문도 Objaverse로 평가하지 않고 실사 벤치마크로만 평가한다. 합성→실사 전이가 원 논문의 설정이며, COCO val2017 조합 벤치마크 평가도 같은 프레임이다.
+- 원 논문도 Objaverse로 평가하지 않고 실사 벤치마크로만 평가한다. 합성→실사 전이가 원 논문의 설정이며, COCO val2017 실패 유형 쿼리 벤치마크 평가도 같은 프레임이다.
 
 ### 4.4 데이터 준비 기록
 
@@ -211,10 +211,23 @@ spatial raw top-1, seed별: naive 60.7 / 61.5 / 54.3, MaskCLIP 67.6 / 71.7 / 68.
 - **배치 의존 점수.** `standardize()`가 배치 전체 통계를 쓰므로 같은 이미지의 점수가 함께 넣은 텍스트 집합에 따라 달라진다.
 - **기타.** `initialize_clip`은 ViT-L/14를 로드하지만 실제 학습은 B/16(dead code). 평가 main의 `is not "all"` 문자열 비교.
 
-## 7. 논문 포지셔닝 메모
+## 7. referring detection — 파이프라인 설계와 해석 (`results/refdet_full`)
 
-- 제목 후보: *"Reading CLIP's last block correctly: readout surgery turns a frozen CLIP into a zero-shot region classifier, and a retrained DCSM scorer into a spatial-relation selector"*.
+후보 선택(§3~5)은 GT 후보 박스가 주어진 과제라 탐지 성능이 아니다. 2026-10-11에 이미지와 쿼리 문장만 받는 referring detection을 추가했다(`scripts/referring_detection_eval.py`, 최종 표는 overview §3.3).
+
+- **설계.** OWLv2를 한 번 forward하면서 [쿼리 문장, "a photo of a {A}", "a photo of a {B}"]를 함께 넣는다. 박스는 텍스트와 무관하므로 native 점수(쿼리 logit)와 클래스명 확률 p(A), p(B)가 같은 박스 집합 위에서 나온다. 후보 = p(A) ≥ 0.1, NMS 0.5, 최대 10개(2개 미만이면 상위 2개). 참조 B̂ = spatial은 p(B) 최상위 1개(B가 이미지에 유일하다는 벤치마크 정의와 같음), negation/affirm은 p(B) ≥ 0.1인 B 박스 중 후보에 가장 가까운 것(후보 선택 프로토콜의 "nearest GT B"와 같음). 최종 점수 = p(A) × softmax(scorer). softmax는 scorer가 16×16 cross-entropy로 학습된 것과 일치하고, 항목마다 타깃이 하나라 AP 계산 시 항목 간 보정 역할을 한다.
+- **지표.** Acc@0.5는 RefCOCO 관례. AP는 subset을 카테고리, 쿼리 항목을 pseudo-image로 두고 pycocotools로 계산하므로 한 항목의 오탐(타깃이 아닌 박스에 높은 점수)이 다른 항목의 정답보다 앞서면 AP가 깎인다. 모든 native 방법에 같은 NMS 0.5·항목당 100개 제한을 적용했다.
+- **후보 recall이 상한이다.** spatial 89.2, negation 81.9. `cands/*`의 Acc@0.5는 이 값을 넘을 수 없다. 후보 선택에서 MaskCLIP 재학습이 raw 69~70이었는데 referring detection에서 49.7인 차이는 (a) 후보 누락 11%, (b) 참조 B̂ 오검출, (c) 후보 집합에 섞인 비-A 박스와 중복 박스가 scorer의 배치 표준화를 흔드는 것의 합이다.
+- **관계를 읽는 것은 scorer다.** 같은 후보 집합에서 p(A)만 쓰는 `cands/owlv2_classname`(37.8)은 우연보다 높지만(후보가 평균 4.2개라 우연 ≈ 24), 이는 OWLv2 class 확률이 큰 박스·중앙 박스를 선호하는 효과다. naive 재학습(40.7 ± 1.3)은 이 기준선과 CI가 겹치고, MaskCLIP·ClearCLIP 재학습(49.7, 48.3)만 +11점으로 분리된다. 즉 readout surgery 없이는 scorer가 proposal 위에서 관계를 읽지 못한다.
+- **native 검출기는 문장의 관계를 무시한다.** OWLv2 7.8, OWL-ViT 12.0, GDINO-T 17.1은 모두 "A" 또는 "B" 박스 중 아무거나 내는 수준이다(두 클래스 박스 중 타깃 A 하나를 맞출 확률 근방). GDINO-B만 63.0으로 관계를 읽는데, 이 체크포인트는 RefCOCO(referring 라벨)와 COCO(탐지 라벨)로 학습되었다(https://github.com/IDEA-Research/GroundingDINO 체크포인트 표). RefCOCO 이미지는 COCO train2014에서 왔으므로 val2017과 겹치지 않지만, 제로샷 비교 대상은 아니다. GDINO-T(O365, GoldG, Cap4M)가 제로샷 비교 대상이다.
+- **나머지 서브셋.** size·color는 GDINO-B·OWLv2가 높고 DCSM 헤드는 낮다(size는 큰 박스 선호 효과가 커서 균형 Acc는 모두 30~45). negation은 모든 방법이 p(A) 기준선(31.1) 이하다. affirm은 GDINO-B(57.7) > p(A) 기준선(46.9) > DCSM 헤드(38~40). 즉 DCSM 헤드의 이점은 공간 관계에 한정된다.
+- **재현.** 1,833개 항목, 11개 scorer 체크포인트, GPU 1장(RTX PRO 6000) 약 9분. 스모크 결과는 리팩터링 전후 완전히 일치한다(`results/refdet_smoke` vs 리팩터링 후 재실행).
+
+## 8. 논문 포지셔닝 메모
+
+- 제목(2026-10-11 확정): *"Readout Surgery Turns DCSM into a Spatial Relationship Detection Head for CLIP"*. 용어는 overview §0의 표를 따른다.
 - 주장 1: DCSM 원 코드의 readout은 반(反)localized이며, 이는 논문이 인정한 반전 현상의 정량적 증거다(§1).
-- 주장 2: 마지막 블록 readout을 MaskCLIP/ClearCLIP 식으로 바꾸면 추가 학습 없이 DCSM 행렬이 OWLv2 proposal 위에서 유효한 제로샷 분류 신호가 된다(§2, 같은 박스 통제 비교).
-- 주장 3: 같은 readout 위에서 원 논문 레시피로 scorer를 재학습하면 공간 관계 선택이 naive 대비 약 +10점 오른다(§5.3, 3 seed). 공개 scorer를 새 표현에 그대로 쓰면 우연 이하이므로 표현과 scorer를 함께 맞춰야 한다.
-- 현재 `../paper/` 초안은 §4~5 이전 상태(재학습 없음)를 기준으로 쓰였다. 재학습 결과를 반영하려면 초안의 "수정된 특징에 학습된 DCSM scorer를 결합한 실험은 수행하지 않았다"는 문장과 표 5를 갱신해야 한다.
+- 주장 2: 마지막 블록 readout을 MaskCLIP/ClearCLIP 식으로 바꾸면 추가 학습 없이 DCSM 행렬이 OWLv2 proposal 위에서 유효한 제로샷 분류 신호가 된다(§2).
+- 주장 3: 같은 readout 위에서 원 논문 레시피로 scorer를 재학습하면 공간 관계 후보 선택이 naive 대비 약 +10점 오르고(§5.3, 3 seed), OWLv2 proposal 위 referring detection에서 OWLv2·OWL-ViT·GDINO-T를 앞선다(§7). 공개 scorer를 새 표현에 그대로 쓰면 우연 이하이므로 표현과 scorer를 함께 맞춰야 한다.
+- Disclaimer: 단일 클래스명 탐지·속성·부정에서는 이점이 없다. GDINO-B는 COCO·RefCOCO 감독을 받은 상한선이다.
+- `../paper/manuscript.md`와 `summary.ko.md`는 2026-10-11에 이 프레임으로 다시 썼다. `../paper/shortpaper/`는 재학습 이전 분석 논문 프레임의 구버전이며 상단에 대체 표시만 남겼다.
