@@ -239,6 +239,13 @@ spatial 관계별 (raw top-1): dcsm_obja_ctx left 61.2 / right 61.3 / above 40.3
 - 차이점: CLIP forward 한 번으로 naive·MaskCLIP·ClearCLIP 세 readout을 모두 뽑아 scorer 3개를 **같은 배치·같은 증강**으로 동시에 학습한다. 체크포인트에 `readout`과 `special_slicing="replace"`를 기록해 평가 시 학습과 같은 열 규칙을 쓴다(공개 체크포인트는 저장소 eval 규칙인 "삽입 후 마지막 열 삭제"를 유지).
 - 평가: 3b 조합 벤치마크에 `dcsm_{naive,maskclip,clearclip}_retrain_ctx` scorer로 추가. 검증 기준: naive 재학습 ≈ 공개 체크포인트(spatial 균형 57~58).
 
+### 3c.2b 학습 데이터 출처 확인 — Objaverse는 원 논문의 선택이다 (2026-10-11)
+
+- 원 논문 §5.1: "We train one model on synthetic data created from Objaverse renders and another on a subset of COCO2017." 부록 B.2: 합성 세트는 "open-source 3D assets from Objaverse placed upon randomized backgrounds"로, 두 물체를 above/below/left/right로 지터를 주어 배치(관계), 서로 다른 색·크기 부여(속성), 두 물체 쌍과 겹치지 않는 다른 두 물체 쌍을 "but not / and no / without"으로 묶음(부정). 모든 positive에 속성 교환·관계 반전 hard negative를 짝지은다. 공개 체크포인트 `dcsm_obja_ckpt.pt` / `dcsm_coco_ckpt.pt`가 이 두 모델에 대응한다.
+- 공개 코드의 유일한 데이터 조립 함수 `make_and_return_train_data`는 Objaverse 관계 + Objaverse 색·크기 + **COCO-train 부정 json**을 쓴다. 논문이 말한 Objaverse 부정 데이터(`negated_pairs_objaverse_v1.json`)는 Drive에 json만 있고 이미지 폴더(`objaverse_paired_grid_withbg/`)가 없으며, COCO 모델용 조립 함수(`coco_cutmix_train`, `coco_ATTRSWAP`)는 코드에 없다. 따라서 우리 재학습은 **공개 코드가 재현 가능한 유일한 레시피 = obja 모델 변형**이고, naive 재학습이 obja 체크포인트와 통계적으로 같았던 결과(3c.4)와 부합한다.
+- 수량 대조: 속성 5,402장은 논문과 일치. 관계는 논문 11,324장 vs 데이터 12,324장(above·leftof 6,162 + CUTMIX 6,162)로 1,000장 차이. 코드는 논문이 따로 세지 않은 small/big 6,162장도 추가로 쓴다. 부정 10,000쌍은 일치.
+- 논문은 Objaverse로 평가하지 않고 실사 벤치마크(WhatsUp, COCO-spatial, NegBench 등)로만 평가한다. 즉 합성→실사 전이가 원 논문의 설정이며, 우리가 COCO val2017 조합 벤치마크로 평가하는 것도 같은 프레임이다.
+
 ### 3c.3 현재 상태 (2026-10-10)
 
 - 학습 스크립트 작성 완료. 원 데이터 파일 규약을 흉내 낸 더미 데이터로 코드 경로(데이터 로딩·special word 교체·손실·체크포인트 저장·평가 로딩)를 검증했다.
