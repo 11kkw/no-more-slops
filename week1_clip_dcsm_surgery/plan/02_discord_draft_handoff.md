@@ -43,7 +43,7 @@ paper/evidence/와 paper/tables/에는 이미 원본과 대조한 준비 자료�
 4. `week1_clip_dcsm_surgery/experiment/results/comp_full/summary.json`, `summary.md`, `summary_balanced.md`, `heuristics.md`, `per_item.json`, `run_log.txt`: 조합 쿼리 결과.
 5. `week1_clip_dcsm_surgery/experiment/results/comp_full/benchmark/comp_queries.json`, `stats.md`, `spotcheck_*.png`: 평가 항목과 검수 그림.
 6. `week1_clip_dcsm_surgery/experiment/scripts/`: 실제 평가 구현. 특히 `dcsm_detection_eval.py`, `compositional_eval.py`, `build_comp_queries.py`, `balanced_view.py`.
-7. `week1_clip_dcsm_surgery/plan/01_feasibility_review.md`: 기존 해석과 논문 구상. 수치와 주장은 위 원본 및 코드와 대조한다.
+7. `week1_clip_dcsm_surgery/experiment/overview.md`(목표·벤치마크·최종 결과)와 `experiment/findings.md`(중간 실측·핵심 발견): 기존 해석과 논문 구상. 수치와 주장은 위 원본 및 코드와 대조한다.
 8. `week1_clip_dcsm_surgery/plan/03_paper_pipeline.md`와 `skills/research/experiment-to-paper/`: 봇에 설치한 작성 파이프라인과 결과 내보내기 도구.
 
 ## 원고 방향과 주요 수치

@@ -65,7 +65,7 @@ uv run scripts/heuristic_baselines.py                                           
 uv run scripts/balanced_view.py results/comp_full                                               # size-balanced accuracy table
 
 # DCSM training data: download the two Drive zips (link in ../baseline/README.md) into data/dcsm_train/dcsm_training/, unzip into data/dcsm_train/;
-# the negation json references COCO train2017 originals -> fetch them into data/dcsm_train/train2017/train2017/ (see plan §3c.3)
+# the negation json references COCO train2017 originals -> fetch them into data/dcsm_train/train2017/train2017/ (see findings.md §4.4)
 uv run scripts/train_dcsm_scorer.py --data_root data/dcsm_train --spatial_dir objaverse_train_cutmix_newrelations_withbg --out results/retrain  # ~77 min
 uv run scripts/compositional_eval.py --dcsm_ckpts data/dcsm_ckpt/*.pt results/retrain/*.pt --out results/comp_retrain
 uv run scripts/balanced_view.py results/comp_retrain && uv run scripts/paired_bootstrap.py results/comp_retrain spatial dcsm_maskclip_retrain_ctx dcsm_naive_retrain_ctx
