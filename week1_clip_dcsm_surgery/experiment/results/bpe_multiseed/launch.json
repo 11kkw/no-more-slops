@@ -1,0 +1,11 @@
+{
+  "pid": 848814,
+  "cwd": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment",
+  "script": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/scripts/run_bpe_multiseed.py",
+  "state_file": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/state.json",
+  "seeds": [
+    15,
+    16,
+    17
+  ]
+}

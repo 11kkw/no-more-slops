@@ -1,0 +1,219 @@
+{
+  "status": "completed",
+  "pid": 848814,
+  "started_unix": 1791644539.4060361,
+  "seeds": [
+    15,
+    16,
+    17
+  ],
+  "completed_seeds": [
+    15,
+    16,
+    17
+  ],
+  "stage": "done",
+  "seed": null,
+  "child_pid": null,
+  "commands": [
+    {
+      "seed": 15,
+      "stage": "training",
+      "argv": [
+        "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/.venv/bin/python",
+        "scripts/train_dcsm_scorer.py",
+        "--data_root",
+        "data/dcsm_train",
+        "--spatial_dir",
+        "objaverse_train_cutmix_newrelations_withbg",
+        "--epochs",
+        "27",
+        "--batch_size",
+        "8",
+        "--lr",
+        "0.001",
+        "--workers",
+        "24",
+        "--seed",
+        "15",
+        "--out",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_15/train"
+      ],
+      "log": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_15/train.log",
+      "started_unix": 1791644539.4069557,
+      "exit_code": 0,
+      "ended_unix": 1791649566.6659977
+    },
+    {
+      "seed": 15,
+      "stage": "full_compositional_evaluation",
+      "argv": [
+        "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/.venv/bin/python",
+        "scripts/compositional_eval.py",
+        "--queries",
+        "data/comp_queries/comp_queries.json",
+        "--coco_root",
+        "data/coco",
+        "--dcsm_ckpts",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_15/train/dcsm_naive_retrain.pt",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_15/train/dcsm_maskclip_retrain.pt",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_15/train/dcsm_clearclip_retrain.pt",
+        "--out",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_15/evaluation"
+      ],
+      "log": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_15/evaluation.log",
+      "started_unix": 1791649566.666859,
+      "exit_code": 0,
+      "ended_unix": 1791649751.3933434
+    },
+    {
+      "seed": 15,
+      "stage": "adaptation_and_controls",
+      "argv": [
+        "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/.venv/bin/python",
+        "scripts/evaluate_bpe_adaptation.py",
+        "--ckpt_dir",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_15/train",
+        "--out",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_15/adaptation"
+      ],
+      "log": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_15/adaptation.log",
+      "started_unix": 1791649751.3942387,
+      "exit_code": 0,
+      "ended_unix": 1791649769.5323005
+    },
+    {
+      "seed": 16,
+      "stage": "training",
+      "argv": [
+        "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/.venv/bin/python",
+        "scripts/train_dcsm_scorer.py",
+        "--data_root",
+        "data/dcsm_train",
+        "--spatial_dir",
+        "objaverse_train_cutmix_newrelations_withbg",
+        "--epochs",
+        "27",
+        "--batch_size",
+        "8",
+        "--lr",
+        "0.001",
+        "--workers",
+        "24",
+        "--seed",
+        "16",
+        "--out",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_16/train"
+      ],
+      "log": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_16/train.log",
+      "started_unix": 1791649769.5337307,
+      "exit_code": 0,
+      "ended_unix": 1791654806.5677683
+    },
+    {
+      "seed": 16,
+      "stage": "full_compositional_evaluation",
+      "argv": [
+        "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/.venv/bin/python",
+        "scripts/compositional_eval.py",
+        "--queries",
+        "data/comp_queries/comp_queries.json",
+        "--coco_root",
+        "data/coco",
+        "--dcsm_ckpts",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_16/train/dcsm_naive_retrain.pt",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_16/train/dcsm_maskclip_retrain.pt",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_16/train/dcsm_clearclip_retrain.pt",
+        "--out",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_16/evaluation"
+      ],
+      "log": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_16/evaluation.log",
+      "started_unix": 1791654806.5685415,
+      "exit_code": 0,
+      "ended_unix": 1791654992.358008
+    },
+    {
+      "seed": 16,
+      "stage": "adaptation_and_controls",
+      "argv": [
+        "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/.venv/bin/python",
+        "scripts/evaluate_bpe_adaptation.py",
+        "--ckpt_dir",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_16/train",
+        "--out",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_16/adaptation"
+      ],
+      "log": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_16/adaptation.log",
+      "started_unix": 1791654992.358822,
+      "exit_code": 0,
+      "ended_unix": 1791655010.7012568
+    },
+    {
+      "seed": 17,
+      "stage": "training",
+      "argv": [
+        "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/.venv/bin/python",
+        "scripts/train_dcsm_scorer.py",
+        "--data_root",
+        "data/dcsm_train",
+        "--spatial_dir",
+        "objaverse_train_cutmix_newrelations_withbg",
+        "--epochs",
+        "27",
+        "--batch_size",
+        "8",
+        "--lr",
+        "0.001",
+        "--workers",
+        "24",
+        "--seed",
+        "17",
+        "--out",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_17/train"
+      ],
+      "log": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_17/train.log",
+      "started_unix": 1791655010.7027848,
+      "exit_code": 0,
+      "ended_unix": 1791660036.3898675
+    },
+    {
+      "seed": 17,
+      "stage": "full_compositional_evaluation",
+      "argv": [
+        "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/.venv/bin/python",
+        "scripts/compositional_eval.py",
+        "--queries",
+        "data/comp_queries/comp_queries.json",
+        "--coco_root",
+        "data/coco",
+        "--dcsm_ckpts",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_17/train/dcsm_naive_retrain.pt",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_17/train/dcsm_maskclip_retrain.pt",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_17/train/dcsm_clearclip_retrain.pt",
+        "--out",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_17/evaluation"
+      ],
+      "log": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_17/evaluation.log",
+      "started_unix": 1791660036.390758,
+      "exit_code": 0,
+      "ended_unix": 1791660221.326479
+    },
+    {
+      "seed": 17,
+      "stage": "adaptation_and_controls",
+      "argv": [
+        "/home/jovyan/no-more-slops/week1_clip_dcsm_surgery/experiment/.venv/bin/python",
+        "scripts/evaluate_bpe_adaptation.py",
+        "--ckpt_dir",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_17/train",
+        "--out",
+        "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_17/adaptation"
+      ],
+      "log": "/home/jovyan/no-more-slops-bpe-alignment/week1_clip_dcsm_surgery/experiment/results/bpe_multiseed/seed_17/adaptation.log",
+      "started_unix": 1791660221.3275282,
+      "exit_code": 0,
+      "ended_unix": 1791660239.6945465
+    }
+  ],
+  "finished_unix": 1791660241.3883765
+}

@@ -1,0 +1,200 @@
+{
+  "naive": {
+    "success": [
+      {
+        "image_id": 139,
+        "query": "a picture of a tv to the right of a refrigerator",
+        "target": 1,
+        "prediction": 1
+      },
+      {
+        "image_id": 632,
+        "query": "a picture of a potted plant above a chair",
+        "target": 0,
+        "prediction": 0
+      },
+      {
+        "image_id": 632,
+        "query": "a picture of a potted plant to the right of a chair",
+        "target": 1,
+        "prediction": 1
+      },
+      {
+        "image_id": 1000,
+        "query": "a picture of a handbag to the right of a tennis racket",
+        "target": 1,
+        "prediction": 1
+      },
+      {
+        "image_id": 2157,
+        "query": "a picture of a cup to the right of a cake",
+        "target": 1,
+        "prediction": 1
+      }
+    ],
+    "failure": [
+      {
+        "image_id": 139,
+        "query": "a picture of a tv to the left of a refrigerator",
+        "target": 0,
+        "prediction": 1
+      },
+      {
+        "image_id": 2431,
+        "query": "a picture of a cup to the left of a wine glass",
+        "target": 0,
+        "prediction": 1
+      },
+      {
+        "image_id": 3845,
+        "query": "a picture of a broccoli to the left of a cup",
+        "target": 2,
+        "prediction": 1
+      },
+      {
+        "image_id": 11699,
+        "query": "a picture of a handbag to the right of a suitcase",
+        "target": 0,
+        "prediction": 1
+      },
+      {
+        "image_id": 25603,
+        "query": "a picture of a cup to the right of a pizza",
+        "target": 0,
+        "prediction": 1
+      }
+    ]
+  },
+  "maskclip": {
+    "success": [
+      {
+        "image_id": 139,
+        "query": "a picture of a tv to the left of a refrigerator",
+        "target": 0,
+        "prediction": 0
+      },
+      {
+        "image_id": 139,
+        "query": "a picture of a tv to the right of a refrigerator",
+        "target": 1,
+        "prediction": 1
+      },
+      {
+        "image_id": 632,
+        "query": "a picture of a potted plant above a chair",
+        "target": 0,
+        "prediction": 0
+      },
+      {
+        "image_id": 632,
+        "query": "a picture of a potted plant to the right of a chair",
+        "target": 1,
+        "prediction": 1
+      },
+      {
+        "image_id": 1000,
+        "query": "a picture of a handbag to the right of a tennis racket",
+        "target": 1,
+        "prediction": 1
+      }
+    ],
+    "failure": [
+      {
+        "image_id": 3845,
+        "query": "a picture of a broccoli to the left of a cup",
+        "target": 2,
+        "prediction": 1
+      },
+      {
+        "image_id": 10707,
+        "query": "a picture of a couch to the right of a backpack",
+        "target": 0,
+        "prediction": 1
+      },
+      {
+        "image_id": 11699,
+        "query": "a picture of a handbag to the right of a suitcase",
+        "target": 0,
+        "prediction": 1
+      },
+      {
+        "image_id": 12576,
+        "query": "a picture of a pizza to the right of a person",
+        "target": 1,
+        "prediction": 0
+      },
+      {
+        "image_id": 27186,
+        "query": "a picture of a couch to the right of a person",
+        "target": 1,
+        "prediction": 0
+      }
+    ]
+  },
+  "clearclip": {
+    "success": [
+      {
+        "image_id": 139,
+        "query": "a picture of a tv to the left of a refrigerator",
+        "target": 0,
+        "prediction": 0
+      },
+      {
+        "image_id": 139,
+        "query": "a picture of a tv to the right of a refrigerator",
+        "target": 1,
+        "prediction": 1
+      },
+      {
+        "image_id": 632,
+        "query": "a picture of a potted plant above a chair",
+        "target": 0,
+        "prediction": 0
+      },
+      {
+        "image_id": 632,
+        "query": "a picture of a potted plant to the right of a chair",
+        "target": 1,
+        "prediction": 1
+      },
+      {
+        "image_id": 1000,
+        "query": "a picture of a handbag to the right of a tennis racket",
+        "target": 1,
+        "prediction": 1
+      }
+    ],
+    "failure": [
+      {
+        "image_id": 3845,
+        "query": "a picture of a broccoli to the left of a cup",
+        "target": 2,
+        "prediction": 1
+      },
+      {
+        "image_id": 9914,
+        "query": "a picture of a bowl below a dining table",
+        "target": 0,
+        "prediction": 1
+      },
+      {
+        "image_id": 10707,
+        "query": "a picture of a couch to the right of a backpack",
+        "target": 0,
+        "prediction": 1
+      },
+      {
+        "image_id": 11699,
+        "query": "a picture of a handbag to the right of a suitcase",
+        "target": 0,
+        "prediction": 1
+      },
+      {
+        "image_id": 12576,
+        "query": "a picture of a pizza to the right of a person",
+        "target": 1,
+        "prediction": 0
+      }
+    ]
+  }
+}

@@ -24,6 +24,7 @@ import pickle
 import sys
 import time
 import types
+import warnings
 from collections import defaultdict
 
 import numpy as np
@@ -36,6 +37,8 @@ from transformers import AutoProcessor, CLIPImageProcessor, CLIPModel, CLIPToken
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from dcsm_detection_eval import cxcywh_to_xyxy  # noqa: E402
 from probe_localization import MODES, dense_features, heatmaps, preprocess, text_features  # noqa: E402
+
+from bpe_alignment import ALIGNMENT_VERSION, replace_special_bpe
 
 SPECIAL_WORDS = ["above", "below", "left", "right", "small", "big", "not", "no", "without", "but", "absent"]
 TEXT_SEQ, IMG_SEQ = 30, 14 * 14 + 1
@@ -80,7 +83,7 @@ def tolerant_torch_load(path):
 
 class DCSMScorer:
     """Released checkpoints: naive readout + the repo's eval-time special-word slicing (insert, drop last column).
-    Retrained checkpoints (train_dcsm_scorer.py) carry 'readout' and 'special_slicing' = 'replace'."""
+    New checkpoints carry 'special_slicing' = 'bpe_replace_v1'; legacy slicing is preserved with a warning."""
 
     def __init__(self, ckpt_path, clip, tok, img_proc, device):
         st = tolerant_torch_load(ckpt_path)
@@ -90,6 +93,10 @@ class DCSMScorer:
         self.words = st.get("learned_lookup") or SPECIAL_WORDS
         self.readout = st.get("readout", "naive")
         self.slicing = st.get("special_slicing", "eval_shift")
+        if self.slicing not in (ALIGNMENT_VERSION, "replace", "eval_shift"):
+            raise ValueError(f"Unknown checkpoint alignment: {self.slicing}")
+        if self.slicing != ALIGNMENT_VERSION:
+            warnings.warn("Legacy checkpoint uses unaligned word-index slicing; retained for historical reproduction. Corrected BPE alignment requires retraining.", RuntimeWarning)
         self.clip, self.tok, self.img_proc, self.device = clip, tok, img_proc, device
 
     @torch.no_grad()
@@ -106,14 +113,18 @@ class DCSMScorer:
         txt = self.clip.text_projection(self.clip.text_model(**tt).last_hidden_state)
         txt = txt / txt.norm(dim=-1, keepdim=True)  # (1,30,512)
         cos = torch.einsum("bie,te->bit", img, txt[0])  # (B,197,30)
-        sent = text.split(" ")
-        for w in self.words:  # same order / same (eval_simple.py) slicing as the repo
-            if w in sent:
-                loc = sent.index(w)
-                mid = self.emb(torch.tensor([self.words.index(w)], device=self.device)).unsqueeze(2).repeat(len(crops), 1, 1)
-                tail = cos[:, :, loc + 1:] if self.slicing == "replace" else cos[:, :, loc:-1]
-                cos = torch.cat([cos[:, :, :loc], mid, tail], dim=-1)
-        cos = cos.unsqueeze(1)  # (B,1,197,30)
+        if self.slicing == ALIGNMENT_VERSION:
+            cos = replace_special_bpe(cos.unsqueeze(1), [text], self.emb,
+                                      self.tok, self.words, tt["input_ids"])
+        else:
+            sent = text.split(" ")
+            for w in self.words:  # same order / same (eval_simple.py) slicing as the repo
+                if w in sent:
+                    loc = sent.index(w)
+                    mid = self.emb(torch.tensor([self.words.index(w)], device=self.device)).unsqueeze(2).repeat(len(crops), 1, 1)
+                    tail = cos[:, :, loc + 1:] if self.slicing == "replace" else cos[:, :, loc:-1]
+                    cos = torch.cat([cos[:, :, :loc], mid, tail], dim=-1)
+            cos = cos.unsqueeze(1)
         cos = (cos - cos.mean()) / cos.std()  # repo's standardize() over the whole batch tensor
         return self.net(cos).squeeze(-1).squeeze(-1).float().cpu().numpy()
 
