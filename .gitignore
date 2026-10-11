@@ -4,3 +4,17 @@ __pycache__/
 
 # Local manuscript-review process locks
 /week1_clip_dcsm_surgery/paper/shortpaper/reviews/*.lock
+
+# LaTeX build artifacts and review-session logs under paper/ (the PDF and sources stay tracked)
+/week1_clip_dcsm_surgery/paper/**/*.aux
+/week1_clip_dcsm_surgery/paper/**/*.bbl
+/week1_clip_dcsm_surgery/paper/**/*.blg
+/week1_clip_dcsm_surgery/paper/**/*.out
+/week1_clip_dcsm_surgery/paper/**/*.log
+/week1_clip_dcsm_surgery/paper/**/pdf_text.txt
+/week1_clip_dcsm_surgery/paper/**/compile_stdout.txt
+
+# Experiment leftovers; checkpoints already tracked stay tracked, new ones need git add -f
+*.partial.json
+runner.lock
+*.pt
