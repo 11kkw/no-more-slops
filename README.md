@@ -56,6 +56,10 @@ Include deliverables, production code, reproduction instructions, metrics, and p
 - **A personal portfolio:** Own the papers, services, or content you create during the project.
 - **Peer feedback:** Review each other's work, find ways to improve, and share production know-how.
 
+## Reusable production tools
+
+- **Auto-Paper:** [saved-result evidence export](skills/experiment-to-paper/SKILL.md) and [local manuscript review](skills/paper-review-local/SKILL.md). See the [Korean usage guide](docs/auto-paper-evidence-review.ko.md) and [paper example with validation records](examples/auto-paper/README.md).
+
 ## Ownership and acknowledgement
 
 Participants may retain their work and be paper authors, app or service owners, or owners of the accounts where they publish content.

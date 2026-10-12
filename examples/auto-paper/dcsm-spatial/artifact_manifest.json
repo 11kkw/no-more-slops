@@ -46,6 +46,10 @@
     "tables/all_subsets.tex": {
       "sha256": "57a791fc6a228238a2351bc6100ec09cc3c77a862f6ee5580995eed1922028b5",
       "bytes": 944
+    },
+    "figures/spatial_gain.png": {
+      "sha256": "fa3766419aba9a8b83ba85873afb6adbdb6bfb48286371e7ff2c47992cfcd40f",
+      "bytes": 32256
     }
   }
 }

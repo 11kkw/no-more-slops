@@ -9,26 +9,26 @@
 
 ## 설치와 재현
 
-Python 3.10 이상을 사용합니다. 각 `skills/research/<skill-name>/` 폴더 전체를 사용하는 agent의 skill 디렉터리에 복사하면 됩니다. 특정 agent 프로필이나 서버 설정이 필요하지 않습니다. 아래 명령은 저장소 루트에서 실행합니다.
+Python 3.10 이상을 사용합니다. 각 `skills/<skill-name>/` 폴더 전체를 사용하는 agent의 skill 디렉터리에 복사하면 됩니다. 특정 agent 프로필이나 서버 설정이 필요하지 않습니다. 아래 명령은 저장소 루트에서 실행합니다.
 
 ```sh
 python -m venv /tmp/auto-paper-env
 . /tmp/auto-paper-env/bin/activate
-python -m pip install -r skills/research/paper-review-local/scripts/requirements.txt
+python -m pip install -r skills/paper-review-local/scripts/requirements.txt
 
-python skills/research/experiment-to-paper/scripts/export_evidence.py \
+python skills/experiment-to-paper/scripts/export_evidence.py \
   --root examples/auto-paper/dcsm-spatial --spec export-spec.json \
   --out /tmp/auto-paper-evidence-new
 
-python skills/research/paper-review-local/scripts/review_mcp.py \
+python skills/paper-review-local/scripts/review_mcp.py \
   --root . --package examples/auto-paper/dcsm-spatial --review-id initial-01
 ```
 
 Exporter는 새 출력 폴더를 요구합니다. 검토 결과는 예제의 `reviews/initial-01/local_checks.json`에 저장되며 Git에서 제외합니다. 입력이나 검사 환경이 바뀌면 새로운 review ID를 사용합니다. 실행 성공은 보고서 저장 성공을 뜻하므로 각 검사 상태와 required finding을 읽어야 합니다.
 
-PDF 읽기는 `pypdf`, 문장 문자열 비교는 `RapidFuzz`를 사용합니다. ChkTeX는 운영체제에 별도로 설치합니다(예: Ubuntu의 `apt install chktex`). 미설치 상태를 통과로 바꾸지 않습니다. 선택적 설정과 MCP 실행은 [local-tools.md](../../skills/research/paper-review-local/references/local-tools.md)에 있습니다.
+PDF 읽기는 `pypdf`, 문장 문자열 비교는 `RapidFuzz`를 사용합니다. ChkTeX는 운영체제에 별도로 설치합니다(예: Ubuntu의 `apt install chktex`). 미설치 상태를 통과로 바꾸지 않습니다. 선택적 설정과 MCP 실행은 [local-tools.md](../../skills/paper-review-local/references/local-tools.md)에 있습니다.
 
-다른 프로젝트에서는 [evidence-schema.md](../../skills/research/experiment-to-paper/references/evidence-schema.md)의 작은 JSON spec에 파일·JSON pointer·단위·분모를 지정합니다. 이 exporter는 전사와 해시를 검증하며, 집계 계산은 해당 프로젝트의 분석 코드로 별도 검증해야 합니다.
+다른 프로젝트에서는 [evidence-schema.md](../../skills/experiment-to-paper/references/evidence-schema.md)의 작은 JSON spec에 파일·JSON pointer·단위·분모를 지정합니다. 이 exporter는 전사와 해시를 검증하며, 집계 계산은 해당 프로젝트의 분석 코드로 별도 검증해야 합니다.
 
 ## 실제 예제와 검증 범위
 
@@ -46,12 +46,37 @@ python examples/auto-paper/dcsm-spatial/rebuild.py --out /tmp/auto-paper-pdf-new
 
 검증 기록은 [validation.json](validation.json)에 있습니다. GPU 실행, 데이터셋·체크포인트, Discord/systemd 자동화, 외부 provider 업로드는 이 패키지에 포함하지 않습니다.
 
+## Hermes에서 공유·설치
+
+현재 이 제출 브랜치는 아직 푸시되지 않았습니다. 아래 URL 명령은 upstream PR이 머지된 뒤 사용할 주소이며, 지금 공개 URL 설치가 가능하다고 검증한 것은 아닙니다.
+
+```sh
+hermes skills install https://raw.githubusercontent.com/Pseudo-Lab/no-more-slops/main/skills/experiment-to-paper/SKILL.md
+hermes skills install https://raw.githubusercontent.com/Pseudo-Lab/no-more-slops/main/skills/paper-review-local/SKILL.md
+hermes skills list
+```
+
+GitHub 경로로 내용을 먼저 조회할 수 있습니다(머지 후):
+
+```sh
+hermes skills inspect Pseudo-Lab/no-more-slops/skills/experiment-to-paper
+hermes skills inspect Pseudo-Lab/no-more-slops/skills/paper-review-local
+```
+
+전체 폴더를 수동 설치하려면 각 skill 폴더를 현재 Hermes 프로필의 `skills/` 아래에 복사하고 `hermes skills list`로 확인합니다. 기본 프로필 위치는 `~/.hermes/skills/`입니다. 설치는 보조 파일을 복사하는 과정이며 Python 의존성 설치·MCP 서버 등록까지 수행하지는 않습니다. 앞의 실행 안내와 각 skill의 references를 따릅니다.
+
+`SKILL.md`는 URL 설치에 필요한 scripts와 requirements를 직접 링크합니다. 버전은 top-level `version`에 선언합니다. 두 skill에는 API 시크릿이 필요하지 않아 `required_environment_variables`는 없습니다. 실행 파일·설정 경로 override는 비밀값이 아닙니다.
+
+공유 점검: 추적한 텍스트에서 개인 절대 경로·키/토큰 형식·비밀값 대입을 확인하고, 예제에 데이터셋·체크포인트·개인 원본 피드백을 포함하지 않았습니다. 코드의 쓰기 범위는 새 export/빌드 폴더와 package 내 reviews이며, 기존 파일 덮어쓰기·오래된 검토 저장 거부는 테스트로 확인합니다. 이 검사는 모든 종류의 민감정보 부재를 보증하지는 않습니다.
+
+기준: [Hermes KR 스킬 공유](https://tmdgusya.github.io/hermes-ko/docs/sharing-skills/), [공식 Skills System](https://github.com/NousResearch/hermes-agent/blob/main/website/docs/user-guide/features/skills.md).
+
 ## 도구 테스트
 
 선택적 MCP의 실제 stdio 실행까지 검사하므로 테스트에는 MCP 의존성도 설치합니다.
 
 ```sh
-python -m pip install -r skills/research/paper-review-local/scripts/requirements-mcp.txt
+python -m pip install -r skills/paper-review-local/scripts/requirements-mcp.txt
 python -B -m unittest discover -s tests/auto-paper -v
 ```
 

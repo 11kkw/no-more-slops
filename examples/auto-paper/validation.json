@@ -3,15 +3,11 @@
   "scope": "Local tools, saved example consistency and same-host document rebuild; no model execution or independent scientific review",
   "local_tests": {
     "python_3_10": {
-      "passed": 23
+      "passed": 24
     },
     "python_3_12": {
-      "passed": 23
+      "passed": 24
     }
-  },
-  "skill_structure_validation": {
-    "experiment-to-paper": "passed",
-    "paper-review-local": "passed"
   },
   "dependencies": {
     "pypdf": "6.20.0",
@@ -130,7 +126,7 @@
       },
       {
         "path": "paper/artifact_manifest.json",
-        "sha256": "b9657ab5b9d50433ffa0b964172eeb2afceb6e3428a05458a4e84551dfafe14d"
+        "sha256": "9f08eb2678b3a7ceabc20c1ed1aa50dca1131b25c94a1951c6ff76b3eedb9115"
       },
       {
         "path": "paper/claim_evidence.md",
@@ -145,6 +141,10 @@
         "sha256": "b6e82b25a37233d77190d08a25ecc8c1ec83cad15f401729f939af47fae6540f"
       },
       {
+        "path": "paper/figures/spatial_gain.png",
+        "sha256": "fa3766419aba9a8b83ba85873afb6adbdb6bfb48286371e7ff2c47992cfcd40f"
+      },
+      {
         "path": "paper/rebuild.py",
         "sha256": "e1c038287c6997fc2d8c167f7ca94314e15daee6391d2634d0ab08182b139607"
       },
@@ -157,7 +157,7 @@
         "sha256": "57a791fc6a228238a2351bc6100ec09cc3c77a862f6ee5580995eed1922028b5"
       }
     ],
-    "input_digest": "f4ac162648f3da88c19bddb7b75321d999661f473afed71d7cce66f0ac52a6f1",
+    "input_digest": "1bc95f162738783bfaefa37b06e4fa5677cea7aba6bfc7a97292cf048330368c",
     "local_source_count": 0,
     "source_overlap_status": "no_local_sources",
     "latex_lint": {
@@ -188,5 +188,21 @@
   },
   "github_ci": "configured; not run on GitHub",
   "independent_editorial_review": "not completed",
-  "submission_status": "authors and affiliations unresolved; no submission performed"
+  "submission_status": "authors and affiliations unresolved; no submission performed",
+  "hermes_sharing_validation": {
+    "frontmatter_parser": "installed Hermes parser: passed",
+    "top_level_versions": {
+      "experiment-to-paper": "0.2.1",
+      "paper-review-local": "0.4.1"
+    },
+    "direct_support_file_links": "passed",
+    "isolated_hermes_skill_list": "passed via installed Hermes list command handler, using a temporary Hermes home",
+    "linked_files_only_bundle_execution": "passed on Python 3.10 and 3.12; local bundle simulation, not a public URL install",
+    "launcher_retry": "fresh-home launcher bootstrap timed out at 30 seconds; catalog tested directly without runtime bootstrap"
+  },
+  "sharing_text_audit": {
+    "personal_paths_and_credential_patterns": "no matches in tracked and proposed text files",
+    "relative_markdown_links": "all file targets exist",
+    "scope": "pattern scan and file-target checks; no guarantee of all sensitive content or rendered-link behavior"
+  }
 }
