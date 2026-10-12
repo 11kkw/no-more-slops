@@ -16,10 +16,6 @@
 
 각 skill 폴더 전체를 복사해 사용할 수 있습니다. 개인 경로·agent 프로필·Discord·systemd 설정에 의존하지 않습니다. 실험 실행, 외부 업로드와 논문 제출은 수행하지 않습니다.
 
-## 기존 Auto-Paper 기여와 연결
-
-[PR #6](https://github.com/Pseudo-Lab/no-more-slops/pull/6)의 근거 중심 작성·짝 비교 검사와 함께 사용할 수 있습니다. 이번 기여는 JSON selector를 통한 근거 추출과 원고 입력 변경을 감지하는 로컬 검토에 초점을 둡니다. 스킬은 `skills/<name>/`에서 공유하고 실제 논문은 예제로 제공합니다. CI 파일은 별도 이름을 사용해 기존 PR의 workflow를 덮어쓰지 않습니다.
-
 ## 검증
 
 - 로컬 Python 3.10/3.12 각각 동작 테스트 24개 통과: 결측값/0, 잘못된 값·selector, 기존 출력 보존, 경로·symlink 범위, 입력 변경 후 검토 저장 거부, 별도 프로젝트와 실제 MCP stdio 실행
@@ -29,7 +25,7 @@
 - 로컬 설정의 ChkTeX 종료 코드 0·진단 0개; stderr의 설정 환경 안내는 보고서에 보존
 - 새 디렉터리에서 pdfLaTeX → BibTeX → pdfLaTeX → pdfLaTeX 모두 종료 코드 0; 저장된 PDF와 5쪽 전체 추출 텍스트 일치
 
-Fork의 [GitHub Actions 실행](https://github.com/11kkw/no-more-slops/actions/runs/38224953416)에서 Python 3.10/3.12 검사 모두 통과했습니다. Upstream PR 검사 결과는 등록 이후 별도로 확인합니다. 예제에 대한 저자·소속과 독립 editorial review는 미완료로 표시했습니다. 문서 빌드와 정적 검사 결과를 실험 재현, scientific validity, originality 또는 투고 승인으로 보고하지 않습니다.
+[Upstream PR의 GitHub Actions 실행](https://github.com/Pseudo-Lab/no-more-slops/actions/runs/38225864365)에서 Python 3.10/3.12 검사 모두 통과했습니다. 예제에 대한 저자·소속과 독립 editorial review는 미완료로 표시했습니다. 문서 빌드와 정적 검사 결과를 실험 재현, scientific validity, originality 또는 투고 승인으로 보고하지 않습니다.
 
 ## 재현
 

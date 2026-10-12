@@ -46,7 +46,5 @@ python3 skills/experiment-to-paper/scripts/export_evidence.py \
 [예제 안내와 검증 기록](../examples/auto-paper/README.md)은 도구 실행과 논문의 미확인 사항을 구분합니다.
 저자·소속과 독립 검토가 아직 완료되지 않은 연구 초안입니다.
 
-기존 [Auto-Paper PR #6](https://github.com/Pseudo-Lab/no-more-slops/pull/6)의
-근거 중심 작성과 짝 비교 검사에 이어 함께 사용할 수 있습니다.
-이번 패키지는 JSON의 지정한 값을 근거표로 추출하고, 원고 입력이 바뀌면 이전 검토를 재사용하지 않도록 하는 데 초점을 둡니다.
+JSON의 지정한 값을 근거표로 추출하고, 원고 입력이 바뀌면 이전 검토를 재사용하지 않도록 합니다.
 실험 집계 재계산, 통계적 타당성, 독창성, 투고 승인에 대한 자동 판정은 제공하지 않습니다.
