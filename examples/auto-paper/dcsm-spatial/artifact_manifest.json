@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "source_repository": "https://github.com/11kkw/no-more-slops",
+  "source_commit": "540986088ddf1ae80a3f7bf4b9ec63b3edbfeb06",
+  "source_package": "week1_clip_dcsm_surgery/paper/bpe_multiseed/shortpaper",
+  "scope": "Copied document and saved derived measurements; no raw predictions, datasets, checkpoints or independent scientific review in this example",
+  "expected_pages": 5,
+  "body_pages": 4,
+  "reference_pages": 1,
+  "unresolved": [
+    "authors and affiliations",
+    "independent editorial review for the revised input",
+    "human label validation",
+    "original-data identity audit",
+    "novelty and venue decisions"
+  ],
+  "files": {
+    "evidence/measurements.json": {
+      "sha256": "737172171d5ccf0daa8aa6068ea5962e067cdf7ab1ff292a1802b3bb29082a09",
+      "bytes": 196766
+    },
+    "figures/spatial_gain.pdf": {
+      "sha256": "b89eec556927162a6a301d832b136723ec9418acbc95c6c6898a9e0ad919fda2",
+      "bytes": 13561
+    },
+    "references.bib": {
+      "sha256": "883f705364cf96cd8f77577172dd2170d4fb39a77081d439ea947068b35e6d6b",
+      "bytes": 3602
+    },
+    "shortpaper.md": {
+      "sha256": "c74a338504810cfe05940149cdf4fa5a697f15959e73b68085242f93520af05d",
+      "bytes": 20474
+    },
+    "shortpaper.pdf": {
+      "sha256": "16cdb46bddddebb7c08c80d55da3fa75a96103a7b019262837130b7c7c4fa3bf",
+      "bytes": 207264
+    },
+    "shortpaper.tex": {
+      "sha256": "ba23daea81fa9a0cd97f59df8283fb47dc8608a3fabdd39081ee60f0fabd80da",
+      "bytes": 20367
+    },
+    "tables/all_subsets.md": {
+      "sha256": "f92787427290d02764952f5c4996e778c4993f5d1b20c896f02a3e54988fde36",
+      "bytes": 886
+    },
+    "tables/all_subsets.tex": {
+      "sha256": "57a791fc6a228238a2351bc6100ec09cc3c77a862f6ee5580995eed1922028b5",
+      "bytes": 944
+    }
+  }
+}

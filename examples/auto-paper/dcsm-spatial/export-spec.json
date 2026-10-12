@@ -1,0 +1,551 @@
+{
+  "schema_version": 1,
+  "measurements": [
+    {
+      "id": "spatial.owlv2.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/owlv2/raw/mean",
+      "unit": "fraction",
+      "denominator": 527
+    },
+    {
+      "id": "spatial.owlv2.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/owlv2/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "spatial.owlvit_v1.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/owlvit_v1/raw/mean",
+      "unit": "fraction",
+      "denominator": 527
+    },
+    {
+      "id": "spatial.owlvit_v1.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/owlvit_v1/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "spatial.clip_crop.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/clip_crop/raw/mean",
+      "unit": "fraction",
+      "denominator": 527
+    },
+    {
+      "id": "spatial.clip_crop.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/clip_crop/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "spatial.clip_ctx.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/clip_ctx/raw/mean",
+      "unit": "fraction",
+      "denominator": 527
+    },
+    {
+      "id": "spatial.clip_ctx.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/clip_ctx/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "spatial.dcsm_naive_retrain_ctx.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/dcsm_naive_retrain_ctx/raw/mean",
+      "unit": "fraction",
+      "denominator": 527
+    },
+    {
+      "id": "spatial.dcsm_naive_retrain_ctx.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/dcsm_naive_retrain_ctx/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "spatial.dcsm_maskclip_retrain_ctx.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/dcsm_maskclip_retrain_ctx/raw/mean",
+      "unit": "fraction",
+      "denominator": 527
+    },
+    {
+      "id": "spatial.dcsm_maskclip_retrain_ctx.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/dcsm_maskclip_retrain_ctx/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "spatial.dcsm_clearclip_retrain_ctx.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/dcsm_clearclip_retrain_ctx/raw/mean",
+      "unit": "fraction",
+      "denominator": 527
+    },
+    {
+      "id": "spatial.dcsm_clearclip_retrain_ctx.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/dcsm_clearclip_retrain_ctx/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "spatial.readout.naive.pooled.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/readout~1naive~1pooled/raw/mean",
+      "unit": "fraction",
+      "denominator": 527
+    },
+    {
+      "id": "spatial.readout.naive.pooled.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/readout~1naive~1pooled/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "spatial.readout.naive.dcsm_tok.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/readout~1naive~1dcsm_tok/raw/mean",
+      "unit": "fraction",
+      "denominator": 527
+    },
+    {
+      "id": "spatial.readout.naive.dcsm_tok.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/readout~1naive~1dcsm_tok/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "spatial.readout.maskclip.pooled.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/readout~1maskclip~1pooled/raw/mean",
+      "unit": "fraction",
+      "denominator": 527
+    },
+    {
+      "id": "spatial.readout.maskclip.pooled.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/readout~1maskclip~1pooled/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "spatial.readout.maskclip.dcsm_tok.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/readout~1maskclip~1dcsm_tok/raw/mean",
+      "unit": "fraction",
+      "denominator": 527
+    },
+    {
+      "id": "spatial.readout.maskclip.dcsm_tok.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/readout~1maskclip~1dcsm_tok/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "spatial.readout.clearclip.pooled.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/readout~1clearclip~1pooled/raw/mean",
+      "unit": "fraction",
+      "denominator": 527
+    },
+    {
+      "id": "spatial.readout.clearclip.pooled.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/readout~1clearclip~1pooled/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "spatial.readout.clearclip.dcsm_tok.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/readout~1clearclip~1dcsm_tok/raw/mean",
+      "unit": "fraction",
+      "denominator": 527
+    },
+    {
+      "id": "spatial.readout.clearclip.dcsm_tok.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/spatial/readout~1clearclip~1dcsm_tok/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "negation.owlv2.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/owlv2/raw/mean",
+      "unit": "fraction",
+      "denominator": 315
+    },
+    {
+      "id": "negation.owlv2.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/owlv2/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "negation.owlvit_v1.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/owlvit_v1/raw/mean",
+      "unit": "fraction",
+      "denominator": 315
+    },
+    {
+      "id": "negation.owlvit_v1.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/owlvit_v1/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "negation.clip_crop.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/clip_crop/raw/mean",
+      "unit": "fraction",
+      "denominator": 315
+    },
+    {
+      "id": "negation.clip_crop.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/clip_crop/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "negation.clip_ctx.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/clip_ctx/raw/mean",
+      "unit": "fraction",
+      "denominator": 315
+    },
+    {
+      "id": "negation.clip_ctx.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/clip_ctx/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "negation.dcsm_naive_retrain_ctx.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/dcsm_naive_retrain_ctx/raw/mean",
+      "unit": "fraction",
+      "denominator": 315
+    },
+    {
+      "id": "negation.dcsm_naive_retrain_ctx.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/dcsm_naive_retrain_ctx/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "negation.dcsm_maskclip_retrain_ctx.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/dcsm_maskclip_retrain_ctx/raw/mean",
+      "unit": "fraction",
+      "denominator": 315
+    },
+    {
+      "id": "negation.dcsm_maskclip_retrain_ctx.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/dcsm_maskclip_retrain_ctx/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "negation.dcsm_clearclip_retrain_ctx.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/dcsm_clearclip_retrain_ctx/raw/mean",
+      "unit": "fraction",
+      "denominator": 315
+    },
+    {
+      "id": "negation.dcsm_clearclip_retrain_ctx.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/dcsm_clearclip_retrain_ctx/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "negation.readout.naive.pooled.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/readout~1naive~1pooled/raw/mean",
+      "unit": "fraction",
+      "denominator": 315
+    },
+    {
+      "id": "negation.readout.naive.pooled.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/readout~1naive~1pooled/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "negation.readout.naive.dcsm_tok.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/readout~1naive~1dcsm_tok/raw/mean",
+      "unit": "fraction",
+      "denominator": 315
+    },
+    {
+      "id": "negation.readout.naive.dcsm_tok.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/readout~1naive~1dcsm_tok/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "negation.readout.maskclip.pooled.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/readout~1maskclip~1pooled/raw/mean",
+      "unit": "fraction",
+      "denominator": 315
+    },
+    {
+      "id": "negation.readout.maskclip.pooled.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/readout~1maskclip~1pooled/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "negation.readout.maskclip.dcsm_tok.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/readout~1maskclip~1dcsm_tok/raw/mean",
+      "unit": "fraction",
+      "denominator": 315
+    },
+    {
+      "id": "negation.readout.maskclip.dcsm_tok.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/readout~1maskclip~1dcsm_tok/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "negation.readout.clearclip.pooled.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/readout~1clearclip~1pooled/raw/mean",
+      "unit": "fraction",
+      "denominator": 315
+    },
+    {
+      "id": "negation.readout.clearclip.pooled.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/readout~1clearclip~1pooled/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "negation.readout.clearclip.dcsm_tok.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/readout~1clearclip~1dcsm_tok/raw/mean",
+      "unit": "fraction",
+      "denominator": 315
+    },
+    {
+      "id": "negation.readout.clearclip.dcsm_tok.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/negation/readout~1clearclip~1dcsm_tok/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "affirm.owlv2.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/owlv2/raw/mean",
+      "unit": "fraction",
+      "denominator": 194
+    },
+    {
+      "id": "affirm.owlv2.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/owlv2/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "affirm.owlvit_v1.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/owlvit_v1/raw/mean",
+      "unit": "fraction",
+      "denominator": 194
+    },
+    {
+      "id": "affirm.owlvit_v1.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/owlvit_v1/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "affirm.clip_crop.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/clip_crop/raw/mean",
+      "unit": "fraction",
+      "denominator": 194
+    },
+    {
+      "id": "affirm.clip_crop.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/clip_crop/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "affirm.clip_ctx.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/clip_ctx/raw/mean",
+      "unit": "fraction",
+      "denominator": 194
+    },
+    {
+      "id": "affirm.clip_ctx.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/clip_ctx/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "affirm.dcsm_naive_retrain_ctx.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/dcsm_naive_retrain_ctx/raw/mean",
+      "unit": "fraction",
+      "denominator": 194
+    },
+    {
+      "id": "affirm.dcsm_naive_retrain_ctx.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/dcsm_naive_retrain_ctx/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "affirm.dcsm_maskclip_retrain_ctx.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/dcsm_maskclip_retrain_ctx/raw/mean",
+      "unit": "fraction",
+      "denominator": 194
+    },
+    {
+      "id": "affirm.dcsm_maskclip_retrain_ctx.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/dcsm_maskclip_retrain_ctx/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "affirm.dcsm_clearclip_retrain_ctx.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/dcsm_clearclip_retrain_ctx/raw/mean",
+      "unit": "fraction",
+      "denominator": 194
+    },
+    {
+      "id": "affirm.dcsm_clearclip_retrain_ctx.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/dcsm_clearclip_retrain_ctx/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "affirm.readout.naive.pooled.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/readout~1naive~1pooled/raw/mean",
+      "unit": "fraction",
+      "denominator": 194
+    },
+    {
+      "id": "affirm.readout.naive.pooled.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/readout~1naive~1pooled/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "affirm.readout.naive.dcsm_tok.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/readout~1naive~1dcsm_tok/raw/mean",
+      "unit": "fraction",
+      "denominator": 194
+    },
+    {
+      "id": "affirm.readout.naive.dcsm_tok.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/readout~1naive~1dcsm_tok/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "affirm.readout.maskclip.pooled.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/readout~1maskclip~1pooled/raw/mean",
+      "unit": "fraction",
+      "denominator": 194
+    },
+    {
+      "id": "affirm.readout.maskclip.pooled.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/readout~1maskclip~1pooled/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "affirm.readout.maskclip.dcsm_tok.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/readout~1maskclip~1dcsm_tok/raw/mean",
+      "unit": "fraction",
+      "denominator": 194
+    },
+    {
+      "id": "affirm.readout.maskclip.dcsm_tok.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/readout~1maskclip~1dcsm_tok/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "affirm.readout.clearclip.pooled.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/readout~1clearclip~1pooled/raw/mean",
+      "unit": "fraction",
+      "denominator": 194
+    },
+    {
+      "id": "affirm.readout.clearclip.pooled.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/readout~1clearclip~1pooled/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    },
+    {
+      "id": "affirm.readout.clearclip.dcsm_tok.raw",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/readout~1clearclip~1dcsm_tok/raw/mean",
+      "unit": "fraction",
+      "denominator": 194
+    },
+    {
+      "id": "affirm.readout.clearclip.dcsm_tok.balanced",
+      "file": "evidence/measurements.json",
+      "pointer": "/metrics/affirm/readout~1clearclip~1dcsm_tok/balanced/mean",
+      "unit": "fraction",
+      "denominator": null
+    }
+  ]
+}
