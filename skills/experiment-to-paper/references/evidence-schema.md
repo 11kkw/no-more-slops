@@ -20,3 +20,17 @@ python /path/to/experiment-to-paper/scripts/export_evidence.py \
 The new directory contains `evidence/measurements.json`, `evidence/manifest.json` and `tables/measurements.md`. The manifest hashes the specification and result bytes, records a Git snapshot revision when available, and leaves the experiment execution revision unknown. Existing output directories are preserved; inspect them and choose a fresh directory for another export. All inputs are validated before publishing output.
 
 This checks transcription and hashes, not labels, aggregates, significance, novelty or scientific support. Use project-specific analysis for those checks.
+
+## Invented example
+
+From the repository root, this example needs no project data or third-party dependencies:
+
+```sh
+python3 skills/experiment-to-paper/scripts/export_evidence.py \
+  --root skills/experiment-to-paper/assets/example --spec export-spec.json \
+  --out /tmp/paper-evidence-demo-new
+```
+
+Expect three measurements: `0.75`, a measured `0`, and an unavailable `null`.
+After copying the skill, replace the two `skills/experiment-to-paper` prefixes
+with its installed directory. Use a fresh output path for another run.

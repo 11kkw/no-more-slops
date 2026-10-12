@@ -22,8 +22,8 @@ def load(name, relative):
     return module
 
 
-exporter = load('evidence_export', 'skills/research/experiment-to-paper/scripts/export_evidence.py')
-review = load('local_review', 'skills/research/paper-review-local/scripts/review_mcp.py')
+exporter = load('evidence_export', 'skills/experiment-to-paper/scripts/export_evidence.py')
+review = load('local_review', 'skills/paper-review-local/scripts/review_mcp.py')
 
 
 class ExportTests(unittest.TestCase):
@@ -192,6 +192,41 @@ class ReviewTests(unittest.TestCase):
 
 
 class PortabilityTests(unittest.TestCase):
+    def test_entrypoint_linked_bundle_runs_without_checkout(self):
+        # URL installers fetch direct SKILL.md references, not every tree file.
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for name in ['experiment-to-paper', 'paper-review-local']:
+                source = ROOT / 'skills' / name
+                installed = root / name
+                installed.mkdir()
+                entry = (source / 'SKILL.md').read_text()
+                (installed / 'SKILL.md').write_text(entry)
+                links = set(re.findall(r'\]\(((?:scripts|references|assets)/[^)]+)\)', entry))
+                bundled = {p.relative_to(source).as_posix() for p in source.rglob('*')
+                           if p.is_file() and p.parts[len(source.parts)] in {'scripts', 'references', 'assets'}
+                           and '__pycache__' not in p.parts and p.suffix != '.pyc'}
+                self.assertEqual(links, bundled, name)
+                for relative in links:
+                    target = installed / relative
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(source / relative, target)
+            skill = root / 'experiment-to-paper'
+            result = subprocess.run([sys.executable, '-S', str(skill / 'scripts/export_evidence.py'),
+                '--root', str(skill / 'assets/example'), '--spec', 'export-spec.json', '--out', str(root / 'out')],
+                cwd=root, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            values = json.loads((root / 'out/evidence/measurements.json').read_text())['measurements']
+            self.assertEqual([v['value'] for v in values], [0.75, 0, None])
+            package = root / 'project/paper'
+            package.mkdir(parents=True)
+            (package / 'manuscript.md').write_text('# Invented manuscript')
+            result = subprocess.run([sys.executable, str(root / 'paper-review-local/scripts/review_mcp.py'),
+                '--root', str(root / 'project'), '--package', 'paper', '--review-id', 'url-bundle'],
+                cwd=root, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue((package / 'reviews/url-bundle/local_checks.json').is_file())
+
     def test_example_tables_and_artifact_hashes(self):
         example = ROOT / 'examples/auto-paper/dcsm-spatial'
         manifest = json.loads((example / 'artifact_manifest.json').read_text())
@@ -214,7 +249,7 @@ class PortabilityTests(unittest.TestCase):
             root = Path(d)
             installed = root / 'installed'
             for name in ['experiment-to-paper', 'paper-review-local']:
-                shutil.copytree(ROOT / 'skills/research' / name, installed / name)
+                shutil.copytree(ROOT / 'skills' / name, installed / name)
             package = root / 'project/paper'
             shutil.copytree(ROOT / 'examples/auto-paper/dcsm-spatial', package)
             r = subprocess.run([sys.executable, str(installed / 'experiment-to-paper/scripts/export_evidence.py'),
@@ -237,7 +272,7 @@ class PortabilityTests(unittest.TestCase):
 
         async def exercise(root):
             params = StdioServerParameters(command=sys.executable,
-                args=[str(ROOT / 'skills/research/paper-review-local/scripts/review_mcp.py'), '--serve', '--root', str(root)])
+                args=[str(ROOT / 'skills/paper-review-local/scripts/review_mcp.py'), '--serve', '--root', str(root)])
             async with stdio_client(params) as (read, write):
                 async with ClientSession(read, write) as session:
                     await session.initialize()

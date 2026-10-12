@@ -1,16 +1,24 @@
 ---
 name: paper-review-local
-description: Check a manuscript package locally for structure, bibliography keys, figures, PDF readability, LaTeX typography and overlap with supplied source texts; record input-bound findings for revision.
+description: Check local manuscripts, PDFs and supplied-text overlap.
+version: 0.4.1
 license: MIT
 metadata:
-  version: 0.4.0
+  hermes:
+    tags: [research, paper, review]
 ---
 
 # Local Manuscript Review
 
+## When to use
+
+Use for a completed manuscript package or revision needing local checks and input-bound findings.
+
 Read the manuscript and original evidence before the author's self-review. For revisions, prior findings and the author's response provide useful context. Automated output is not peer-review approval.
 
 ## Run the checks
+
+Runtime files: [review_mcp.py](scripts/review_mcp.py), [CLI dependencies](scripts/requirements.txt), [optional MCP dependencies](scripts/requirements-mcp.txt). Install dependencies for the requested mode.
 
 Read [local-tools.md](references/local-tools.md) for installation, CLI and optional MCP use. The bundled script takes an explicit repository root and package path; it needs no agent profile, GPU, provider credentials or network access. It writes reports under `reviews/<review-id>/` and keeps manuscript inputs unchanged.
 
@@ -27,3 +35,9 @@ Record location, evidence, impact and a correction for each finding. The optiona
 Distinguish author-side review, independent review and venue decisions. Bound revisions to the user's task and record unresolved issues. Author identities, rights, venue rules and upload readiness remain separate from static checks. Consult current official submission instructions when submission preparation is requested.
 
 The bundled workflow performs no external upload or submission. Provider comparisons need a supported connection and applicable user authorization; a score alone cannot certify or reject a manuscript.
+
+## Pitfalls and verification
+
+Successful CLI exit means a report was saved, not that every check passed. Read statuses and unresolved findings. Same-ID reports are immutable; changed inputs or check environments need a fresh ID. PDF readability is separate from layout inspection, and overlap candidates are separate from plagiarism findings.
+
+Version 0.4.1 declares the Hermes frontmatter version and directly links runtime files for URL installation. The check engine remains 0.4.0.

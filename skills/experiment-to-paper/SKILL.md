@@ -1,18 +1,26 @@
 ---
 name: experiment-to-paper
-description: Draft or revise a paper from completed experiment artifacts, tracing measurements and claims to their inputs. Use when saved results need a manuscript or an evidence audit.
+description: Draft papers from completed results with checked evidence.
+version: 0.2.1
 license: MIT
 metadata:
-  version: 0.2.0
+  hermes:
+    tags: [research, paper, evidence]
 ---
 
 # Experiment to Paper
+
+## When to use
+
+Use when saved experiment results need a manuscript, revision or evidence audit.
 
 Inspect the requested format, evaluation code and completed result artifacts. Record the input revision and file hashes. Saved results do not prove the current revision generated them or that inference was reproduced. Preserve the user's language, venue and output choices.
 
 ## Connect results to claims
 
-Create an evidence index with measurements, units, denominators, source files/selectors and missing values. The bundled [JSON exporter](references/evidence-schema.md) transcribes explicitly selected values from any project's saved JSON and hashes the inputs; it does not recompute metrics. When item-level data is available, separately recompute aggregates using the actual evaluation rules.
+Create an evidence index with measurements, units, denominators, source files/selectors and missing values. The bundled [exporter script](scripts/export_evidence.py), used according to [evidence-schema.md](references/evidence-schema.md), transcribes explicitly selected values from any project's saved JSON and hashes the inputs; it does not recompute metrics. When item-level data is available, separately recompute aggregates using the actual evaluation rules.
+
+Try the invented [example results](assets/example/results.json) with the [export specification](assets/example/export-spec.json) before adapting selectors to real results. These files demonstrate measured zero versus unavailable data.
 
 For each main claim, record the sentence, measurement or original-source citation, comparator conditions, limitations and status (`observed`, `interpretation`, `unverified`). Keep missing values distinct from measured zero. Separate detection AP from supplied-box candidate-selection accuracy; shared boxes alone do not establish identical proposals or scoring.
 
@@ -28,8 +36,14 @@ Read [internal-review.md](references/internal-review.md) for author-side content
 
 Revise within the user's scope and use a bounded budget appropriate to the task (two rounds is a useful starting point). Record unresolved experiments or novelty questions instead of launching an indefinite loop. Delegation follows the user's authorization.
 
-## Handoff
+## Verification and handoff
 
 When a PDF is requested, compile its actual sources, inspect page count and actual rendered pages, and report the chosen format. Successful compilation alone does not establish layout quality. Distinguish document rebuilds from experiment reproduction and static checks from scientific validation. Report missing authorship, rights, independent review or venue checks when relevant to submission.
 
 Writing from saved artifacts does not itself authorize new experiments, provider uploads, bot assignments or submission. Existing user authorization remains applicable.
+
+## Pitfalls
+
+Snapshot hashes certify saved inputs, not scientific validity. Preserve null instead of reporting zero; distinguish provided-box selection from full detection; inspect original passages rather than trusting bibliography-key validation.
+
+Version 0.2.1 declares the Hermes frontmatter version and directly links runtime files for URL installation.
