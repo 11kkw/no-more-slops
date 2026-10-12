@@ -48,7 +48,16 @@ python examples/auto-paper/dcsm-spatial/rebuild.py --out /tmp/auto-paper-pdf-new
 
 ## Hermes에서 공유·설치
 
-현재 이 제출 브랜치는 아직 푸시되지 않았습니다. 아래 URL 명령은 upstream PR이 머지된 뒤 사용할 주소이며, 지금 공개 URL 설치가 가능하다고 검증한 것은 아닙니다.
+PR 검토 중에는 fork의 제출 브랜치에서 조회·설치할 수 있습니다. 전체 URL 설치를 실행한 검증 결과는 아니며, 로컬에서는 Hermes parser·목록 처리기와 보조 파일만 복사한 번들을 검증했습니다. 의존성 설치는 앞의 안내를 따릅니다.
+
+```sh
+hermes skills inspect https://raw.githubusercontent.com/11kkw/no-more-slops/feat/auto-paper-evidence-review/skills/experiment-to-paper/SKILL.md
+hermes skills install https://raw.githubusercontent.com/11kkw/no-more-slops/feat/auto-paper-evidence-review/skills/experiment-to-paper/SKILL.md
+hermes skills install https://raw.githubusercontent.com/11kkw/no-more-slops/feat/auto-paper-evidence-review/skills/paper-review-local/SKILL.md
+hermes skills list
+```
+
+아래 upstream URL은 PR이 머지된 뒤 사용할 주소입니다.
 
 ```sh
 hermes skills install https://raw.githubusercontent.com/Pseudo-Lab/no-more-slops/main/skills/experiment-to-paper/SKILL.md

@@ -2,7 +2,9 @@
 
 ## 논문 예제
 
-[실제 DCSM 공간관계 논문 PDF · 본문 4쪽 + 참고문헌 1쪽](../../examples/auto-paper/dcsm-spatial/shortpaper.pdf)를 함께 제공합니다. 저자·소속과 독립 검토가 남아 있는 연구 초안입니다.
+[실제 DCSM 공간관계 논문 PDF · 본문 4쪽 + 참고문헌 1쪽](https://github.com/11kkw/no-more-slops/blob/c19a2ccd434dfd81617e58e7defec997c61072a6/examples/auto-paper/dcsm-spatial/shortpaper.pdf)를 함께 제공합니다. 저자·소속과 독립 검토가 남아 있는 연구 초안입니다.
+
+[한국어 사용 안내](https://github.com/11kkw/no-more-slops/blob/feat/auto-paper-evidence-review/docs/auto-paper-evidence-review.ko.md) · [공유·설치 및 검증 기록](https://github.com/11kkw/no-more-slops/blob/feat/auto-paper-evidence-review/examples/auto-paper/README.md)
 
 ## 변경 사항
 
@@ -41,6 +43,6 @@ python skills/paper-review-local/scripts/review_mcp.py \
   --root . --package examples/auto-paper/dcsm-spatial --review-id initial-01
 ```
 
-ChkTeX와 문서 재빌드 설치 조건, 출력 상태의 해석은 `examples/auto-paper/README.md`에 있습니다. Exporter는 입력값 전사와 해시를 검사하며 집계 재계산은 하지 않습니다. Overlap 검사는 제공된 영어 source text에 한정된 검토 후보이며 global plagiarism percentage가 아닙니다.
+ChkTeX와 문서 재빌드 설치 조건, 출력 상태의 해석은 [예제 README](https://github.com/11kkw/no-more-slops/blob/feat/auto-paper-evidence-review/examples/auto-paper/README.md)에 있습니다. Exporter는 입력값 전사와 해시를 검사하며 집계 재계산은 하지 않습니다. Overlap 검사는 제공된 영어 source text에 한정된 검토 후보이며 global plagiarism percentage가 아닙니다.
 
 이 결과물은 가짜연구소(Pseudo Lab) No-More-Slops 그룹 활동의 일환으로 제작되었습니다.
