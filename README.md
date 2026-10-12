@@ -58,7 +58,7 @@ Include deliverables, production code, reproduction instructions, metrics, and p
 
 ## Reusable production tools
 
-- **Auto-Paper:** [saved-result evidence export](skills/experiment-to-paper/SKILL.md) and [local manuscript review](skills/paper-review-local/SKILL.md). See the [Korean usage guide](docs/auto-paper-evidence-review.ko.md) and [paper example with validation records](examples/auto-paper/README.md).
+- **Auto-Paper:** [saved-result evidence export](skills/experiment-to-paper/SKILL.md) and [local manuscript review](skills/paper-review-local/SKILL.md). See the [Korean usage guide](docs/auto-paper-evidence-review.ko.md) and [paper PDF](artifacts/auto-paper/dcsm-spatial/paper.pdf).
 
 ## Ownership and acknowledgement
 

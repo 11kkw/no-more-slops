@@ -1,9 +1,3 @@
 __pycache__/
 *.py[cod]
 .venv/
-/examples/auto-paper/**/reviews/
-/examples/auto-paper/**/*.aux
-/examples/auto-paper/**/*.bbl
-/examples/auto-paper/**/*.blg
-/examples/auto-paper/**/*.out
-/examples/auto-paper/**/*.log

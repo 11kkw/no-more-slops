@@ -1,9 +1,9 @@
 name: Auto-Paper evidence and local review
 on:
   pull_request:
-    paths: ['skills/experiment-to-paper/**', 'skills/paper-review-local/**', 'examples/auto-paper/**', 'tests/auto-paper/**', '.github/workflows/auto-paper-evidence-review.yml']
+    paths: ['skills/experiment-to-paper/**', 'skills/paper-review-local/**', 'tests/auto-paper/**', '.github/workflows/auto-paper-evidence-review.yml']
   push:
-    paths: ['skills/experiment-to-paper/**', 'skills/paper-review-local/**', 'examples/auto-paper/**', 'tests/auto-paper/**', '.github/workflows/auto-paper-evidence-review.yml']
+    paths: ['skills/experiment-to-paper/**', 'skills/paper-review-local/**', 'tests/auto-paper/**', '.github/workflows/auto-paper-evidence-review.yml']
   workflow_dispatch:
 permissions:
   contents: read

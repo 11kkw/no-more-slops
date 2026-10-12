@@ -227,23 +227,6 @@ class PortabilityTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertTrue((package / 'reviews/url-bundle/local_checks.json').is_file())
 
-    def test_example_tables_and_artifact_hashes(self):
-        example = ROOT / 'examples/auto-paper/dcsm-spatial'
-        manifest = json.loads((example / 'artifact_manifest.json').read_text())
-        for name, record in manifest['files'].items():
-            self.assertEqual(hashlib.sha256((example / name).read_bytes()).hexdigest(), record['sha256'])
-        measurements = json.loads((example / 'evidence/measurements.json').read_text())
-        rows = [line for line in (example / 'tables/all_subsets.tex').read_text().splitlines() if '&' in line][1:]
-        methods = list(measurements['metrics']['spatial'])
-        self.assertEqual(len(rows), len(methods))
-        count = 0
-        for method, row in zip(methods, rows):
-            for subset, cell in zip(['spatial', 'negation', 'affirm'], row.split('&')[1:]):
-                expected = [f"{100 * measurements['metrics'][subset][method][metric]['mean']:.1f}" for metric in ['raw', 'balanced']]
-                self.assertEqual(re.findall(r'\d+\.\d+', cell), expected)
-                count += len(expected)
-        self.assertEqual(count, 78)
-
     def test_installed_skills_run_outside_checkout(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
@@ -251,12 +234,17 @@ class PortabilityTests(unittest.TestCase):
             for name in ['experiment-to-paper', 'paper-review-local']:
                 shutil.copytree(ROOT / 'skills' / name, installed / name)
             package = root / 'project/paper'
-            shutil.copytree(ROOT / 'examples/auto-paper/dcsm-spatial', package)
+            shutil.copytree(ROOT / 'skills/experiment-to-paper/assets/example', package)
+            (package / 'manuscript.md').write_text('# Invented manuscript')
+            from pypdf import PdfWriter
+            writer = PdfWriter()
+            writer.add_blank_page(width=612, height=792)
+            writer.write(package / 'manuscript.pdf')
             r = subprocess.run([sys.executable, str(installed / 'experiment-to-paper/scripts/export_evidence.py'),
                                 '--root', str(package), '--spec', 'export-spec.json', '--out', str(root / 'export')],
                                cwd=root, capture_output=True, text=True)
             self.assertEqual(r.returncode, 0, r.stderr)
-            self.assertEqual(json.loads(r.stdout)['measurements'], 78)
+            self.assertEqual(json.loads(r.stdout)['measurements'], 3)
             r = subprocess.run([sys.executable, str(installed / 'paper-review-local/scripts/review_mcp.py'),
                                 '--root', str(root / 'project'), '--package', 'paper', '--review-id', 'portable'],
                                cwd=root, capture_output=True, text=True)
@@ -264,7 +252,7 @@ class PortabilityTests(unittest.TestCase):
             report = json.loads((package / 'reviews/portable/local_checks.json').read_text())
             self.assertEqual(report['package'], 'paper')
             pdf_check = next(c for c in report['checks'] if c['name'] == 'pdf_readable')
-            self.assertEqual(pdf_check['details']['pages'], 5)
+            self.assertEqual(pdf_check['details']['pages'], 1)
 
     def test_mcp_tools_use_explicit_root(self):
         from mcp import ClientSession, StdioServerParameters

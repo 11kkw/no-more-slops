@@ -58,7 +58,7 @@ Auto-Paper, Auto-Application, Auto-Post 3개의 트랙이 있습니다.
 
 ## 재사용 가능한 제작 도구
 
-- **Auto-Paper:** [완료된 실험의 근거 추출](skills/experiment-to-paper/SKILL.md)과 [로컬 원고 검토](skills/paper-review-local/SKILL.md). [한국어 사용 안내](docs/auto-paper-evidence-review.ko.md)와 [논문 예제·검증 기록](examples/auto-paper/README.md)을 제공합니다.
+- **Auto-Paper:** [완료된 실험의 근거 추출](skills/experiment-to-paper/SKILL.md)과 [로컬 원고 검토](skills/paper-review-local/SKILL.md). [한국어 사용 안내](docs/auto-paper-evidence-review.ko.md)와 [논문 PDF](artifacts/auto-paper/dcsm-spatial/paper.pdf)을 제공합니다.
 
 ## 소유권과 Acknowledgement
 
