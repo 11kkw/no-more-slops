@@ -29,7 +29,7 @@
 - 로컬 설정의 ChkTeX 종료 코드 0·진단 0개; stderr의 설정 환경 안내는 보고서에 보존
 - 새 디렉터리에서 pdfLaTeX → BibTeX → pdfLaTeX → pdfLaTeX 모두 종료 코드 0; 저장된 PDF와 5쪽 전체 추출 텍스트 일치
 
-CI는 구성했으며 GitHub 실행 결과는 아직 없습니다. 예제에 대한 저자·소속과 독립 editorial review는 미완료로 표시했습니다. 문서 빌드와 정적 검사 결과를 실험 재현, scientific validity, originality 또는 투고 승인으로 보고하지 않습니다.
+Fork의 [GitHub Actions 실행](https://github.com/11kkw/no-more-slops/actions/runs/38224953416)에서 Python 3.10/3.12 검사 모두 통과했습니다. Upstream PR 검사 결과는 등록 이후 별도로 확인합니다. 예제에 대한 저자·소속과 독립 editorial review는 미완료로 표시했습니다. 문서 빌드와 정적 검사 결과를 실험 재현, scientific validity, originality 또는 투고 승인으로 보고하지 않습니다.
 
 ## 재현
 

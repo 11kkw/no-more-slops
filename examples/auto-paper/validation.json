@@ -186,7 +186,16 @@
     "execution_context": "Temporary project copy; input paths are relative to that copied project root",
     "package_relative": "paper"
   },
-  "github_ci": "configured; not run on GitHub",
+  "github_ci": {
+    "scope": "fork push workflow; upstream PR checks not yet available",
+    "status": "success",
+    "verified_commit": "30b2acaba9d6cdd13a1a78c9061fbad647ab1f5b",
+    "run_url": "https://github.com/11kkw/no-more-slops/actions/runs/38224953416",
+    "python_versions": [
+      "3.10",
+      "3.12"
+    ]
+  },
   "independent_editorial_review": "not completed",
   "submission_status": "authors and affiliations unresolved; no submission performed",
   "hermes_sharing_validation": {
