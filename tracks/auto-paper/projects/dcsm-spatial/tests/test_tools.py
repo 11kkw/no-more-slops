@@ -12,7 +12,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[5]
 
 
 def load(name, relative):
@@ -22,8 +22,8 @@ def load(name, relative):
     return module
 
 
-exporter = load('evidence_export', 'skills/experiment-to-paper/scripts/export_evidence.py')
-review = load('local_review', 'skills/paper-review-local/scripts/review_mcp.py')
+exporter = load('evidence_export', 'tracks/auto-paper/skills/experiment-to-paper/scripts/export_evidence.py')
+review = load('local_review', 'tracks/auto-paper/skills/paper-review-local/scripts/review_mcp.py')
 
 
 class ExportTests(unittest.TestCase):
@@ -197,7 +197,7 @@ class PortabilityTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
             for name in ['experiment-to-paper', 'paper-review-local']:
-                source = ROOT / 'skills' / name
+                source = ROOT / 'tracks/auto-paper/skills' / name
                 installed = root / name
                 installed.mkdir()
                 entry = (source / 'SKILL.md').read_text()
@@ -232,9 +232,9 @@ class PortabilityTests(unittest.TestCase):
             root = Path(d)
             installed = root / 'installed'
             for name in ['experiment-to-paper', 'paper-review-local']:
-                shutil.copytree(ROOT / 'skills' / name, installed / name)
+                shutil.copytree(ROOT / 'tracks/auto-paper/skills' / name, installed / name)
             package = root / 'project/paper'
-            shutil.copytree(ROOT / 'skills/experiment-to-paper/assets/example', package)
+            shutil.copytree(ROOT / 'tracks/auto-paper/skills/experiment-to-paper/assets/example', package)
             (package / 'manuscript.md').write_text('# Invented manuscript')
             from pypdf import PdfWriter
             writer = PdfWriter()
@@ -260,7 +260,7 @@ class PortabilityTests(unittest.TestCase):
 
         async def exercise(root):
             params = StdioServerParameters(command=sys.executable,
-                args=[str(ROOT / 'skills/paper-review-local/scripts/review_mcp.py'), '--serve', '--root', str(root)])
+                args=[str(ROOT / 'tracks/auto-paper/skills/paper-review-local/scripts/review_mcp.py'), '--serve', '--root', str(root)])
             async with stdio_client(params) as (read, write):
                 async with ClientSession(read, write) as session:
                     await session.initialize()

@@ -26,11 +26,11 @@ This checks transcription and hashes, not labels, aggregates, significance, nove
 From the repository root, this example needs no project data or third-party dependencies:
 
 ```sh
-python3 skills/experiment-to-paper/scripts/export_evidence.py \
-  --root skills/experiment-to-paper/assets/example --spec export-spec.json \
+python3 tracks/auto-paper/skills/experiment-to-paper/scripts/export_evidence.py \
+  --root tracks/auto-paper/skills/experiment-to-paper/assets/example --spec export-spec.json \
   --out /tmp/paper-evidence-demo-new
 ```
 
 Expect three measurements: `0.75`, a measured `0`, and an unavailable `null`.
-After copying the skill, replace the two `skills/experiment-to-paper` prefixes
+After copying the skill, replace the two `tracks/auto-paper/skills/experiment-to-paper` prefixes
 with its installed directory. Use a fresh output path for another run.

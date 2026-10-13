@@ -56,10 +56,6 @@ Auto-Paper, Auto-Application, Auto-Post 3개의 트랙이 있습니다.
 - **개인 포트폴리오:** 프로젝트 기간 중 제작한 논문·서비스·콘텐츠를 소유합니다.
 - **동료 피드백:** 서로의 결과물을 검토하며 개선점을 찾고 제작 노하우를 나눕니다.
 
-## 재사용 가능한 제작 도구
-
-- **Auto-Paper:** [완료된 실험의 근거 추출](skills/experiment-to-paper/SKILL.md)과 [로컬 원고 검토](skills/paper-review-local/SKILL.md). [한국어 사용 안내](docs/auto-paper-evidence-review.ko.md)와 [논문 PDF](artifacts/auto-paper/dcsm-spatial/paper.pdf)을 제공합니다.
-
 ## 소유권과 Acknowledgement
 
 결과물은 본인의 성과로 보유·활용할 수 있습니다. 논문의 저자, 앱·서비스의 소유주, 포스팅 계정의 소유주가 될 수 있습니다.
